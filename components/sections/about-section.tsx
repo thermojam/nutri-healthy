@@ -1,83 +1,45 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-children";
 
-interface AboutSectionProps {
-  data?: {
-    title: string;
-    subtitle: string;
-    bio: string;
-    philosophy: string;
-    photo?: {
-      url: string;
-      alt: string;
-    };
-    journey?: {
-      year: string;
-      title: string;
-      description: string;
-    }[];
-  };
+interface EducationItem {
+  _id: string;
+  title: string;
+  institution: string;
+  specialty: string;
+  year: string;
 }
 
-export default function AboutSection({ data }: AboutSectionProps) {
-  // Данные по умолчанию
-  const aboutData = data || {
-    title: "Обо мне",
-    subtitle: "Мой путь в нутрициологии и health-коучинге",
-    bio: `Привет! Меня зовут [Имя], и я сертифицированный нутрициолог и health-коуч с более чем 7-летним опытом работы.
+export default function AboutSection() {
+  const [education, setEducation] = useState<EducationItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-Моя миссия — помочь вам обрести здоровье, энергию и гармонию с телом через научно обоснованный подход к питанию и образу жизни.
-
-Я верю, что каждый человек уникален, и не существует универсальных решений. Поэтому я разработаю индивидуальную программу, которая подойдет именно вам и вашему образу жизни.`,
-    philosophy:
-      "Здоровье — это не просто отсутствие болезней, это состояние полного физического, психического и социального благополучия.",
-    journey: [
-      {
-        year: "2017",
-        title: "Начало пути",
-        description:
-          "Получила первое образование в области диетологии и начала частную практику",
-      },
-      {
-        year: "2019",
-        title: "Сертификация",
-        description:
-          "Прошла международную сертификацию в области нутрициологии (INM)",
-      },
-      {
-        year: "2021",
-        title: "Health-коучинг",
-        description:
-          "Изучила методы коучинга для работы с психологией питания и привычками",
-      },
-      {
-        year: "2023",
-        title: "500+ клиентов",
-        description:
-          "Более 500 довольных клиентов с устойчивыми результатами",
-      },
-      {
-        year: "2025",
-        title: "Развитие",
-        description:
-          "Запуск авторской методики комплексного оздоровления",
-      },
-    ],
-  };
+  useEffect(() => {
+    fetch("/api/education")
+      .then((res) => res.json())
+      .then((data) => {
+        const formatted = (data.data || []).slice(0, 5).map((item: any) => ({
+          ...item,
+          year: new Date(item.startDate).getFullYear().toString(),
+        }));
+        setEducation(formatted);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch education:", err);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <section id="about" className="py-24 bg-background">
       <div className="container">
         <FadeIn className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            {aboutData.title}
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Обо мне</h2>
           <p className="text-lg text-muted max-w-2xl mx-auto">
-            {aboutData.subtitle}
+            Мой путь в нутрициологии и health-коучинге
           </p>
         </FadeIn>
 
@@ -88,10 +50,10 @@ export default function AboutSection({ data }: AboutSectionProps) {
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
                 {/* Placeholder для фото */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-8xl">👩‍️</span>
+                  <span className="text-8xl">👩‍⚕️</span>
                 </div>
               </div>
-              
+
               {/* Декоративный элемент */}
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/20 rounded-2xl -z-10" />
               <div className="absolute -top-6 -left-6 w-24 h-24 bg-accent/20 rounded-full -z-10" />
@@ -102,11 +64,15 @@ export default function AboutSection({ data }: AboutSectionProps) {
           <div className="space-y-8">
             <FadeIn direction="left" delay={0.3}>
               <div className="prose dark:prose-invert max-w-none">
-                {aboutData.bio.split("\n\n").map((paragraph, index) => (
-                  <p key={index} className="text-base md:text-lg text-muted leading-relaxed">
-                    {paragraph}
-                  </p>
-                ))}
+                <p className="text-base md:text-lg text-muted leading-relaxed">
+                  Привет! Меня зовут Ксения Каменская, и я сертифицированный нутрициолог и health-коуч с более чем 7-летним опытом работы.
+                </p>
+                <p className="text-base md:text-lg text-muted leading-relaxed">
+                  Моя миссия — помочь вам обрести здоровье, энергию и гармонию с телом через научно обоснованный подход к питанию и образу жизни.
+                </p>
+                <p className="text-base md:text-lg text-muted leading-relaxed">
+                  Я верю, что каждый человек уникален, и не существует универсальных решений. Поэтому я разработаю индивидуальную программу, которая подойдет именно вам и вашему образу жизни.
+                </p>
               </div>
             </FadeIn>
 
@@ -114,7 +80,9 @@ export default function AboutSection({ data }: AboutSectionProps) {
             <FadeIn direction="left" delay={0.4}>
               <div className="bg-primary/5 dark:bg-primary/10 p-6 rounded-2xl border-l-4 border-primary">
                 <h3 className="text-lg font-semibold mb-2">Моя философия</h3>
-                <p className="text-muted italic">{aboutData.philosophy}</p>
+                <p className="text-muted italic">
+                  Здоровье — это не просто отсутствие болезней, это состояние полного физического, психического и социального благополучия.
+                </p>
               </div>
             </FadeIn>
 
@@ -122,21 +90,27 @@ export default function AboutSection({ data }: AboutSectionProps) {
             <FadeIn direction="left" delay={0.5}>
               <div>
                 <h3 className="text-xl font-semibold mb-6">Мой путь</h3>
-                <StaggerChildren className="space-y-4">
-                  {aboutData.journey?.map((item, index) => (
-                    <StaggerItem key={index}>
-                      <div className="flex gap-4 items-start">
-                        <div className="flex-shrink-0 w-16 text-primary font-bold text-lg">
-                          {item.year}
+                {loading ? (
+                  <p className="text-muted">Загрузка...</p>
+                ) : (
+                  <StaggerChildren className="space-y-4">
+                    {education.map((item, index) => (
+                      <StaggerItem key={item._id}>
+                        <div className="flex gap-4 items-start">
+                          <div className="flex-shrink-0 w-16 text-primary font-bold text-lg">
+                            {item.year}
+                          </div>
+                          <div className="flex-1 pb-4 border-b border-border last:border-b-0">
+                            <h4 className="font-semibold mb-1">{item.title}</h4>
+                            <p className="text-sm text-muted">
+                              {item.institution} • {item.specialty}
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex-1 pb-4 border-b border-border last:border-b-0">
-                          <h4 className="font-semibold mb-1">{item.title}</h4>
-                          <p className="text-sm text-muted">{item.description}</p>
-                        </div>
-                      </div>
-                    </StaggerItem>
-                  ))}
-                </StaggerChildren>
+                      </StaggerItem>
+                    ))}
+                  </StaggerChildren>
+                )}
               </div>
             </FadeIn>
           </div>

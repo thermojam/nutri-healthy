@@ -1,36 +1,27 @@
-"use client";
-
+import { FadeIn } from "@/components/motion/fade-in";
+import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-children";
 import { Check, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FadeIn } from "@/components/motion/fade-in";
-import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-children";
 
-interface ProductsSectionProps {
-  data?: {
-    title: string;
-    subtitle: string;
-    services?: {
-      id: string;
-      slug: string;
-      title: string;
-      description: string;
-      category: "nutrition" | "health_coaching" | "slavic_gymnastics";
-      pricing: {
-        base: number;
-        premium: number;
-        vip: number;
-      };
-      features: {
-        base: string[];
-        premium: string[];
-        vip: string[];
-      };
-      popular?: boolean;
-      icon?: string;
-    }[];
+interface Service {
+  _id: string;
+  slug: string;
+  title: string;
+  description: string;
+  icon?: string;
+  pricing: {
+    base: number;
+    premium: number;
+    vip: number;
   };
+  features: {
+    base: string[];
+    premium: string[];
+    vip: string[];
+  };
+  popular?: boolean;
 }
 
 function formatPrice(price: number): string {
@@ -42,141 +33,55 @@ function formatPrice(price: number): string {
   }).format(price);
 }
 
-export default function ProductsSection({ data }: ProductsSectionProps) {
-  const productsData = data || {
-    title: "Услуги и тарифы",
-    subtitle: "Выберите подходящую программу для достижения ваших целей",
-    services: [
-      {
-        id: "1",
-        slug: "nutrition",
-        title: "Нутрициология",
-        description: "Индивидуальный план питания и коррекция рациона",
-        category: "nutrition",
-        icon: "🥗",
-        pricing: {
-          base: 5000,
-          premium: 10000,
-          vip: 20000,
-        },
-        features: {
-          base: [
-            "Анкетирование и анализ рациона",
-            "Рекомендации по питанию",
-            "План питания на 7 дней",
-            "Чат поддержки 7 дней",
-          ],
-          premium: [
-            "Всё из базового тарифа",
-            "План питания на 14 дней",
-            "Список продуктов и рецептов",
-            "Коррекция плана по результатам",
-            "Чат поддержки 14 дней",
-            "2 видео-консультации по 60 мин",
-          ],
-          vip: [
-            "Всё из премиум тарифа",
-            "Индивидуальные добавки и витамины",
-            "План питания на 30 дней",
-            "Еженедельные созвоны",
-            "Чат поддержки 30 дней",
-            "4 видео-консультации по 60 мин",
-          ],
-        },
-      },
-      {
-        id: "2",
-        slug: "health-coaching",
-        title: "Health-коучинг",
-        description: "Комплексное сопровождение к здоровью и энергии",
-        category: "health_coaching",
-        icon: "🎯",
-        popular: true,
-        pricing: {
-          base: 15000,
-          premium: 30000,
-          vip: 50000,
-        },
-        features: {
-          base: [
-            "Глубокий анализ здоровья",
-            "Постановка целей и план действий",
-            "Работа с привычками",
-            "Чат поддержки 14 дней",
-            "2 видео-консультации по 60 мин",
-          ],
-          premium: [
-            "Всё из базового тарифа",
-            "Интеграция питания и образа жизни",
-            "Работа с мышлением и убеждениями",
-            "Чат поддержки 30 дней",
-            "4 видео-консультации по 60 мин",
-            "Доступ к закрытым материалам",
-          ],
-          vip: [
-            "Всё из премиум тарифа",
-            "Персональное сопровождение 3 месяца",
-            "Еженедельные созвоны",
-            "Экстренная поддержка в чате",
-            "8 видео-консультаций по 60 мин",
-            "Семейная консультация (1 сессия)",
-          ],
-        },
-      },
-      {
-        id: "3",
-        slug: "slavic-gymnastics",
-        title: "Славянская гимнастика",
-        description: "Телесные практики для гармонии души и тела",
-        category: "slavic_gymnastics",
-        icon: "🧘",
-        pricing: {
-          base: 3000,
-          premium: 8000,
-          vip: 15000,
-        },
-        features: {
-          base: [
-            "Знакомство с практикой",
-            "Базовые упражнения",
-            "Видео-урок (60 мин)",
-            "Чек-лист по практике",
-          ],
-          premium: [
-            "Всё из базового тарифа",
-            "4 видео-урока (4 часа)",
-            "Аудио-сопровождение",
-            "Гайд по славянским практикам",
-            "Чат участников",
-            "1 групповой созвон",
-          ],
-          vip: [
-            "Всё из премиум тарифа",
-            "2 индивидуальные сессии по 60 мин",
-            "Персональная коррекция практики",
-            "Доступ ко всем материалам",
-            "Приглашение на ретрит (скидка 20%)",
-          ],
-        },
-      },
-    ],
-  };
+async function getServices(): Promise<Service[]> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/api/services`, {
+      cache: "no-store",
+    });
+    const data = await res.json();
+    return data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch services:", error);
+    return [];
+  }
+}
+
+export default async function ProductsSection() {
+  const services = await getServices();
+
+  // Если нет данных из БД, используем fallback
+  if (services.length === 0) {
+    return (
+      <section id="services" className="py-24 bg-background">
+        <div className="container">
+          <FadeIn className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Услуги и тарифы
+            </h2>
+            <p className="text-lg text-muted max-w-2xl mx-auto">
+              Загрузка услуг...
+            </p>
+          </FadeIn>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="services" className="py-24 bg-background">
       <div className="container">
         <FadeIn className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            {productsData.title}
+            Услуги и тарифы
           </h2>
           <p className="text-lg text-muted max-w-2xl mx-auto">
-            {productsData.subtitle}
+            Выберите подходящую программу для достижения ваших целей
           </p>
         </FadeIn>
 
         <StaggerChildren className="grid lg:grid-cols-3 gap-8">
-          {productsData.services?.map((service) => (
-            <StaggerItem key={service.id}>
+          {services.map((service, index) => (
+            <StaggerItem key={service._id}>
               <Card
                 className={`relative h-full overflow-hidden ${
                   service.popular
@@ -196,7 +101,7 @@ export default function ProductsSection({ data }: ProductsSectionProps) {
                 <CardContent className="p-6 space-y-6">
                   {/* Заголовок */}
                   <div className="text-center space-y-2">
-                    <span className="text-4xl">{service.icon}</span>
+                    <span className="text-4xl">{service.icon || "✨"}</span>
                     <h3 className="text-2xl font-bold">{service.title}</h3>
                     <p className="text-sm text-muted">{service.description}</p>
                   </div>

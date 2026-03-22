@@ -1,26 +1,367 @@
 @import "tailwindcss";
 
+/* ===========================================
+   DESIGN SYSTEM - Нутрициолог/Health-коуч
+   Версия: 3.0 (по spec.md)
+   =========================================== */
+
+/* Цветовая палитра - Light Theme (default) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary - фиолетовый (основной бренд) */
+  --primary-h: 271;
+  --primary-s: 68%;
+  --primary-l: 46%;
+  --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+  --primary-foreground: hsl(0, 0%, 100%);
+
+  /* Accent - оранжевый (акценты, CTA) */
+  --accent-h: 29;
+  --accent-s: 100%;
+  --accent-l: 66%;
+  --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --accent-foreground: hsl(0, 0%, 100%);
+
+  /* Background & Surface */
+  --background: hsl(0, 0%, 100%);
+  --card: hsl(0, 0%, 100%);
+  --card-hover: hsl(240, 10%, 98%);
+
+  /* Text */
+  --text: hsl(240, 21%, 15%);
+  --text-muted: hsl(240, 10%, 45%);
+  --text-inverse: hsl(0, 0%, 100%);
+
+  /* Borders & Rings */
+  --border: hsl(240, 10%, 90%);
+  --ring: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+
+  /* Status colors */
+  --success: hsl(142, 76%, 36%);
+  --warning: hsl(38, 92%, 50%);
+  --error: hsl(0, 84%, 60%);
+  --info: hsl(217, 91%, 60%);
+
+  /* Gradient - по референсу template.png */
+  --gradient-start: hsl(45, 100%, 85%);
+  --gradient-middle: hsl(271, 68%, 70%);
+  --gradient-end: hsl(240, 60%, 20%);
 }
 
+/* Dark Theme */
+.dark {
+  /* Primary - более светлый фиолетовый для темной темы */
+  --primary-h: 271;
+  --primary-s: 76%;
+  --primary-l: 63%;
+  --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+  --primary-foreground: hsl(0, 0%, 100%);
+
+  /* Accent - оранжевый (ярче для темной темы) */
+  --accent-h: 29;
+  --accent-s: 100%;
+  --accent-l: 66%;
+  --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --accent-foreground: hsl(0, 0%, 100%);
+
+  /* Background & Surface */
+  --background: hsl(240, 10%, 6%);
+  --card: hsl(240, 10%, 10%);
+  --card-hover: hsl(240, 10%, 14%);
+
+  /* Text */
+  --text: hsl(0, 0%, 96%);
+  --text-muted: hsl(240, 10%, 65%);
+  --text-inverse: hsl(0, 0%, 100%);
+
+  /* Borders & Rings */
+  --border: hsl(240, 10%, 20%);
+  --ring: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+
+  /* Status colors (адаптированы для темной темы) */
+  --success: hsl(142, 76%, 46%);
+  --warning: hsl(38, 92%, 60%);
+  --error: hsl(0, 84%, 70%);
+  --info: hsl(217, 91%, 70%);
+
+  /* Gradient - темная версия */
+  --gradient-start: hsl(240, 60%, 15%);
+  --gradient-middle: hsl(271, 76%, 40%);
+  --gradient-end: hsl(45, 100%, 70%);
+}
+
+/* ===========================================
+   TAILWIND THEME CONFIG
+   =========================================== */
 @theme inline {
+  /* Colors */
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-foreground: var(--text);
+  --color-card: var(--card);
+  --color-card-hover: var(--card-hover);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+
+  /* Fonts */
+  --font-sans: var(--font-nunito), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Border Radius */
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ===========================================
+   BASE STYLES
+   =========================================== */
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  font-family: var(--font-nunito), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===========================================
+   TYPOGRAPHY
+   =========================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem); /* 32px - 48px */
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 2.25rem); /* 24px - 36px */
+  font-weight: 600;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 3vw, 1.5rem); /* 20px - 24px */
+  font-weight: 600;
+}
+
+p {
+  font-size: 1rem; /* 16px */
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* ===========================================
+   UTILITY CLASSES
+   =========================================== */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Gradient background по template.png */
+.gradient-bg {
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start) 0%,
+    var(--gradient-middle) 50%,
+    var(--gradient-end) 100%
+  );
+}
+
+/* Card styles */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  background: var(--card-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* Button base styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.btn-accent:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+}
+
+.btn-ghost:hover {
+  background: var(--card-hover);
+}
+
+/* Input styles */
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--card);
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px hsl(var(--primary-h), var(--primary-s), var(--primary-l), 0.1);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ===========================================
+   ACCESSIBILITY
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible styles */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
 }

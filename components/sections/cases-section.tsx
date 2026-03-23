@@ -1,168 +1,169 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Quote } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { FadeIn } from "@/components/motion/fade-in";
-import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-children";
-import { cn } from "@/lib/utils";
+import {useEffect, useState} from "react";
+import {Quote} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
+import {FadeIn} from "@/components/motion/fade-in";
+import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
+import {cn} from "@/lib/utils";
 
 interface Case {
-  _id: string;
-  slug: string;
-  title: string;
-  client: {
-    name: string;
-    anonymized: boolean;
-    age?: number;
-    gender?: "female" | "male";
-  };
-  problem: string;
-  results: {
+    _id: string;
+    slug: string;
     title: string;
-    value: string;
-    metric?: string;
-  }[];
-  testimonial?: string;
-  serviceName: string;
-  duration: string;
+    client: {
+        name: string;
+        anonymized: boolean;
+        age?: number;
+        gender?: "female" | "male";
+    };
+    problem: string;
+    results: {
+        title: string;
+        value: string;
+        metric?: string;
+    }[];
+    testimonial?: string;
+    serviceName: string;
+    duration: string;
 }
 
 export default function CasesSection() {
-  const [cases, setCases] = useState<Case[]>([]);
-  const [loading, setLoading] = useState(true);
+    const [cases, setCases] = useState<Case[]>([]);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("/api/cases")
-      .then((res) => res.json())
-      .then((data) => {
-        setCases(data.data || []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch cases:", err);
-        setLoading(false);
-      });
-  }, []);
+    useEffect(() => {
+        fetch("/api/cases")
+            .then((res) => res.json())
+            .then((data) => {
+                setCases(data.data || []);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error("Failed to fetch cases:", err);
+                setLoading(false);
+            });
+    }, []);
 
-  if (loading) {
+    if (loading) {
+        return (
+            <section id="cases" className="py-24 bg-card">
+                <div className="container">
+                    <FadeIn className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                            Кейсы и результаты
+                        </h2>
+                        <p className="text-lg text-muted">Загрузка...</p>
+                    </FadeIn>
+                </div>
+            </section>
+        );
+    }
+
     return (
-      <section id="cases" className="py-24 bg-card">
-        <div className="container">
-          <FadeIn className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Кейсы и результаты
-            </h2>
-            <p className="text-lg text-muted">Загрузка...</p>
-          </FadeIn>
-        </div>
-      </section>
-    );
-  }
+        <section id="cases" className="py-24 bg-card">
+            <div className="container">
+                <FadeIn className="text-center mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Кейсы и результаты
+                    </h2>
+                    <p className="text-lg text-muted max-w-2xl mx-auto">
+                        Истории успеха моих клиентов с реальными результатами
+                    </p>
+                </FadeIn>
 
-  return (
-    <section id="cases" className="py-24 bg-card">
-      <div className="container">
-        <FadeIn className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Кейсы и результаты
-          </h2>
-          <p className="text-lg text-muted max-w-2xl mx-auto">
-            Истории успеха моих клиентов с реальными результатами
-          </p>
-        </FadeIn>
-
-        <StaggerChildren className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cases.map((caseItem, index) => (
-            <StaggerItem key={caseItem._id}>
-              <Card className="h-full hover:shadow-lg transition-shadow">
-                <CardContent className="p-6 space-y-4">
-                  {/* Заголовок и клиент */}
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={cn(
-                          "w-12 h-12 rounded-full flex items-center justify-center",
-                          caseItem.client.anonymized
-                            ? "bg-primary/20"
-                            : "bg-gradient-to-br from-primary to-accent"
-                        )}
-                      >
-                        {caseItem.client.anonymized ? (
-                          <span className="text-xl">👤</span>
-                        ) : (
-                          <span className="text-xl font-bold text-white">
+                <StaggerChildren className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {cases.map((caseItem, index) => (
+                        <StaggerItem key={caseItem._id}>
+                            <Card className="h-full hover:shadow-lg transition-shadow">
+                                <CardContent className="p-6 space-y-4">
+                                    {/* Заголовок и клиент */}
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div className="flex items-center gap-3">
+                                            <div
+                                                className={cn(
+                                                    "w-12 h-12 rounded-full flex items-center justify-center",
+                                                    caseItem.client.anonymized
+                                                        ? "bg-primary/20"
+                                                        : "bg-gradient-to-br from-primary to-accent"
+                                                )}
+                                            >
+                                                {caseItem.client.anonymized ? (
+                                                    <span className="text-xl">👤</span>
+                                                ) : (
+                                                    <span className="text-xl font-bold text-white">
                             {caseItem.client.name[0]}
                           </span>
-                        )}
-                      </div>
-                      <div>
-                        <h3 className="font-semibold">
-                          {caseItem.client.anonymized
-                            ? "Клиент"
-                            : caseItem.client.name}
-                        </h3>
-                        <p className="text-sm text-muted">
-                          {caseItem.client.age && `${caseItem.client.age} лет`} •{" "}
-                          {caseItem.serviceName}
-                        </p>
-                      </div>
-                    </div>
-                    <Badge variant="outline">{caseItem.duration}</Badge>
-                  </div>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold">
+                                                    {caseItem.client.anonymized
+                                                        ? "Клиент"
+                                                        : caseItem.client.name}
+                                                </h3>
+                                                <p className="text-sm text-muted">
+                                                    {caseItem.client.age && `${caseItem.client.age} лет`} •{" "}
+                                                    {caseItem.serviceName}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <Badge variant="outline">{caseItem.duration}</Badge>
+                                    </div>
 
-                  {/* Название кейса */}
-                  <h3 className="text-lg font-bold">{caseItem.title}</h3>
+                                    {/* Название кейса */}
+                                    <h3 className="text-lg font-bold">{caseItem.title}</h3>
 
-                  {/* Проблема */}
-                  <div>
-                    <p className="text-sm text-muted mb-1">Запрос:</p>
-                    <p className="text-sm">{caseItem.problem}</p>
-                  </div>
+                                    {/* Проблема */}
+                                    <div>
+                                        <p className="text-sm text-muted mb-1">Запрос:</p>
+                                        <p className="text-sm">{caseItem.problem}</p>
+                                    </div>
 
-                  {/* Результаты */}
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted font-medium">Результаты:</p>
-                    {caseItem.results.map((result, i) => (
-                      <div key={i} className="flex items-center gap-2 text-sm">
-                        <span className="text-primary font-bold">✓</span>
-                        <span>
+                                    {/* Результаты */}
+                                    <div className="space-y-2">
+                                        <p className="text-sm text-muted font-medium">Результаты:</p>
+                                        {caseItem.results.map((result, i) => (
+                                            <div key={i} className="flex items-center gap-2 text-sm">
+                                                <span className="text-primary font-bold">✓</span>
+                                                <span>
                           <strong className="text-primary">{result.value}</strong>
-                          {result.metric && (
-                            <span className="text-muted"> {result.metric}</span>
-                          )}
+                                                    {result.metric && (
+                                                        <span className="text-muted"> {result.metric}</span>
+                                                    )}
                         </span>
-                      </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* Отзыв */}
+                                    {caseItem.testimonial && (
+                                        <blockquote
+                                            className="border-l-4 border-primary pl-4 italic text-muted text-sm">
+                                            <Quote className="h-4 w-4 inline mr-2 -mt-1 opacity-50"/>
+                                            {caseItem.testimonial}
+                                        </blockquote>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </StaggerItem>
                     ))}
-                  </div>
+                </StaggerChildren>
 
-                  {/* Отзыв */}
-                  {caseItem.testimonial && (
-                    <blockquote className="border-l-4 border-primary pl-4 italic text-muted text-sm">
-                      <Quote className="h-4 w-4 inline mr-2 -mt-1 opacity-50" />
-                      {caseItem.testimonial}
-                    </blockquote>
-                  )}
-                </CardContent>
-              </Card>
-            </StaggerItem>
-          ))}
-        </StaggerChildren>
-
-        {/* CTA */}
-        <FadeIn delay={0.6}>
-          <div className="mt-12 text-center">
-            <p className="text-muted mb-4">
-              Хотите такой же результат? Запишитесь на консультацию!
-            </p>
-            <a href="#contact">
-              <Button size="lg">Начать свой путь к здоровью</Button>
-            </a>
-          </div>
-        </FadeIn>
-      </div>
-    </section>
-  );
+                {/* CTA */}
+                <FadeIn delay={0.6}>
+                    <div className="mt-12 text-center">
+                        <p className="text-muted mb-4">
+                            Хотите такой же результат? Запишитесь на консультацию!
+                        </p>
+                        <a href="#contact">
+                            <Button size="lg">Начать свой путь к здоровью</Button>
+                        </a>
+                    </div>
+                </FadeIn>
+            </div>
+        </section>
+    );
 }

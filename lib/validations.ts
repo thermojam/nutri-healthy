@@ -80,8 +80,10 @@ export const orderFormSchema = z.object({
         .min(10, "Введите корректный номер телефона")
         .optional()
         .or(z.literal("")),
-    serviceId: z.string().uuid("Некорректный ID услуги"),
+    serviceId: z.string().min(1, "ID услуги обязателен"),
     tariff: z.enum(["base", "premium", "vip"]),
+    paymentMethod: z.enum(["card", "yookassa", "cloudpayments", "yandex_split", "dolemi"]).optional(),
+    installments: z.number().optional(),
     // Согласия
     personalDataConsent: z.boolean().refine((val) => val === true, {
         message: "Необходимо согласие на обработку персональных данных",

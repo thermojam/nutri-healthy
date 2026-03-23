@@ -142,5 +142,19 @@ ServiceSchema.index({available: 1});
 ServiceSchema.index({order: 1});
 ServiceSchema.index({featured: 1});
 
+// Виртуальное поле для _id (чтобы возвращалось как строка)
+ServiceSchema.virtual("id").get(function() {
+    return this._id.toHexString();
+});
+
+ServiceSchema.set("toJSON", {
+    virtuals: true,
+    versionKey: false,
+    transform: function(_doc, ret: any) {
+        ret._id = ret.id;
+        delete ret.id;
+    },
+});
+
 export const Service =
     mongoose.models.Service || mongoose.model<IService>("Service", ServiceSchema);

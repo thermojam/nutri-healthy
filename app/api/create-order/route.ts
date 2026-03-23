@@ -4,8 +4,10 @@ import {connectDB} from "@/lib/db/connect";
 import {Order} from "@/lib/db/models/Order";
 import {User} from "@/lib/db/models/User";
 import {Consent} from "@/lib/db/models/Consent";
+import {Service} from "@/lib/db/models/Service";
 import {createAuditLog, getClientIP, getUserAgent} from "@/lib/db/audit";
 import {orderFormSchema, LEGAL_VERSIONS} from "@/lib/validations";
+import {yookassaService} from "@/lib/payments/yookassa";
 
 /**
  * POST /api/create-order
@@ -55,22 +57,32 @@ export async function POST(request: NextRequest) {
 
         await connectDB();
 
-        // TODO: Получить данные об услуге из БД для проверки цены
-        // const service = await Service.findById(serviceId);
-        // if (!service || !service.available) {
-        //   return NextResponse.json(
-        //     { success: false, error: "Услуга недоступна" },
-        //     { status: 404 }
-        //   );
-        // }
+        // Получение услуги из БД для проверки цены и доступности
+        const service = await Service.findById(serviceId);
 
-        // Моковые данные для цены (заменить на реальные из БД)
-        const prices = {
-            base: 5000,
-            premium: 10000,
-            vip: 20000,
-        };
-        const price = prices[tariff];
+        if (!service) {
+            return NextResponse.json(
+                {success: false, error: "Услуга не найдена"},
+                {status: 404}
+            );
+        }
+
+        if (!service.available) {
+            return NextResponse.json(
+                {success: false, error: "Услуга временно недоступна"},
+                {status: 400}
+            );
+        }
+
+        // Получение цены из тарифа услуги
+        const price = service.pricing[tariff];
+
+        if (!price) {
+            return NextResponse.json(
+                {success: false, error: "Некорректный тариф"},
+                {status: 400}
+            );
+        }
 
         // Поиск или создание пользователя
         let user = await User.findOne({email});
@@ -95,8 +107,8 @@ export async function POST(request: NextRequest) {
         // Создание заказа
         const order = await Order.create({
             user: user._id,
-            service: serviceId,
-            serviceName: "Консультация нутрициолога", // TODO: из БД
+            service: service._id,
+            serviceName: service.title,
             tariff,
             price,
             client: {
@@ -215,27 +227,53 @@ export async function POST(request: NextRequest) {
             details: {
                 tariff,
                 price,
-                serviceId,
+                serviceId: service._id.toString(),
             },
         });
 
-        // TODO: Инициализация платежа (ЮKassa/CloudPayments)
-        // const paymentData = await createYooKassaPayment({
-        //   order_id: order._id.toString(),
-        //   amount: price,
-        //   email,
-        // });
+        // Инициализация платежа через ЮKassa
+        try {
+            const paymentData = await yookassaService.createPayment({
+                orderId: order._id.toString(),
+                amount: price,
+                currency: "RUB",
+                description: `Оплата услуги: ${service.title} (${tariff})`,
+                email,
+            });
 
-        return NextResponse.json({
-            success: true,
-            message: "Заказ создан успешно",
-            order: {
-                id: order._id,
-                price,
-                tariff,
-            },
-            // payment_url: paymentData.confirmation.confirmation_url,
-        });
+            // Сохранение ID платежа в заказ
+            order.paymentMethod = "yookassa";
+            order.metadata = {
+                yookassaPaymentId: paymentData.id,
+                confirmationUrl: paymentData.confirmation.confirmation_url,
+            };
+            await order.save();
+
+            return NextResponse.json({
+                success: true,
+                message: "Заказ создан успешно",
+                order: {
+                    id: order._id,
+                    price,
+                    tariff,
+                },
+                payment_url: paymentData.confirmation.confirmation_url,
+            });
+        } catch (paymentError) {
+            console.error("❌ Payment initialization error:", paymentError);
+
+            // Возвращаем данные заказа даже если платеж не инициирован
+            return NextResponse.json({
+                success: true,
+                message: "Заказ создан, но платеж не инициирован",
+                order: {
+                    id: order._id,
+                    price,
+                    tariff,
+                },
+                error: "Не удалось инициализировать платеж",
+            });
+        }
     } catch (error) {
         console.error("❌ Order creation error:", error);
 

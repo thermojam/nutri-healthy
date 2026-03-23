@@ -10,7 +10,22 @@ import TestimonialsSection from "@/components/sections/testimonials-section";
 import FAQSection from "@/components/sections/faq-section";
 import ContactSection from "@/components/sections/contact-section";
 
-export default function Home() {
+async function getServices() {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/api/services`, {
+            cache: "no-store",
+        });
+        const data = await res.json();
+        return data.data || [];
+    } catch (error) {
+        console.error("Failed to fetch services:", error);
+        return [];
+    }
+}
+
+export default async function Home() {
+    const services = await getServices();
+
     return (
         <>
             <Header/>
@@ -19,7 +34,7 @@ export default function Home() {
                 <HeroSection/>
                 <AboutSection/>
                 <EducationSection/>
-                <ProductsSection/>
+                <ProductsSection services={services}/>
                 <CasesSection/>
                 <MaterialsSection/>
                 <TestimonialsSection/>

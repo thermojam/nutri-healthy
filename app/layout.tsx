@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import {Nunito} from "next/font/google";
 import {ThemeProvider} from "next-themes";
 import {AnalyticsProvider} from "@/components/analytics";
+import {ErrorBoundary} from "@/components/ui/error-boundary";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -97,9 +98,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
-            <AnalyticsProvider>
-                {children}
-            </AnalyticsProvider>
+            <ErrorBoundary>
+                <AnalyticsProvider>
+                    {children}
+                </AnalyticsProvider>
+            </ErrorBoundary>
         </ThemeProvider>
         </body>
         </html>

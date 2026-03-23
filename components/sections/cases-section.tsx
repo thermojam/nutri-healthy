@@ -1,6 +1,3 @@
-"use client";
-
-import {useEffect, useState} from "react";
 import {Quote} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
@@ -8,9 +5,10 @@ import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
 import {cn} from "@/lib/utils";
+import type {ObjectId} from "mongoose";
 
 interface Case {
-    _id: string;
+    _id: string | ObjectId;
     slug: string;
     title: string;
     client: {
@@ -30,36 +28,13 @@ interface Case {
     duration: string;
 }
 
-export default function CasesSection() {
-    const [cases, setCases] = useState<Case[]>([]);
-    const [loading, setLoading] = useState(true);
+interface CasesSectionProps {
+    cases: Case[];
+}
 
-    useEffect(() => {
-        fetch("/api/cases")
-            .then((res) => res.json())
-            .then((data) => {
-                setCases(data.data || []);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error("Failed to fetch cases:", err);
-                setLoading(false);
-            });
-    }, []);
-
-    if (loading) {
-        return (
-            <section id="cases" className="py-24 bg-card">
-                <div className="container">
-                    <FadeIn className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                            Кейсы и результаты
-                        </h2>
-                        <p className="text-lg text-muted">Загрузка...</p>
-                    </FadeIn>
-                </div>
-            </section>
-        );
+export function CasesSection({cases}: CasesSectionProps) {
+    if (!cases || cases.length === 0) {
+        return null;
     }
 
     return (
@@ -75,8 +50,8 @@ export default function CasesSection() {
                 </FadeIn>
 
                 <StaggerChildren className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {cases.map((caseItem, index) => (
-                        <StaggerItem key={caseItem._id}>
+                    {cases.map((caseItem) => (
+                        <StaggerItem key={caseItem._id.toString()}>
                             <Card className="h-full hover:shadow-lg transition-shadow">
                                 <CardContent className="p-6 space-y-4">
                                     {/* Заголовок и клиент */}
@@ -94,8 +69,8 @@ export default function CasesSection() {
                                                     <span className="text-xl">👤</span>
                                                 ) : (
                                                     <span className="text-xl font-bold text-white">
-                            {caseItem.client.name[0]}
-                          </span>
+                                                        {caseItem.client.name[0]}
+                                                    </span>
                                                 )}
                                             </div>
                                             <div>
@@ -129,11 +104,11 @@ export default function CasesSection() {
                                             <div key={i} className="flex items-center gap-2 text-sm">
                                                 <span className="text-primary font-bold">✓</span>
                                                 <span>
-                          <strong className="text-primary">{result.value}</strong>
+                                                    <strong className="text-primary">{result.value}</strong>
                                                     {result.metric && (
                                                         <span className="text-muted"> {result.metric}</span>
                                                     )}
-                        </span>
+                                                </span>
                                             </div>
                                         ))}
                                     </div>
@@ -141,7 +116,8 @@ export default function CasesSection() {
                                     {/* Отзыв */}
                                     {caseItem.testimonial && (
                                         <blockquote
-                                            className="border-l-4 border-primary pl-4 italic text-muted text-sm">
+                                            className="border-l-4 border-primary pl-4 italic text-muted text-sm"
+                                        >
                                             <Quote className="h-4 w-4 inline mr-2 -mt-1 opacity-50"/>
                                             {caseItem.testimonial}
                                         </blockquote>

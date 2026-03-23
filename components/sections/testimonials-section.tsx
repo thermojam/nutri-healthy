@@ -1,15 +1,13 @@
-"use client";
-
-import {useEffect, useState} from "react";
-import {Star, Quote} from "lucide-react";
+import {Quote, Star} from "lucide-react";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
 import {cn} from "@/lib/utils";
+import type {ObjectId} from "mongoose";
 
 interface Testimonial {
-    _id: string;
+    _id: string | ObjectId;
     author: {
         name: string;
         anonymized: boolean;
@@ -21,34 +19,13 @@ interface Testimonial {
     verified: boolean;
 }
 
-export default function TestimonialsSection() {
-    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-    const [loading, setLoading] = useState(true);
+interface TestimonialsSectionProps {
+    testimonials: Testimonial[];
+}
 
-    useEffect(() => {
-        fetch("/api/testimonials")
-            .then((res) => res.json())
-            .then((data) => {
-                setTestimonials(data.data || []);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error("Failed to fetch testimonials:", err);
-                setLoading(false);
-            });
-    }, []);
-
-    if (loading) {
-        return (
-            <section id="reviews" className="py-24 bg-background">
-                <div className="container">
-                    <FadeIn className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Отзывы клиентов</h2>
-                        <p className="text-lg text-muted">Загрузка...</p>
-                    </FadeIn>
-                </div>
-            </section>
-        );
+export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
+    if (!testimonials || testimonials.length === 0) {
+        return null;
     }
 
     return (
@@ -62,8 +39,8 @@ export default function TestimonialsSection() {
                 </FadeIn>
 
                 <StaggerChildren className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {testimonials.map((testimonial, index) => (
-                        <StaggerItem key={testimonial._id}>
+                    {testimonials.map((testimonial) => (
+                        <StaggerItem key={testimonial._id.toString()}>
                             <Card className="h-full hover:shadow-lg transition-shadow">
                                 <CardContent className="p-6 space-y-4">
                                     {/* Автор и рейтинг */}
@@ -81,8 +58,8 @@ export default function TestimonialsSection() {
                                                     <span className="text-xl">👤</span>
                                                 ) : (
                                                     <span className="text-xl font-bold text-white">
-                            {testimonial.author.name[0]}
-                          </span>
+                                                        {testimonial.author.name[0]}
+                                                    </span>
                                                 )}
                                             </div>
                                             <div>
@@ -129,8 +106,8 @@ export default function TestimonialsSection() {
                                         <p className="text-xs text-muted">
                                             Услуга:{" "}
                                             <span className="font-medium text-foreground">
-                        {testimonial.serviceName}
-                      </span>
+                                                {testimonial.serviceName}
+                                            </span>
                                         </p>
                                     </div>
                                 </CardContent>

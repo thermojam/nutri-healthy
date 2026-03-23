@@ -1,6 +1,7 @@
 "use client";
 
 import {useEffect, useState} from "react";
+import Image from "next/image";
 import {FadeIn} from "@/components/motion/fade-in";
 import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
 
@@ -49,10 +50,13 @@ export default function AboutSection() {
                         <div className="relative">
                             <div
                                 className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
-                                {/* Placeholder для фото */}
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-8xl">👩‍⚕️</span>
-                                </div>
+                                <Image
+                                    src="/images/expert.jpeg"
+                                    alt="Ксения Каменская - нутрициолог"
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                />
                             </div>
 
                             {/* Декоративный элемент */}

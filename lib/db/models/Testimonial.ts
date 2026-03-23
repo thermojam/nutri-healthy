@@ -34,13 +34,13 @@ const TestimonialSchema = new Schema<ITestimonial>(
         content: {type: String, required: true},
         verified: {type: Boolean, default: false},
         orderId: {type: Schema.Types.ObjectId, ref: "Order"},
-        published: {type: Boolean, default: false, index: true},
+        published: {type: Boolean, default: false},
         publishedAt: Date,
         consentGiven: {type: Boolean, required: true, default: false},
         consentDate: Date,
         video: {url: String, thumbnail: String, duration: Number},
         order: {type: Number, default: 0},
-        featured: {type: Boolean, default: false, index: true},
+        featured: {type: Boolean, default: false},
     },
     {timestamps: true}
 );

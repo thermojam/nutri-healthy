@@ -42,11 +42,11 @@ export default function HeroSection({data}: HeroSectionProps) {
     };
 
     return (
-        <AnimatedBackground className="min-h-screen flex items-center">
+        <AnimatedBackground className="min-h-screen flex justify-center items-center">
             <div className="container py-24 md:py-32">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     {/* Левая часть - Контент */}
-                    <div className="space-y-8">
+                    <div className="space-y-8 text-center lg:text-left mx-auto lg:mx-0 max-w-3xl lg:max-w-none">
                         <FadeIn direction="up" delay={0.2}>
                             <div
                                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm text-primary">
@@ -66,14 +66,14 @@ export default function HeroSection({data}: HeroSectionProps) {
                         </FadeIn>
 
                         <FadeIn direction="up" delay={0.4}>
-                            <p className="text-lg md:text-xl text-muted max-w-xl">
+                            <p className="text-lg md:text-xl text-muted max-w-xl mx-auto lg:mx-0">
                                 {heroData.description}
                             </p>
                         </FadeIn>
 
                         {/* CTA кнопки */}
                         <FadeIn direction="up" delay={0.5}>
-                            <div className="flex flex-col sm:flex-row gap-4">
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                 <a href="#services">
                                     <Button size="lg" className="gap-2">
                                         {heroData.ctaPrimary}
@@ -91,7 +91,7 @@ export default function HeroSection({data}: HeroSectionProps) {
                         {/* Статистика */}
                         {heroData.stats && (
                             <FadeIn direction="up" delay={0.6}>
-                                <div className="flex flex-wrap gap-8 pt-4">
+                                <div className="flex flex-wrap gap-8 pt-4 justify-center lg:justify-start">
                                     {heroData.stats.map((stat, index) => (
                                         <motion.div
                                             key={stat.label}
@@ -113,7 +113,7 @@ export default function HeroSection({data}: HeroSectionProps) {
 
                         {/* Доверие */}
                         <FadeIn direction="up" delay={0.8}>
-                            <div className="flex items-center gap-4 pt-4">
+                            <div className="flex items-center gap-4 pt-4 justify-center lg:justify-start">
                                 <div className="flex -space-x-3">
                                     {[1, 2, 3, 4].map((i) => (
                                         <div
@@ -137,14 +137,13 @@ export default function HeroSection({data}: HeroSectionProps) {
                         <div className="relative">
                             {/* Основное фото */}
                             <div className="relative w-full aspect-square max-w-md mx-auto">
-                                {/* Placeholder для фото эксперта */}
-                                <div
-                                    className="w-full h-full rounded-full bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center">
-                                    <div
-                                        className="w-3/4 h-3/4 rounded-full bg-background/90 flex items-center justify-center">
-                                        <span className="text-6xl">👩‍⚕️</span>
-                                    </div>
-                                </div>
+                                <Image
+                                    src="/images/main-image.png"
+                                    alt="Нутрициолог"
+                                    fill
+                                    className="object-cover rounded-full"
+                                    priority
+                                />
 
                                 {/* Декоративные круги (по референсу template.png) */}
                                 <motion.div
@@ -210,27 +209,6 @@ export default function HeroSection({data}: HeroSectionProps) {
                         </div>
                     </FadeIn>
                 </div>
-
-                {/* Логотипы партнеров / СМИ (опционально) */}
-                <FadeIn direction="up" delay={1}>
-                    <div className="mt-16 pt-8 border-t border-primary/10">
-                        <p className="text-center text-sm text-muted mb-6">
-                            Публиковались в изданиях
-                        </p>
-                        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-50">
-                            {["Forbes", "Vogue", "Harper's Bazaar", "Elle", "GQ"].map(
-                                (brand) => (
-                                    <div
-                                        key={brand}
-                                        className="text-xl md:text-2xl font-bold text-muted"
-                                    >
-                                        {brand}
-                                    </div>
-                                )
-                            )}
-                        </div>
-                    </div>
-                </FadeIn>
             </div>
         </AnimatedBackground>
     );

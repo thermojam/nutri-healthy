@@ -131,9 +131,7 @@ const UserSchema = new Schema<IUser>(
     }
 );
 
-// Индексы для производительности и 152-ФЗ
-UserSchema.index({email: 1}, {unique: true});
-UserSchema.index({phone: 1}, {unique: true, sparse: true});
+// Индексы для производительности и 152-ФЗ (email и phone уже имеют unique в определении поля)
 UserSchema.index({createdAt: -1});
 UserSchema.index({"consents.personalData.given": 1});
 UserSchema.index({"consents.marketing.given": 1});

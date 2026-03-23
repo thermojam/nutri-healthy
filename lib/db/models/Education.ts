@@ -33,8 +33,8 @@ const EducationSchema = new Schema<IEducation>(
                 name: {type: String, required: true},
             },
         ],
-        order: {type: Number, default: 0, index: true},
-        featured: {type: Boolean, default: false, index: true},
+        order: {type: Number, default: 0},
+        featured: {type: Boolean, default: false},
     },
     {timestamps: true}
 );

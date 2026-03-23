@@ -69,7 +69,6 @@ const ServiceSchema = new Schema<IService>(
             type: String,
             enum: ["nutrition", "health_coaching", "slavic_gymnastics", "other"],
             required: true,
-            index: true,
         },
         pricing: {
             base: {type: Number, required: true, min: 0},
@@ -96,7 +95,6 @@ const ServiceSchema = new Schema<IService>(
         available: {
             type: Boolean,
             default: true,
-            index: true,
         },
         popular: {
             type: Boolean,
@@ -127,7 +125,6 @@ const ServiceSchema = new Schema<IService>(
         featured: {
             type: Boolean,
             default: false,
-            index: true,
         },
     },
     {
@@ -135,8 +132,7 @@ const ServiceSchema = new Schema<IService>(
     }
 );
 
-// Индексы для производительности
-ServiceSchema.index({slug: 1}, {unique: true});
+// Индексы для производительности (убраны дубли — slug уже имеет unique: true)
 ServiceSchema.index({category: 1});
 ServiceSchema.index({available: 1});
 ServiceSchema.index({order: 1});

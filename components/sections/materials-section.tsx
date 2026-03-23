@@ -63,7 +63,7 @@ function formatDuration(seconds: number): string {
     return `${minutes} мин`;
 }
 
-export default function MaterialsSection() {
+export function MaterialsSection() {
     const [articles, setArticles] = useState<Article[]>([]);
     const [videos, setVideos] = useState<VideoItem[]>([]);
     const [webinars, setWebinars] = useState<Webinar[]>([]);

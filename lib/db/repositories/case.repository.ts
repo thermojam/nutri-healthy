@@ -12,6 +12,14 @@ export class CaseRepository {
         return Case.findOne({slug, published: true}).exec();
     }
 
+    async findAll(limit: number = 10): Promise<ICase[]> {
+        await connectDB();
+        return Case.find({published: true})
+            .sort({order: 1, publishedAt: -1})
+            .limit(limit)
+            .exec();
+    }
+
     async findPublished(limit: number = 10): Promise<ICase[]> {
         await connectDB();
         return Case.find({published: true})

@@ -7,6 +7,14 @@ export class TestimonialRepository {
         return Testimonial.findById(id).exec();
     }
 
+    async findAll(limit: number = 10): Promise<ITestimonial[]> {
+        await connectDB();
+        return Testimonial.find({published: true})
+            .sort({order: 1, rating: -1})
+            .limit(limit)
+            .exec();
+    }
+
     async findPublished(limit: number = 10): Promise<ITestimonial[]> {
         await connectDB();
         return Testimonial.find({published: true})

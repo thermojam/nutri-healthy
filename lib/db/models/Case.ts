@@ -44,18 +44,18 @@ const CaseSchema = new Schema<ICase>(
         serviceId: {type: Schema.Types.ObjectId, ref: "Service"},
         serviceName: {type: String, required: true},
         duration: String,
-        published: {type: Boolean, default: false, index: true},
+        published: {type: Boolean, default: false},
         publishedAt: Date,
         consentGiven: {type: Boolean, required: true, default: false},
         consentDate: Date,
         order: {type: Number, default: 0},
-        featured: {type: Boolean, default: false, index: true},
+        featured: {type: Boolean, default: false},
         tags: [String],
     },
     {timestamps: true}
 );
 
-CaseSchema.index({slug: 1}, {unique: true});
+// Индексы (slug уже имеет unique: true в определении поля)
 CaseSchema.index({published: 1, publishedAt: -1});
 CaseSchema.index({featured: 1});
 CaseSchema.index({order: 1});

@@ -10,8 +10,10 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import OrderModal from "@/components/features/order-modal";
 
+import type {ObjectId} from "mongoose";
+
 interface Service {
-    _id: string;
+    _id: string | ObjectId;
     slug: string;
     title: string;
     description: string;
@@ -42,7 +44,7 @@ interface ProductsSectionProps {
     services: Service[];
 }
 
-export default function ProductsSection({services}: ProductsSectionProps) {
+export function ProductsSection({services}: ProductsSectionProps) {
     const [selectedService, setSelectedService] = useState<{
         serviceId: string;
         serviceName: string;
@@ -53,7 +55,7 @@ export default function ProductsSection({services}: ProductsSectionProps) {
 
     const handleTariffSelect = (service: Service, tariff: "base" | "premium" | "vip") => {
         setSelectedService({
-            serviceId: service._id,
+            serviceId: service._id.toString(),
             serviceName: service.title,
             tariff,
             price: service.pricing[tariff],
@@ -104,7 +106,7 @@ export default function ProductsSection({services}: ProductsSectionProps) {
 
                     <StaggerChildren className="grid lg:grid-cols-3 gap-8">
                         {services.map((service) => (
-                            <StaggerItem key={service._id}>
+                            <StaggerItem key={service._id.toString()}>
                                 <Card
                                     className={`relative h-full overflow-hidden ${
                                         service.popular

@@ -55,7 +55,7 @@ export async function createAuditLog({
         await connectDB();
 
         const ipAddress = await getClientIP();
-        const userAgent = getUserAgent();
+        const userAgent = await getUserAgent();
 
         await AuditLog.create({
             userId: userId ? new Types.ObjectId(userId) : undefined,

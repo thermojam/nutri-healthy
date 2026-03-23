@@ -1,7 +1,5 @@
 import mongoose, { Document, Schema, HydratedDocument } from "mongoose";
 
-// Temp placeholderDocument, Schema} from "mongoose";
-
 export interface IService extends Document {
     slug: string;
     title: string;

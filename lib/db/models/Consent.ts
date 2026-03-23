@@ -1,7 +1,5 @@
 import mongoose, {Document, Schema} from "mongoose";
 
-// Temp placeholder Document, Schema } from "mongoose";
-
 /**
  * Consent - Согласия на обработку персональных данных (152-ФЗ)
  * Отдельная коллекция для хранения всех согласий с возможностью отзыва

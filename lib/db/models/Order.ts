@@ -1,7 +1,5 @@
 import mongoose, {Document, Schema} from "mongoose";
 
-// Temp placeholder Document, Schema } from "mongoose";
-
 export interface IOrder extends Document {
     user: mongoose.Types.ObjectId;
     service: mongoose.Types.ObjectId;

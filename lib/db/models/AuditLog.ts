@@ -1,7 +1,5 @@
 import mongoose, {Document, Schema} from "mongoose";
 
-// Temp placeholder Document, Schema } from "mongoose";
-
 /**
  * AuditLog - Журнал аудита для 152-ФЗ
  * Логирует все действия с персональными данными

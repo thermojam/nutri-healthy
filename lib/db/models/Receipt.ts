@@ -1,7 +1,5 @@
 import mongoose, {Document, Schema, HydratedDocument} from "mongoose";
 
-// Temp placeholder Document, Schema } from "mongoose";
-
 /**
  * Receipt - Чек (54-ФЗ)
  * Хранит информацию о сформированных чеках для налоговой

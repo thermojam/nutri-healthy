@@ -6,7 +6,7 @@ export const databaseConfig = {
     /**
      * URI подключения к MongoDB
      */
-    uri: process.env.MONGODB_URI!,
+    uri: process.env.MONGODB_URI || '',
 
     /**
      * Опции подключения Mongoose

@@ -8,6 +8,9 @@ import {Service} from "@/lib/db/models/Service";
 import {createAuditLog, getClientIP, getUserAgent} from "@/lib/db/audit";
 import {orderFormSchema, LEGAL_VERSIONS} from "@/lib/validations";
 import {yookassaService} from "@/lib/payments/yookassa";
+import {sendAdminEmail, sendEmail} from "@/lib/email";
+import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
+import {ClientOrderConfirmTemplate} from "@/lib/email/templates/client-order-confirm";
 
 /**
  * POST /api/create-order
@@ -232,8 +235,11 @@ export async function POST(request: NextRequest) {
         });
 
         // Инициализация платежа через ЮKassa
+        let paymentUrl: string | undefined;
+        let paymentData: any;
+
         try {
-            const paymentData = await yookassaService.createPayment({
+            paymentData = await yookassaService.createPayment({
                 orderId: order._id.toString(),
                 amount: price,
                 currency: "RUB",
@@ -241,14 +247,24 @@ export async function POST(request: NextRequest) {
                 email,
             });
 
+            paymentUrl = paymentData?.confirmation?.confirmation_url;
+
             // Сохранение ID платежа в заказ
             order.paymentMethod = "yookassa";
             order.metadata = {
                 yookassaPaymentId: paymentData.id,
-                confirmationUrl: paymentData.confirmation.confirmation_url,
+                confirmationUrl: paymentUrl,
             };
             await order.save();
+        } catch (paymentError) {
+            console.error("❌ Payment initialization error:", paymentError);
+        }
 
+        // Письма отправляются ТОЛЬКО после успешной оплаты (webhook)
+        // Сейчас только возвращаем данные для оплаты
+
+        // Возврат ответа
+        if (paymentUrl) {
             return NextResponse.json({
                 success: true,
                 message: "Заказ создан успешно",
@@ -257,12 +273,9 @@ export async function POST(request: NextRequest) {
                     price,
                     tariff,
                 },
-                payment_url: paymentData.confirmation.confirmation_url,
+                payment_url: paymentUrl,
             });
-        } catch (paymentError) {
-            console.error("❌ Payment initialization error:", paymentError);
-
-            // Возвращаем данные заказа даже если платеж не инициирован
+        } else {
             return NextResponse.json({
                 success: true,
                 message: "Заказ создан, но платеж не инициирован",
@@ -271,7 +284,6 @@ export async function POST(request: NextRequest) {
                     price,
                     tariff,
                 },
-                error: "Не удалось инициализировать платеж",
             });
         }
     } catch (error) {

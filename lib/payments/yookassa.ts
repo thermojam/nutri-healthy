@@ -3,6 +3,8 @@
  * Документация: https://yookassa.ru/developers/api
  */
 
+import crypto from "crypto";
+
 interface YooKassaConfig {
     shopId: string;
     secretKey: string;

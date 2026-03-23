@@ -3,29 +3,19 @@
  * Запуск: npm run seed
  */
 
-// Загрузка переменных окружения - ДО всех остальных импортов
+// Загрузка переменных окружения через dotenv
 import dotenv from "dotenv";
 import path from "path";
 import {fileURLToPath} from "url";
-import {readFileSync} from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Загружаем .env.local вручную
+// Загружаем .env.local
 const envPath = path.resolve(__dirname, "../.env.local");
-const envContent = readFileSync(envPath, "utf-8");
-const envLines = envContent.split("\n");
+dotenv.config({path: envPath});
 
-for (const line of envLines) {
-    const match = line.match(/^([^#][^=]+)=(.*)$/);
-    if (match) {
-        const key = match[1].trim();
-        const value = match[2].trim().replace(/^["']|["']$/g, "");
-        process.env[key] = value;
-    }
-}
-
+// Теперь можно импортировать остальное
 import {connectDB} from "@/lib/db/connect";
 import {Service} from "@/lib/db/models/Service";
 import {Article} from "@/lib/db/models/Article";

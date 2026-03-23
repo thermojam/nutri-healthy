@@ -53,7 +53,7 @@ async findById(id: string) {
     if (cached && Date.now() - cached.cachedAt < CACHE_TTL) {
         return cached; // Возвращаем из кэша
     }
-    
+
     const user = await User.findById(id).lean().exec();
     if (user) {
         userCache.set(id, {...user, cachedAt: Date.now()});
@@ -70,12 +70,12 @@ async create(data: Partial<IConsent>) {
     if (!data.user || !data.type) {
         throw new Error("User и type обязательны");
     }
-    
+
     const existing = await this.findActiveByType(data.user, data.type);
     if (existing) {
         throw new Error("Согласие уже существует");
     }
-    
+
     return Consent.create(data);
 }
 
@@ -349,14 +349,14 @@ describe("UserRepository", () => {
             firstName: "Иван",
             lastName: "Иванов",
         });
-        
+
         expect(user.email).toBe("test@example.com");
         expect(user.firstName).toBe("Иван");
     });
-    
+
     it("должен найти пользователя по email", async () => {
         const user = await userRepository.findByEmail("test@example.com");
-        
+
         expect(user).not.toBeNull();
         expect(user?.email).toBe("test@example.com");
     });
@@ -368,10 +368,10 @@ describe("UserRepository", () => {
 ## 📚 API Reference
 
 Полный список методов см. в файлах:
-- [`lib/db/repositories/user.repository.ts`](./lib/db/repositories/user.repository.ts)
-- [`lib/db/repositories/order.repository.ts`](./lib/db/repositories/order.repository.ts)
-- [`lib/db/repositories/receipt.repository.ts`](./lib/db/repositories/receipt.repository.ts)
-- [`lib/db/repositories/consent.repository.ts`](./lib/db/repositories/consent.repository.ts)
+- [`lib/db/repositories/user.repository.ts`](../lib/db/repositories/user.repository.ts)
+- [`lib/db/repositories/order.repository.ts`](../lib/db/repositories/order.repository.ts)
+- [`lib/db/repositories/receipt.repository.ts`](../lib/db/repositories/receipt.repository.ts)
+- [`lib/db/repositories/consent.repository.ts`](../lib/db/repositories/consent.repository.ts)
 
 ---
 

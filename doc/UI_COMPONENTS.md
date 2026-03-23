@@ -125,7 +125,7 @@ import {TestimonialCard, CompactTestimonial, FeaturedTestimonial} from "@/compon
 <CompactTestimonial testimonial={testimonial} />
 
 // Выделенная (featured)
-<FeaturedTestimonial 
+<FeaturedTestimonial
     testimonial={testimonial}
     className="border-primary"
 />
@@ -209,7 +209,7 @@ function Typography({as}) {
 // ✅ Хорошо
 export function EmptyState({icon = "inbox", ...}) {
     if (!title) return null;
-    
+
     const iconNode = typeof icon === "string" ? ICONS[icon] : icon;
     return <div>...</div>;
 }
@@ -327,7 +327,7 @@ describe("Typography", () => {
         render(<H1>Тест</H1>);
         expect(screen.getByRole("heading", {level: 1})).toHaveTextContent("Тест");
     });
-    
+
     it("рендерит Paragraph с muted", () => {
         render(<Paragraph muted>Текст</Paragraph>);
         expect(screen.getByText("Текст")).toHaveClass("text-muted");
@@ -340,12 +340,12 @@ describe("Typography", () => {
 ## 📚 API Reference
 
 Полный список компонентов см. в файлах:
-- [`components/ui/typography.tsx`](./components/ui/typography.tsx)
-- [`components/ui/skeleton.tsx`](./components/ui/skeleton.tsx)
-- [`components/ui/video-player.tsx`](./components/ui/video-player.tsx)
-- [`components/ui/empty-state.tsx`](./components/ui/empty-state.tsx)
-- [`components/ui/testimonial-card.tsx`](./components/ui/testimonial-card.tsx)
-- [`components/ui/avatar.tsx`](./components/ui/avatar.tsx)
+- [`components/ui/typography.tsx`](../components/ui/typography.tsx)
+- [`components/ui/skeleton.tsx`](../components/ui/skeleton.tsx)
+- [`components/ui/video-player.tsx`](../components/ui/video-player.tsx)
+- [`components/ui/empty-state.tsx`](../components/ui/empty-state.tsx)
+- [`components/ui/testimonial-card.tsx`](../components/ui/testimonial-card.tsx)
+- [`components/ui/avatar.tsx`](../components/ui/avatar.tsx)
 
 ---
 

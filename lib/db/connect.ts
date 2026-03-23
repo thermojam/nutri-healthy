@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
-import {databaseConfig, validateDatabaseConfig} from "@/config/database";
 
-// Валидация конфигурации при инициализации
-validateDatabaseConfig();
+const MONGODB_URI = process.env.MONGODB_URI;
 
-const MONGODB_URI = databaseConfig.uri;
+if (!MONGODB_URI) {
+    throw new Error(
+        "MONGODB_URI is not defined. Please add it to your .env.local file."
+    );
+}
 
 interface MongooseCache {
     conn: typeof mongoose | null;
@@ -29,7 +31,13 @@ export async function connectDB(): Promise<typeof mongoose> {
 
     if (!cached.promise) {
         cached.promise = mongoose
-            .connect(MONGODB_URI, databaseConfig.options)
+            .connect(MONGODB_URI!, {
+                bufferCommands: false,
+                maxPoolSize: 10,
+                serverSelectionTimeoutMS: 5000,
+                socketTimeoutMS: 45000,
+                family: 4,
+            })
             .then((mongoose) => {
                 console.log("✅ MongoDB connected successfully");
                 return mongoose;

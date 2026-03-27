@@ -6,6 +6,8 @@ import {Badge} from "@/components/ui/badge";
 import {Card, CardContent} from "@/components/ui/card";
 import {FadeIn} from "@/components/motion/fade-in";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
+import {InfoBlock} from "@/components/ui/info-block";
+import {FileCheck} from "lucide-react";
 
 interface Education {
     _id: string;
@@ -76,7 +78,7 @@ export default function EducationSection() {
                     </p>
                 </FadeIn>
 
-                <Carousel showDots={true} showArrows={true}>
+                <Carousel showDots={true} showArrows={false}>
                     {education.map((item) => {
                         const DocumentIcon = item.documents?.[0]
                             ? documentIcons[item.documents[0].type]
@@ -144,12 +146,15 @@ export default function EducationSection() {
 
                 {/* Примечание */}
                 <FadeIn delay={0.6}>
-                    <div className="mt-12 p-6 bg-primary/5 rounded-2xl border border-primary/20 text-center">
-                        <p className="text-sm text-muted">
-                            📄 Все документы доступны для проверки. Копии дипломов и сертификатов
-                            можно запросить через форму обратной связи.
-                        </p>
-                    </div>
+                    <InfoBlock
+                        variant="info"
+                        icon={<FileCheck className="h-5 w-5"/>}
+                        title="Проверка документов"
+                        className="mt-12"
+                    >
+                        Все документы доступны для проверки. Копии дипломов и сертификатов
+                        можно запросить через форму обратной связи.
+                    </InfoBlock>
                 </FadeIn>
             </div>
         </section>

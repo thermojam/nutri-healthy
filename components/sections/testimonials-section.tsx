@@ -38,7 +38,7 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                     </p>
                 </FadeIn>
 
-                <Carousel showDots={true} showArrows={true}>
+                <Carousel showDots={true} showArrows={false}>
                     {testimonials.map((testimonial) => (
                         <CarouselItem key={testimonial._id.toString()}>
                             <Card className="h-full hover:shadow-lg transition-shadow">

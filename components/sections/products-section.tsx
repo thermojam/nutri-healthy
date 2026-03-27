@@ -7,8 +7,10 @@ import {Check, Star} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
+import {InfoBlockWithBadges} from "@/components/ui/info-block";
 import OrderModal from "@/components/features/order-modal";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
+import {CreditCard, Percent, Wallet} from "lucide-react";
 import type {ObjectId} from "mongoose";
 
 interface Service {
@@ -103,7 +105,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                         </p>
                     </FadeIn>
 
-                    <Carousel showDots={true} showArrows={true}>
+                    <Carousel showDots={true} showArrows={false}>
                         {services.map((service) => (
                             <CarouselItem key={service._id.toString()}>
                                 <Card
@@ -235,16 +237,20 @@ export function ProductsSection({services}: ProductsSectionProps) {
                         ))}
                     </Carousel>
 
-                    {/* Примечание */}
+                    {/* Рассрочки и оплата */}
                     <FadeIn delay={0.6}>
-                        <div className="mt-12 p-6 bg-accent/5 rounded-2xl border border-accent/20 text-center">
-                            <p className="text-sm text-muted">
-                                💳 Доступны рассрочки от партнеров: Яндекс.Рассрочка, Долями, Тинькофф
+                        <InfoBlockWithBadges
+                            variant="accent"
+                            icon="💳"
+                            title="Доступны рассрочки от партнеров"
+                            badges={["Яндекс.Рассрочка", "Долями", "Тинькофф", "Сплит"]}
+                            className="mt-12"
+                        >
+                            <p>
+                                Возможна оплата частями без процентов и переплат.
+                                Оформление онлайн за 5 минут.
                             </p>
-                            <p className="text-xs text-muted mt-2">
-                                Возможна оплата частями без процентов и переплат
-                            </p>
-                        </div>
+                        </InfoBlockWithBadges>
                     </FadeIn>
                 </div>
             </section>

@@ -97,7 +97,7 @@ export function Carousel({
             )}
 
             {/* Embla viewport */}
-            <div className="overflow-hidden" ref={emblaRef}>
+            <div className="overflow-hidden -mx-2 px-2 lg:-mx-4 lg:px-4" ref={emblaRef}>
                 <div className="flex">
                     {children}
                 </div>
@@ -134,13 +134,18 @@ export function CarouselItem({children, className}: CarouselItemProps) {
     return (
         <div
             className={cn(
-                "flex-[0_0_100%] min-w-0",
-                "sm:flex-[0_0_50%] sm:max-w-[calc(50%-0.5rem)]",
-                "lg:flex-[0_0_33.333%] lg:max-w-[calc(33.333%-0.5rem)]",
+                // Mobile: 1 карточка с отступами
+                "flex-[0_0_100%] min-w-0 px-2",
+                // Tablet: 2 карточки с отступами
+                "sm:flex-[0_0_50%] sm:max-w-[calc(50%-0.75rem)]",
+                // Desktop: 3 карточки с отступами
+                "lg:flex-[0_0_33.333%] lg:max-w-[calc(33.333%-1rem)]",
                 className
             )}
         >
-            {children}
+            <div className="h-full">
+                {children}
+            </div>
         </div>
     );
 }

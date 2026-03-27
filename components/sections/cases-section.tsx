@@ -49,7 +49,7 @@ export function CasesSection({cases}: CasesSectionProps) {
                     </p>
                 </FadeIn>
 
-                <Carousel showDots={true} showArrows={true}>
+                <Carousel showDots={true} showArrows={false}>
                     {cases.map((caseItem) => (
                         <CarouselItem key={caseItem._id.toString()}>
                             <Card className="h-full hover:shadow-lg transition-shadow">

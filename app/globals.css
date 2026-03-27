@@ -102,18 +102,18 @@ body {
     --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
     --accent-foreground: hsl(0, 0%, 100%);
 
-    /* Background & Surface */
-    --background: hsl(240, 10%, 6%);
-    --card: hsl(240, 10%, 10%);
-    --card-hover: hsl(240, 10%, 14%);
+    /* Background & Surface - светлее для лучшей читаемости */
+    --background: hsl(240, 10%, 10%);
+    --card: hsl(240, 10%, 14%);
+    --card-hover: hsl(240, 10%, 18%);
 
-    /* Text */
+    /* Text - контрастнее */
     --text: hsl(0, 0%, 96%);
-    --text-muted: hsl(240, 10%, 65%);
+    --text-muted: hsl(240, 10%, 70%);
     --text-inverse: hsl(0, 0%, 100%);
 
-    /* Borders & Rings */
-    --border: hsl(240, 10%, 20%);
+    /* Borders & Rings - светлее */
+    --border: hsl(240, 10%, 25%);
     --ring: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
 
     /* Status colors (адаптированы для темной темы) */
@@ -122,10 +122,10 @@ body {
     --error: hsl(0, 84%, 70%);
     --info: hsl(217, 91%, 70%);
 
-    /* Gradient - темная версия */
-    --gradient-start: hsl(240, 60%, 15%);
-    --gradient-middle: hsl(271, 76%, 40%);
-    --gradient-end: hsl(45, 100%, 70%);
+    /* Gradient - темная версия (светлее) */
+    --gradient-start: hsl(240, 60%, 20%);
+    --gradient-middle: hsl(271, 76%, 50%);
+    --gradient-end: hsl(45, 100%, 75%);
 }
 
 /* ===========================================

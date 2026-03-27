@@ -5,7 +5,7 @@ import {FileText, Award, BookOpen} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {Card, CardContent} from "@/components/ui/card";
 import {FadeIn} from "@/components/motion/fade-in";
-import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
+import {Carousel, CarouselItem} from "@/components/ui/carousel";
 
 interface Education {
     _id: string;
@@ -76,14 +76,14 @@ export default function EducationSection() {
                     </p>
                 </FadeIn>
 
-                <StaggerChildren className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <Carousel showDots={true} showArrows={true}>
                     {education.map((item) => {
                         const DocumentIcon = item.documents?.[0]
                             ? documentIcons[item.documents[0].type]
                             : Award;
 
                         return (
-                            <StaggerItem key={item._id}>
+                            <CarouselItem key={item._id}>
                                 <Card className="h-full hover:shadow-lg transition-shadow">
                                     <CardContent className="p-6 space-y-4">
                                         {/* Заголовок и бейдж */}
@@ -137,10 +137,10 @@ export default function EducationSection() {
                                         </div>
                                     </CardContent>
                                 </Card>
-                            </StaggerItem>
+                            </CarouselItem>
                         );
                     })}
-                </StaggerChildren>
+                </Carousel>
 
                 {/* Примечание */}
                 <FadeIn delay={0.6}>

@@ -3,7 +3,7 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
-import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
+import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {cn} from "@/lib/utils";
 import type {ObjectId} from "mongoose";
 
@@ -49,9 +49,9 @@ export function CasesSection({cases}: CasesSectionProps) {
                     </p>
                 </FadeIn>
 
-                <StaggerChildren className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <Carousel showDots={true} showArrows={true}>
                     {cases.map((caseItem) => (
-                        <StaggerItem key={caseItem._id.toString()}>
+                        <CarouselItem key={caseItem._id.toString()}>
                             <Card className="h-full hover:shadow-lg transition-shadow">
                                 <CardContent className="p-6 space-y-4">
                                     {/* Заголовок и клиент */}
@@ -124,9 +124,9 @@ export function CasesSection({cases}: CasesSectionProps) {
                                     )}
                                 </CardContent>
                             </Card>
-                        </StaggerItem>
+                        </CarouselItem>
                     ))}
-                </StaggerChildren>
+                </Carousel>
 
                 {/* CTA */}
                 <FadeIn delay={0.6}>

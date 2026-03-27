@@ -2,7 +2,7 @@ import {Quote, Star} from "lucide-react";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
-import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
+import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {cn} from "@/lib/utils";
 import type {ObjectId} from "mongoose";
 
@@ -38,9 +38,9 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                     </p>
                 </FadeIn>
 
-                <StaggerChildren className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <Carousel showDots={true} showArrows={true}>
                     {testimonials.map((testimonial) => (
-                        <StaggerItem key={testimonial._id.toString()}>
+                        <CarouselItem key={testimonial._id.toString()}>
                             <Card className="h-full hover:shadow-lg transition-shadow">
                                 <CardContent className="p-6 space-y-4">
                                     {/* Автор и рейтинг */}
@@ -112,9 +112,9 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                                     </div>
                                 </CardContent>
                             </Card>
-                        </StaggerItem>
+                        </CarouselItem>
                     ))}
-                </StaggerChildren>
+                </Carousel>
             </div>
         </section>
     );

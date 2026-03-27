@@ -3,13 +3,12 @@
 import {useState} from "react";
 import Link from "next/link";
 import {FadeIn} from "@/components/motion/fade-in";
-import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
 import {Check, Star} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import OrderModal from "@/components/features/order-modal";
-
+import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import type {ObjectId} from "mongoose";
 
 interface Service {
@@ -104,9 +103,9 @@ export function ProductsSection({services}: ProductsSectionProps) {
                         </p>
                     </FadeIn>
 
-                    <StaggerChildren className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+                    <Carousel showDots={true} showArrows={true}>
                         {services.map((service) => (
-                            <StaggerItem key={service._id.toString()}>
+                            <CarouselItem key={service._id.toString()}>
                                 <Card
                                     className={`relative h-full overflow-hidden ${
                                         service.popular
@@ -232,9 +231,9 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                         </div>
                                     </CardContent>
                                 </Card>
-                            </StaggerItem>
+                            </CarouselItem>
                         ))}
-                    </StaggerChildren>
+                    </Carousel>
 
                     {/* Примечание */}
                     <FadeIn delay={0.6}>

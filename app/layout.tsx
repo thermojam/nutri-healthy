@@ -91,7 +91,7 @@ export default function RootLayout({
             className={`${nunito.variable} h-full antialiased`}
             suppressHydrationWarning
         >
-        <body className="min-h-full flex flex-col">
+        <body className="min-h-screen flex flex-col overflow-x-hidden">
         <ThemeProvider
             attribute="class"
             defaultTheme="system"

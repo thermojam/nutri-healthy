@@ -134,25 +134,25 @@ export default function ContactSection({data}: ContactSectionProps) {
     }
 
     return (
-        <section id="contact" className="py-24 bg-background">
+        <section id="contact" className="py-16 sm:py-24 bg-background">
             <div className="container">
-                <div className="grid lg:grid-cols-2 gap-12 items-start">
+                <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-start">
                     {/* Левая часть - Информация */}
                     <FadeIn direction="right">
                         <div className="space-y-6">
                             <div>
-                                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                                     {contactData.title}
                                 </h2>
-                                <p className="text-lg text-muted">
+                                <p className="text-sm sm:text-lg text-muted">
                                     {contactData.description}
                                 </p>
                             </div>
 
                             {/* Бонус */}
                             {contactData.bonus && (
-                                <div className="p-6 bg-accent/5 rounded-2xl border border-accent/20">
-                                    <p className="text-base">{contactData.bonus}</p>
+                                <div className="p-4 sm:p-6 bg-accent/5 rounded-xl sm:rounded-2xl border border-accent/20">
+                                    <p className="text-sm sm:text-base">{contactData.bonus}</p>
                                 </div>
                             )}
 
@@ -222,7 +222,7 @@ export default function ContactSection({data}: ContactSectionProps) {
                             <CardContent className="p-6">
                                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                                     {/* Имя и Фамилия */}
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="space-y-2">
                                             <label
                                                 htmlFor="lastName"

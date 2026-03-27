@@ -42,14 +42,14 @@ export default function HeroSection({data}: HeroSectionProps) {
     };
 
     return (
-        <AnimatedBackground className="min-h-screen flex justify-center items-center">
-            <div className="container py-24 md:py-32">
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <AnimatedBackground className="relative min-h-screen flex justify-center items-center">
+            <div className="container py-16 sm:py-24 md:py-32">
+                <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                     {/* Левая часть - Контент */}
-                    <div className="space-y-8 text-center lg:text-left mx-auto lg:mx-0 max-w-3xl lg:max-w-none">
+                    <div className="space-y-6 sm:space-y-8 text-center lg:text-left mx-auto lg:mx-0 max-w-3xl lg:max-w-none">
                         <FadeIn direction="up" delay={0.2}>
                             <div
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm text-primary">
+                                className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/20 text-xs sm:text-sm text-primary">
                 <span className="relative flex h-2 w-2">
                   <span
                       className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -60,28 +60,28 @@ export default function HeroSection({data}: HeroSectionProps) {
                         </FadeIn>
 
                         <FadeIn direction="up" delay={0.3}>
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                                 {heroData.title}
                             </h1>
                         </FadeIn>
 
                         <FadeIn direction="up" delay={0.4}>
-                            <p className="text-lg md:text-xl text-muted max-w-xl mx-auto lg:mx-0">
+                            <p className="text-base sm:text-lg md:text-xl text-muted max-w-xl mx-auto lg:mx-0">
                                 {heroData.description}
                             </p>
                         </FadeIn>
 
                         {/* CTA кнопки */}
                         <FadeIn direction="up" delay={0.5}>
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                                 <a href="#services">
-                                    <Button size="lg" className="gap-2">
+                                    <Button size="lg" className="gap-2 w-full sm:w-auto">
                                         {heroData.ctaPrimary}
-                                        <ArrowRight className="h-5 w-5"/>
+                                        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5"/>
                                     </Button>
                                 </a>
                                 <a href="#about">
-                                    <Button variant="outline" size="lg">
+                                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
                                         {heroData.ctaSecondary}
                                     </Button>
                                 </a>
@@ -91,7 +91,7 @@ export default function HeroSection({data}: HeroSectionProps) {
                         {/* Статистика */}
                         {heroData.stats && (
                             <FadeIn direction="up" delay={0.6}>
-                                <div className="flex flex-wrap gap-8 pt-4 justify-center lg:justify-start">
+                                <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 pt-4 justify-center lg:justify-start">
                                     {heroData.stats.map((stat, index) => (
                                         <motion.div
                                             key={stat.label}
@@ -101,10 +101,10 @@ export default function HeroSection({data}: HeroSectionProps) {
                                             transition={{delay: 0.7 + index * 0.1}}
                                             className="text-center sm:text-left"
                                         >
-                                            <p className="text-3xl md:text-4xl font-bold text-primary">
+                                            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
                                                 {stat.value}
                                             </p>
-                                            <p className="text-sm text-muted">{stat.label}</p>
+                                            <p className="text-xs sm:text-sm text-muted">{stat.label}</p>
                                         </motion.div>
                                     ))}
                                 </div>
@@ -113,18 +113,18 @@ export default function HeroSection({data}: HeroSectionProps) {
 
                         {/* Доверие */}
                         <FadeIn direction="up" delay={0.8}>
-                            <div className="flex items-center gap-4 pt-4 justify-center lg:justify-start">
-                                <div className="flex -space-x-3">
+                            <div className="flex items-center gap-2 sm:gap-4 pt-4 justify-center lg:justify-start">
+                                <div className="flex -space-x-2 sm:-space-x-3">
                                     {[1, 2, 3, 4].map((i) => (
                                         <div
                                             key={i}
-                                            className="w-10 h-10 rounded-full bg-primary/20 border-2 border-background flex items-center justify-center"
+                                            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/20 border-2 border-background flex items-center justify-center"
                                         >
-                                            <span className="text-xs text-primary">👤</span>
+                                            <span className="text-xs sm:text-xs text-primary">👤</span>
                                         </div>
                                     ))}
                                 </div>
-                                <p className="text-sm text-muted">
+                                <p className="text-xs sm:text-sm text-muted">
                                     <span className="font-semibold text-foreground">500+</span>{" "}
                                     довольных клиентов
                                 </p>

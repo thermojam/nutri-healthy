@@ -76,13 +76,13 @@ export function ProductsSection({services}: ProductsSectionProps) {
     // Если нет данных из БД
     if (services.length === 0) {
         return (
-            <section id="services" className="py-24 bg-background">
+            <section id="services" className="py-16 sm:py-24 bg-background">
                 <div className="container">
-                    <FadeIn className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    <FadeIn className="text-center mb-8 sm:mb-12">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                             Услуги и тарифы
                         </h2>
-                        <p className="text-lg text-muted max-w-2xl mx-auto">
+                        <p className="text-sm sm:text-lg text-muted max-w-2xl mx-auto">
                             Загрузка услуг...
                         </p>
                     </FadeIn>
@@ -93,18 +93,18 @@ export function ProductsSection({services}: ProductsSectionProps) {
 
     return (
         <>
-            <section id="services" className="py-24 bg-background">
+            <section id="services" className="py-16 sm:py-24 bg-background">
                 <div className="container">
-                    <FadeIn className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    <FadeIn className="text-center mb-8 sm:mb-12">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                             Услуги и тарифы
                         </h2>
-                        <p className="text-lg text-muted max-w-2xl mx-auto">
+                        <p className="text-sm sm:text-lg text-muted max-w-2xl mx-auto">
                             Выберите подходящую программу для достижения ваших целей
                         </p>
                     </FadeIn>
 
-                    <StaggerChildren className="grid lg:grid-cols-3 gap-8">
+                    <StaggerChildren className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
                         {services.map((service) => (
                             <StaggerItem key={service._id.toString()}>
                                 <Card
@@ -123,12 +123,12 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                         </div>
                                     )}
 
-                                    <CardContent className="p-6 space-y-6">
+                                    <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                                         {/* Заголовок */}
                                         <div className="text-center space-y-2">
-                                            <span className="text-4xl">{service.icon || "✨"}</span>
-                                            <h3 className="text-2xl font-bold">{service.title}</h3>
-                                            <p className="text-sm text-muted">{service.description}</p>
+                                            <span className="text-3xl sm:text-4xl">{service.icon || "✨"}</span>
+                                            <h3 className="text-lg sm:text-xl md:text-2xl font-bold">{service.title}</h3>
+                                            <p className="text-xs sm:text-sm text-muted">{service.description}</p>
                                         </div>
 
                                         {/* Тарифы */}

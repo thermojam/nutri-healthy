@@ -5,6 +5,13 @@
    Версия: 3.0 (по spec.md)
    =========================================== */
 
+/* Глобальные стили для предотвращения дефектов на мобильных */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100%;
+}
+
 /* Цветовая палитра - Light Theme (default) */
 :root {
     /* Primary - фиолетовый (основной бренд) */
@@ -184,8 +191,15 @@ p {
     max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+    .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
 }
 
 @media (min-width: 768px) {

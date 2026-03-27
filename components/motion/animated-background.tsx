@@ -13,7 +13,7 @@ export function AnimatedBackground({
                                        children,
                                    }: AnimatedBackgroundProps) {
     return (
-        <div className={cn("relative overflow-hidden", className)}>
+        <div className={cn("relative min-h-screen overflow-hidden", className)}>
             {/* Градиентный фон по референсу template.png */}
             <div className="absolute inset-0 gradient-bg"/>
 
@@ -31,12 +31,12 @@ export function AnimatedBackground({
                 }}
             />
 
-            {/* Плавающие элементы */}
+            {/* Плавающие элементы - адаптированы для мобильных */}
             <motion.div
-                className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl"
+                className="absolute top-[10%] left-[10%] w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-primary/10 rounded-full blur-3xl"
                 animate={{
-                    y: [0, -30, 0],
-                    x: [0, 20, 0],
+                    y: [0, -20, 0],
+                    x: [0, 15, 0],
                 }}
                 transition={{
                     duration: 8,
@@ -46,10 +46,10 @@ export function AnimatedBackground({
             />
 
             <motion.div
-                className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl"
+                className="absolute bottom-[10%] right-[10%] w-40 h-40 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-accent/10 rounded-full blur-3xl"
                 animate={{
-                    y: [0, 30, 0],
-                    x: [0, -20, 0],
+                    y: [0, 25, 0],
+                    x: [0, -15, 0],
                 }}
                 transition={{
                     duration: 10,

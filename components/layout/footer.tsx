@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {Instagram, Send, Youtube, Mail, Phone, MapPin} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import {Logo} from "@/components/ui/logo";
 
 const socialLinks = [
     {
@@ -58,12 +59,10 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="space-y-4">
                         <Link href="/" className="flex items-center gap-2">
-                            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                                <span className="text-primary-foreground font-bold text-lg">Н</span>
-                            </div>
+                            <Logo size="md" />
                             <div>
-                                <p className="font-semibold text-lg">Нутрициолог [Имя]</p>
-                                <p className="text-xs text-muted">Health-коучинг</p>
+                                <p className="font-semibold text-lg">Ксения Каменская</p>
+                                <p className="text-xs text-muted">Нутрициолог | Health-коучинг</p>
                             </div>
                         </Link>
                         <p className="text-sm text-muted">
@@ -160,7 +159,7 @@ export default function Footer() {
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         {/* Copyright */}
                         <p className="text-sm text-muted">
-                            © {currentYear} Нутрициолог [Имя Фамилия]. Все права защищены.
+                            © {currentYear} Ксения Каменская. Все права защищены.
                         </p>
 
                         {/* Legal Links */}
@@ -189,7 +188,7 @@ export default function Footer() {
                     {/* Developer Credit (optional) */}
                     <div className="mt-6 text-center">
                         <p className="text-xs text-muted">
-                            ИП [ФИО] | ИНН 123456789012 | ОГРНИП 123456789012345
+                            ИП Каменская Ксения | ИНН 123456789012 | ОГРНИП 123456789012345
                         </p>
                     </div>
                 </div>

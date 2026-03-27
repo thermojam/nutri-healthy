@@ -14,8 +14,8 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
     title: {
-        default: "Нутрициолог [Имя] | Health-коучинг",
-        template: "%s | Нутрициолог [Имя]",
+        default: "Ксения Каменская",
+        template: "%s | Ксения Каменская",
     },
     description: "Индивидуальные консультации по нутрициологии и health-коучингу. Персональные планы питания, сопровождение и поддержка.",
     keywords: [
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
         "нутрициология онлайн",
         "коуч по здоровью",
     ],
-    authors: [{name: "Нутрициолог [Имя Фамилия]"}],
-    creator: "Нутрициолог [Имя Фамилия]",
-    publisher: "Нутрициолог [Имя Фамилия]",
+    authors: [{name: "Ксения Каменская"}],
+    creator: "Ксения Каменская",
+    publisher: "Ксения Каменская",
     formatDetection: {
         email: false,
         address: false,
@@ -39,26 +39,30 @@ export const metadata: Metadata = {
     alternates: {
         canonical: '/',
     },
+    icons: {
+        icon: '/favicon.ico',
+        apple: '/favicon.ico',
+    },
     openGraph: {
         type: "website",
         locale: "ru_RU",
         url: "/",
-        siteName: "Нутрициолог [Имя]",
-        title: "Нутрициолог [Имя] | Health-коучинг",
+        siteName: "Ксения Каменская",
+        title: "Ксения Каменская",
         description: "Индивидуальные консультации по нутрициологии и health-коучингу",
         images: [
             {
                 url: "/og-image.jpg",
                 width: 1200,
                 height: 630,
-                alt: "Нутрициолог [Имя] - Health-коучинг",
+                alt: "Ксения Каменская - Нутрициолог | Health-коучинг",
                 type: "image/jpeg",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Нутрициолог [Имя] | Health-коучинг",
+        title: "Ксения Каменская",
         description: "Индивидуальные консультации по нутрициологии и health-коучингу",
         images: ["/og-image.jpg"],
         creator: "@username",

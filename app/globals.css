@@ -35,6 +35,12 @@ body {
     --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
     --accent-foreground: hsl(0, 0%, 100%);
 
+    /* Logo - градиенты для светлой темы (оригинальные цвета из SVG) */
+    --logo-gradient-start-light: #ffbc42;
+    --logo-gradient-middle-light: #a355ff;
+    --logo-gradient-end-light: #a218ff;
+    --logo-stroke-light: #bf76fb;
+
     /* Background & Surface */
     --background: hsl(0, 0%, 100%);
     --card: hsl(0, 0%, 100%);
@@ -56,30 +62,30 @@ body {
     --info: hsl(217, 91%, 60%);
 
     /* Gradient - по референсу template.png (ВАРИАНТ 0 - ТЕКУЩИЙ) */
-    --gradient-start: hsl(46, 96%, 51%);
+    --gradient-start: hsl(41, 87%, 72%);
     --gradient-middle: hsl(271, 68%, 70%);
     --gradient-end: hsl(240, 60%, 20%);
-    
+
     /* ВАРИАНТ 1: Нежный рассвет */
     --gradient-1-start: hsl(35, 100%, 90%);
     --gradient-1-middle: hsl(280, 60%, 85%);
     --gradient-1-end: hsl(260, 50%, 75%);
-    
+
     /* ВАРИАНТ 2: Энергия жизни */
     --gradient-2-start: hsl(29, 100%, 66%);
     --gradient-2-middle: hsl(271, 68%, 60%);
     --gradient-2-end: hsl(265, 80%, 35%);
-    
+
     /* ВАРИАНТ 3: Природная гармония */
     --gradient-3-start: hsl(142, 60%, 85%);
     --gradient-3-middle: hsl(271, 50%, 80%);
     --gradient-3-end: hsl(200, 40%, 70%);
-    
+
     /* ВАРИАНТ 4: Глубокий космос */
     --gradient-4-start: hsl(280, 70%, 75%);
     --gradient-4-middle: hsl(271, 68%, 50%);
     --gradient-4-end: hsl(260, 80%, 25%);
-    
+
     /* ВАРИАНТ 5: Тёплый закат */
     --gradient-5-start: hsl(35, 90%, 75%);
     --gradient-5-middle: hsl(320, 70%, 65%);
@@ -101,6 +107,12 @@ body {
     --accent-l: 66%;
     --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
     --accent-foreground: hsl(0, 0%, 100%);
+
+    /* Logo - градиенты для темной темы (более яркие и насыщенные) */
+    --logo-gradient-start-dark: rgba(255, 174, 144, 0.82);
+    --logo-gradient-middle-dark: #cb56f4;
+    --logo-gradient-end-dark: #c778ff;
+    --logo-stroke-dark: #f2d2ff;
 
     /* Background & Surface - светлее для лучшей читаемости */
     --background: hsl(240, 10%, 10%);
@@ -421,6 +433,24 @@ p {
     }
 }
 
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
 .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
 }
@@ -431,6 +461,17 @@ p {
 
 .animate-float {
     animation: float 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(
+        90deg,
+        var(--background) 0%,
+        var(--card-hover) 50%,
+        var(--background) 100%
+    );
+    background-size: 1000px 100%;
 }
 
 /* Скрытие скроллбара для carousel */
@@ -466,4 +507,87 @@ p {
 ::selection {
     background: var(--primary);
     color: var(--primary-foreground);
+}
+
+/* ===========================================
+   LOGO THEME SWITCHING
+   =========================================== */
+/* По умолчанию показываем светлую тему, скрываем темную */
+.logo-petal-dark,
+.logo-stroke-dark {
+    display: none;
+}
+
+.logo-petal-light,
+.logo-stroke-light {
+    display: block;
+}
+
+/* В темной теме показываем темную версию, скрываем светлую */
+.dark .logo-petal-dark,
+.dark .logo-stroke-dark {
+    display: block;
+}
+
+.dark .logo-petal-light,
+.dark .logo-stroke-light {
+    display: none;
+}
+
+/* ===========================================
+   SPINNER STYLES
+   =========================================== */
+.spinner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Трек (фон) */
+.spinner-track {
+    fill: none;
+    stroke: var(--spinner-track);
+}
+
+/* Индикатор (вращающийся сегмент) */
+.spinner-indicator {
+    fill: none;
+    stroke: var(--spinner-indicator);
+    stroke-linecap: round;
+    transform-origin: center;
+    animation: spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Primary вариант (градиент бренда) */
+.spinner-primary .spinner-track {
+    stroke: hsl(var(--primary-h), var(--primary-s), var(--primary-l), 0.2);
+}
+
+.spinner-primary .spinner-indicator {
+    stroke: var(--primary);
+}
+
+/* Accent вариант (оранжевый) */
+.spinner-accent .spinner-track {
+    stroke: var(--accent);
+    stroke-opacity: 0.2;
+}
+
+.spinner-accent .spinner-indicator {
+    stroke: var(--accent);
+}
+
+/* White вариант (для темных фонов) */
+.spinner-white .spinner-track {
+    stroke: rgba(255, 255, 255, 0.2);
+}
+
+.spinner-white .spinner-indicator {
+    stroke: #ffffff;
 }

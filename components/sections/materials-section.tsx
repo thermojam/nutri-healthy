@@ -8,6 +8,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
+import {Spinner} from "@/components/ui/spinner";
 
 interface Article {
     _id: string;
@@ -95,7 +96,9 @@ export function MaterialsSection() {
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">
                             Полезные материалы
                         </h2>
-                        <p className="text-lg text-muted">Загрузка...</p>
+                        <div className="flex justify-center">
+                            <Spinner size="lg" />
+                        </div>
                     </FadeIn>
                 </div>
             </section>

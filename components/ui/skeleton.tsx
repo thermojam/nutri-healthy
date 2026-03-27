@@ -2,7 +2,7 @@ import {cn} from "@/lib/utils";
 
 /**
  * Skeleton - Заглушка загрузки
- * 
+ *
  * Лучшие практики:
  * - rendering-hoist-jsx: Анимация вынесена в CSS
  * - bundle-conditional: Загружается только когда нужна

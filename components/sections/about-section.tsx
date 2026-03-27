@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import Image from "next/image";
 import {FadeIn} from "@/components/motion/fade-in";
 import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
+import {Spinner} from "@/components/ui/spinner";
 
 interface EducationItem {
     _id: string;
@@ -101,7 +102,9 @@ export default function AboutSection() {
                             <div>
                                 <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Мой путь</h3>
                                 {loading ? (
-                                    <p className="text-muted">Загрузка...</p>
+                                    <div className="flex justify-center py-8">
+                                        <Spinner size="md" />
+                                    </div>
                                 ) : (
                                     <StaggerChildren className="space-y-3 sm:space-y-4">
                                         {education.map((item, index) => (

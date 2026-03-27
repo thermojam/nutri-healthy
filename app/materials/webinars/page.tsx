@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Webinar {
   _id: string;
@@ -72,8 +73,8 @@ export default function WebinarsPage() {
         <section className="py-24 bg-background">
           <div className="container">
             {loading ? (
-              <div className="text-center py-12">
-                <p className="text-muted">Загрузка вебинаров...</p>
+              <div className="flex justify-center py-12">
+                <Spinner size="lg" />
               </div>
             ) : webinars.length === 0 ? (
               <div className="text-center py-12 space-y-4">

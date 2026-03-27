@@ -8,6 +8,7 @@ import {FadeIn} from "@/components/motion/fade-in";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {InfoBlock} from "@/components/ui/info-block";
 import {FileCheck} from "lucide-react";
+import {Spinner} from "@/components/ui/spinner";
 
 interface Education {
     _id: string;
@@ -59,7 +60,9 @@ export default function EducationSection() {
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">
                             Образование и дипломы
                         </h2>
-                        <p className="text-lg text-muted">Загрузка...</p>
+                        <div className="flex justify-center">
+                            <Spinner size="lg" />
+                        </div>
                     </FadeIn>
                 </div>
             </section>

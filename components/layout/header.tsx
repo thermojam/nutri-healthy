@@ -5,6 +5,7 @@ import Link from "next/link";
 import {useTheme} from "next-themes";
 import {Moon, Sun, Menu, X} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import {Logo} from "@/components/ui/logo";
 import {cn} from "@/lib/utils";
 
 const navLinks = [
@@ -50,9 +51,8 @@ export default function Header() {
                 <div className="flex items-center justify-between h-16 md:h-20">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2">
-                        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                            <span className="text-primary-foreground font-bold text-lg">Н</span>
-                        </div>
+                        <Logo size="md" />
+                        <span className="hidden sm:inline-block font-semibold text-lg">Ксения Каменская</span>
                     </Link>
 
                     {/* Desktop Navigation */}

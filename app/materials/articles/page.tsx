@@ -10,6 +10,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-children";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Article {
   _id: string;
@@ -74,8 +75,8 @@ export default function ArticlesPage() {
         <section className="py-24 bg-background">
           <div className="container">
             {loading ? (
-              <div className="text-center py-12">
-                <p className="text-muted">Загрузка статей...</p>
+              <div className="flex justify-center py-12">
+                <Spinner size="lg" />
               </div>
             ) : articles.length === 0 ? (
               <div className="text-center py-12 space-y-4">

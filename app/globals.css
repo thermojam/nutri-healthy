@@ -6,7 +6,14 @@
    =========================================== */
 
 /* Глобальные стили для предотвращения дефектов на мобильных */
-html, body {
+html {
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
     overflow-x: hidden;
     width: 100%;
     min-height: 100%;
@@ -48,10 +55,35 @@ html, body {
     --error: hsl(0, 84%, 60%);
     --info: hsl(217, 91%, 60%);
 
-    /* Gradient - по референсу template.png */
-    --gradient-start: hsl(45, 100%, 85%);
+    /* Gradient - по референсу template.png (ВАРИАНТ 0 - ТЕКУЩИЙ) */
+    --gradient-start: hsl(46, 96%, 51%);
     --gradient-middle: hsl(271, 68%, 70%);
     --gradient-end: hsl(240, 60%, 20%);
+    
+    /* ВАРИАНТ 1: Нежный рассвет */
+    --gradient-1-start: hsl(35, 100%, 90%);
+    --gradient-1-middle: hsl(280, 60%, 85%);
+    --gradient-1-end: hsl(260, 50%, 75%);
+    
+    /* ВАРИАНТ 2: Энергия жизни */
+    --gradient-2-start: hsl(29, 100%, 66%);
+    --gradient-2-middle: hsl(271, 68%, 60%);
+    --gradient-2-end: hsl(265, 80%, 35%);
+    
+    /* ВАРИАНТ 3: Природная гармония */
+    --gradient-3-start: hsl(142, 60%, 85%);
+    --gradient-3-middle: hsl(271, 50%, 80%);
+    --gradient-3-end: hsl(200, 40%, 70%);
+    
+    /* ВАРИАНТ 4: Глубокий космос */
+    --gradient-4-start: hsl(280, 70%, 75%);
+    --gradient-4-middle: hsl(271, 68%, 50%);
+    --gradient-4-end: hsl(260, 80%, 25%);
+    
+    /* ВАРИАНТ 5: Тёплый закат */
+    --gradient-5-start: hsl(35, 90%, 75%);
+    --gradient-5-middle: hsl(320, 70%, 65%);
+    --gradient-5-end: hsl(271, 68%, 55%);
 }
 
 /* Dark Theme */
@@ -141,10 +173,6 @@ html, body {
     border-color: var(--border);
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 body {
     background: var(--background);
     color: var(--text);
@@ -212,10 +240,60 @@ p {
 /* Gradient background по template.png */
 .gradient-bg {
     background: linear-gradient(
-        135deg,
+        155deg,
         var(--gradient-start) 0%,
         var(--gradient-middle) 50%,
         var(--gradient-end) 100%
+    );
+}
+
+/* ВАРИАНТ 1: Нежный рассвет */
+.gradient-bg-1 {
+    background: linear-gradient(
+        135deg,
+        var(--gradient-1-start) 0%,
+        var(--gradient-1-middle) 50%,
+        var(--gradient-1-end) 100%
+    );
+}
+
+/* ВАРИАНТ 2: Энергия жизни */
+.gradient-bg-2 {
+    background: linear-gradient(
+        135deg,
+        var(--gradient-2-start) 0%,
+        var(--gradient-2-middle) 50%,
+        var(--gradient-2-end) 100%
+    );
+}
+
+/* ВАРИАНТ 3: Природная гармония */
+.gradient-bg-3 {
+    background: linear-gradient(
+        180deg,
+        var(--gradient-3-start) 0%,
+        var(--gradient-3-middle) 50%,
+        var(--gradient-3-end) 100%
+    );
+}
+
+/* ВАРИАНТ 4: Глубокий космос */
+.gradient-bg-4 {
+    background: linear-gradient(
+        135deg,
+        var(--gradient-4-start) 0%,
+        var(--gradient-4-middle) 50%,
+        var(--gradient-4-end) 100%
+    );
+}
+
+/* ВАРИАНТ 5: Тёплый закат */
+.gradient-bg-5 {
+    background: linear-gradient(
+        135deg,
+        var(--gradient-5-start) 0%,
+        var(--gradient-5-middle) 50%,
+        var(--gradient-5-end) 100%
     );
 }
 

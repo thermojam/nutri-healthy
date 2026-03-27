@@ -61,7 +61,7 @@ export default function Header() {
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="text-sm font-medium text-muted hover:text-primary transition-colors"
+                                className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
                             >
                                 {link.label}
                             </Link>
@@ -76,13 +76,21 @@ export default function Header() {
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                                className="rounded-full"
+                                className="rounded-full relative"
                                 aria-label="Переключить тему"
                             >
                                 <Sun
-                                    className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"/>
+                                    className={cn(
+                                        "h-5 w-5 transition-all duration-300",
+                                        theme === "dark" ? "rotate-90 scale-0 absolute opacity-0" : "rotate-0 scale-100 opacity-100"
+                                    )}
+                                />
                                 <Moon
-                                    className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"/>
+                                    className={cn(
+                                        "h-5 w-5 transition-all duration-300",
+                                        theme === "dark" ? "rotate-0 scale-100 opacity-100" : "rotate-90 scale-0 absolute opacity-0"
+                                    )}
+                                />
                             </Button>
                         )}
 
@@ -120,7 +128,7 @@ export default function Header() {
                                 <Link
                                     key={link.href}
                                     href={link.href}
-                                    className="text-base font-medium text-muted hover:text-primary transition-colors py-2"
+                                    className="text-base font-medium text-foreground/80 hover:text-primary transition-colors py-2"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     {link.label}

@@ -1,11 +1,13 @@
 "use client";
 
+import {useState} from "react";
 import {motion} from "framer-motion";
 import Image from "next/image";
 import {ArrowRight, Play} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {FadeIn} from "@/components/motion/fade-in";
 import {AnimatedBackground} from "@/components/motion/animated-background";
+import {GradientPreview} from "@/components/features/gradient-preview";
 
 interface HeroSectionProps {
     data?: {
@@ -26,6 +28,8 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({data}: HeroSectionProps) {
+    const [gradientVariant, setGradientVariant] = useState(0);
+    
     // Данные по умолчанию, если не переданы
     const heroData = data || {
         title: "Нутрициолог / Health-коуч",
@@ -42,7 +46,10 @@ export default function HeroSection({data}: HeroSectionProps) {
     };
 
     return (
-        <AnimatedBackground className="relative min-h-screen flex justify-center items-center">
+        <AnimatedBackground 
+            className="relative min-h-screen flex justify-center items-center" 
+            gradientVariant={gradientVariant}
+        >
             <div className="container py-16 sm:py-24 md:py-32">
                 <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                     {/* Левая часть - Контент */}
@@ -81,7 +88,7 @@ export default function HeroSection({data}: HeroSectionProps) {
                                     </Button>
                                 </a>
                                 <a href="#about">
-                                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                                    <Button variant="secondary" size="lg" className="w-full sm:w-auto">
                                         {heroData.ctaSecondary}
                                     </Button>
                                 </a>
@@ -210,6 +217,12 @@ export default function HeroSection({data}: HeroSectionProps) {
                     </FadeIn>
                 </div>
             </div>
+
+            {/* Переключатель градиентов для превью */}
+            <GradientPreview 
+                currentGradient={gradientVariant}
+                onGradientChange={setGradientVariant}
+            />
         </AnimatedBackground>
     );
 }

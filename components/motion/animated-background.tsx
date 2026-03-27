@@ -6,16 +6,28 @@ import {cn} from "@/lib/utils";
 interface AnimatedBackgroundProps {
     className?: string;
     children?: React.ReactNode;
+    gradientVariant?: number; // 0-5 для выбора варианта
 }
 
 export function AnimatedBackground({
-                                       className,
-                                       children,
-                                   }: AnimatedBackgroundProps) {
+    className,
+    children,
+    gradientVariant = 0,
+}: AnimatedBackgroundProps) {
+    // Выбираем класс градиента в зависимости от варианта
+    const gradientClass = cn(
+        gradientVariant === 0 && "gradient-bg",
+        gradientVariant === 1 && "gradient-bg-1",
+        gradientVariant === 2 && "gradient-bg-2",
+        gradientVariant === 3 && "gradient-bg-3",
+        gradientVariant === 4 && "gradient-bg-4",
+        gradientVariant === 5 && "gradient-bg-5"
+    );
+
     return (
         <div className={cn("relative min-h-screen overflow-hidden", className)}>
-            {/* Градиентный фон по референсу template.png */}
-            <div className="absolute inset-0 gradient-bg"/>
+            {/* Градиентный фон */}
+            <div className={cn("absolute inset-0", gradientClass)}/>
 
             {/* Анимированные круги */}
             <motion.div

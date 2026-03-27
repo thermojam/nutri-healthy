@@ -12,7 +12,9 @@ import {FadeIn} from "@/components/motion/fade-in";
 import {LegalConsentCheckboxes} from "@/components/features/legal-consent-checkboxes";
 import {contactFormSchema} from "@/lib/validations";
 
-type FormData = z.infer<typeof contactFormSchema>;
+type FormData = z.infer<typeof contactFormSchema> & {
+    marketingChannels?: ("email" | "sms" | "telegram" | "whatsapp")[];
+};
 
 interface ContactSectionProps {
     data?: {
@@ -42,7 +44,7 @@ export default function ContactSection({data}: ContactSectionProps) {
         handleSubmit,
         watch,
         setValue,
-        formState: {errors},
+        formState: {errors, isValid},
     } = useForm<FormData>({
         resolver: zodResolver(contactFormSchema),
         defaultValues: {
@@ -54,12 +56,29 @@ export default function ContactSection({data}: ContactSectionProps) {
             personalDataConsent: false,
             contractAcceptance: false,
             marketingConsent: false,
+            marketingChannels: [],
         },
+        mode: "onChange", // Валидация при изменении полей
     });
 
     const personalDataConsent = watch("personalDataConsent");
     const contractAcceptance = watch("contractAcceptance");
     const marketingConsent = watch("marketingConsent");
+    const marketingChannels = watch("marketingChannels");
+    const firstName = watch("firstName");
+    const lastName = watch("lastName");
+    const email = watch("email");
+
+    // Кнопка активна только если заполнены обязательные поля и чекбоксы
+    const isFormValid =
+        firstName &&
+        lastName &&
+        email &&
+        personalDataConsent &&
+        contractAcceptance &&
+        !errors.firstName &&
+        !errors.lastName &&
+        !errors.email;
 
     const onSubmit = async (formData: FormData) => {
         setIsSubmitting(true);
@@ -299,6 +318,7 @@ export default function ContactSection({data}: ContactSectionProps) {
                                             personalDataConsent={personalDataConsent}
                                             contractAcceptance={contractAcceptance}
                                             marketingConsent={marketingConsent}
+                                            marketingChannels={marketingChannels}
                                             onPersonalDataChange={(checked) =>
                                                 setValue("personalDataConsent", checked)
                                             }
@@ -307,6 +327,9 @@ export default function ContactSection({data}: ContactSectionProps) {
                                             }
                                             onMarketingChange={(checked) =>
                                                 setValue("marketingConsent", checked)
+                                            }
+                                            onMarketingChannelsChange={(channels) =>
+                                                setValue("marketingChannels", channels)
                                             }
                                         />
                                     </div>
@@ -325,7 +348,7 @@ export default function ContactSection({data}: ContactSectionProps) {
                                         type="submit"
                                         className="w-full"
                                         size="lg"
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting || !isFormValid}
                                     >
                                         {isSubmitting ? (
                                             <span className="flex items-center gap-2">
@@ -338,6 +361,13 @@ export default function ContactSection({data}: ContactSectionProps) {
                       </span>
                                         )}
                                     </Button>
+
+                                    {/* Подсказка о блокировке кнопки */}
+                                    {!isFormValid && !isSubmitting && (
+                                        <p className="text-xs text-muted text-center">
+                                            <span className="text-error">*</span> — заполните обязательные поля и примите условия оферты
+                                        </p>
+                                    )}
 
                                     <p className="text-xs text-muted text-center">
                                         <span className="text-error">*</span> — обязательные поля

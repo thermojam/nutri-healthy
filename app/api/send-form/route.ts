@@ -45,6 +45,9 @@ export async function POST(request: NextRequest) {
             marketingConsent,
         } = validationResult.data;
 
+        // marketingChannels может приходить отдельно, т.к. не в схеме валидации
+        const marketingChannels = body.marketingChannels || [];
+
         // Получение IP и User-Agent для логирования (152-ФЗ)
         const ipAddress = await getClientIP();
         const userAgent = await getUserAgent();
@@ -147,7 +150,11 @@ export async function POST(request: NextRequest) {
             });
         }
 
+        // Маркетинговое согласие - опционально
         if (marketingConsent) {
+            // Если каналы не выбраны, используем email по умолчанию
+            const channels = marketingChannels.length > 0 ? marketingChannels : ["email"];
+            
             await Consent.create({
                 user: user._id,
                 type: "marketing",
@@ -156,7 +163,7 @@ export async function POST(request: NextRequest) {
                 version: LEGAL_VERSIONS.marketingConsent,
                 ipAddress,
                 userAgent,
-                marketingChannels: ["email"],
+                marketingChannels: channels,
                 documentUrl: "/legal/marketing-consent",
             });
 
@@ -167,7 +174,7 @@ export async function POST(request: NextRequest) {
                 entityId: user._id.toString(),
                 details: {
                     consentType: "marketing",
-                    channels: ["email"],
+                    channels: channels,
                     ipAddress,
                     userAgent,
                 },
@@ -195,11 +202,20 @@ export async function POST(request: NextRequest) {
         });
     } catch (error) {
         console.error("❌ Form submission error:", error);
+        
+        // Более подробное сообщение об ошибке для отладки
+        const errorMessage = error instanceof Error ? error.message : "Внутренняя ошибка сервера";
+        const errorStack = error instanceof Error ? error.stack : undefined;
+        
+        console.error("Error details:", {
+            message: errorMessage,
+            stack: errorStack,
+        });
 
         return NextResponse.json(
             {
                 success: false,
-                error: "Внутренняя ошибка сервера"
+                error: errorMessage,
             },
             {status: 500}
         );

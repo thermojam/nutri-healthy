@@ -59,7 +59,9 @@ export const contactFormSchema = z.object({
     }),
 });
 
-export type ContactFormData = z.infer<typeof contactFormSchema>;
+export type ContactFormData = z.infer<typeof contactFormSchema> & {
+    marketingChannels?: ("email" | "sms" | "telegram" | "whatsapp")[];
+};
 
 /**
  * Схема для заказа услуги

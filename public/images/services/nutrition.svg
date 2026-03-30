@@ -1,0 +1,28 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон с градиентом -->
+  <rect width="800" height="600" fill="url(#nutrition-service-gradient)"/>
+  
+  <!-- Декоративные элементы -->
+  <circle cx="400" cy="300" r="150" fill="white" fill-opacity="0.1"/>
+  <circle cx="400" cy="300" r="100" fill="white" fill-opacity="0.15"/>
+  
+  <!-- Иконка тарелки с едой -->
+  <circle cx="400" cy="300" r="100" fill="white" fill-opacity="0.9"/>
+  <circle cx="400" cy="300" r="80" fill="none" stroke="#10B981" stroke-width="3"/>
+  <circle cx="370" cy="280" r="20" fill="#10B981" fill-opacity="0.6"/>
+  <circle cx="430" cy="280" r="20" fill="#F97316" fill-opacity="0.6"/>
+  <circle cx="385" cy="330" r="20" fill="#EF4444" fill-opacity="0.6"/>
+  <circle cx="415" cy="330" r="20" fill="#3B82F6" fill-opacity="0.6"/>
+  
+  <!-- Текст -->
+  <text x="400" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">НУТРИЦИОЛОГИЯ</text>
+  
+  <!-- Градиенты -->
+  <defs>
+    <linearGradient id="nutrition-service-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="50%" style="stop-color:#059669"/>
+      <stop offset="100%" style="stop-color:#047857"/>
+    </linearGradient>
+  </defs>
+</svg>

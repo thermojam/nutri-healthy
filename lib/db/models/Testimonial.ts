@@ -14,6 +14,7 @@ export interface ITestimonial extends Document {
     consentGiven: boolean;
     consentDate?: Date;
     video?: { url: string; thumbnail: string; duration: number };
+    image?: { url: string; alt: string };
     order: number;
     featured: boolean;
     createdAt: Date;
@@ -39,6 +40,7 @@ const TestimonialSchema = new Schema<ITestimonial>(
         consentGiven: {type: Boolean, required: true, default: false},
         consentDate: Date,
         video: {url: String, thumbnail: String, duration: Number},
+        image: {url: String, alt: String},
         order: {type: Number, default: 0},
         featured: {type: Boolean, default: false},
     },

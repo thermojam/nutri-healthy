@@ -196,7 +196,7 @@ export class CloudPaymentsService {
     /**
      * Обработка webhook от CloudPayments
      */
-    async handleWebhook(event: CloudPaymentsWebhookEvent): Promise<{ orderId: string; status: string }> {
+    async handleWebhook(event: CloudPaymentsWebhookEvent): Promise<{ orderId: string; status: string; paymentId: string }> {
         const {Type, OrderId, Status} = event;
 
         console.log(`CloudPayments webhook: ${Type} for transaction ${event.TransactionId}`);
@@ -204,6 +204,7 @@ export class CloudPaymentsService {
         return {
             orderId: OrderId,
             status: Status,
+            paymentId: event.TransactionId.toString(),
         };
     }
 

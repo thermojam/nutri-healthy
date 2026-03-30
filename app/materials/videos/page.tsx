@@ -11,6 +11,7 @@ import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-childr
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { Spinner } from "@/components/ui/spinner";
+import Image from "next/image";
 
 interface Video {
   _id: string;
@@ -98,6 +99,12 @@ export default function VideosPage() {
                         <CardContent className="p-0">
                           {/* Превью */}
                           <div className="relative aspect-video bg-gradient-to-br from-primary/20 to-accent/20">
+                            <Image
+                              src={`/images/videos/${video.category}.svg`}
+                              alt={video.title}
+                              fill
+                              className="object-cover"
+                            />
                             <div className="absolute inset-0 flex items-center justify-center">
                               <div className="w-16 h-16 rounded-full bg-primary/80 flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <Play className="h-8 w-8 text-white ml-1" />

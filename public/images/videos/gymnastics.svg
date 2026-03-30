@@ -1,0 +1,31 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон с градиентом -->
+  <rect width="800" height="600" fill="url(#gymnastics-gradient)"/>
+  
+  <!-- Декоративные элементы -->
+  <circle cx="400" cy="300" r="150" fill="white" fill-opacity="0.1"/>
+  <circle cx="400" cy="300" r="100" fill="white" fill-opacity="0.15"/>
+  
+  <!-- Play кнопка -->
+  <circle cx="400" cy="300" r="80" fill="white" fill-opacity="0.2"/>
+  <polygon points="380,260 380,340 450,300" fill="white" fill-opacity="0.9"/>
+  
+  <!-- Иконка человека в движении -->
+  <circle cx="400" cy="160" r="20" fill="white" fill-opacity="0.9"/>
+  <path d="M400 180L400 210" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <path d="M385 190L415 190" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <path d="M400 210L385 230" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <path d="M400 210L415 230" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Текст -->
+  <text x="400" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">ГИМНАСТИКА</text>
+  
+  <!-- Градиенты -->
+  <defs>
+    <linearGradient id="gymnastics-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EC4899"/>
+      <stop offset="50%" style="stop-color:#DB2777"/>
+      <stop offset="100%" style="stop-color:#BE185D"/>
+    </linearGradient>
+  </defs>
+</svg>

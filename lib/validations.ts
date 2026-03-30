@@ -84,7 +84,7 @@ export const orderFormSchema = z.object({
         .or(z.literal("")),
     serviceId: z.string().min(1, "ID услуги обязателен"),
     tariff: z.enum(["base", "premium", "vip"]),
-    paymentMethod: z.enum(["card", "yookassa", "cloudpayments", "yandex_split", "dolemi"]).optional(),
+    paymentMethod: z.enum(["card", "yookassa", "cloudpayments", "yandex_split", "dolemi", "paykeeper"]).optional(),
     installments: z.number().optional(),
     // Согласия
     personalDataConsent: z.boolean().refine((val) => val === true, {

@@ -42,7 +42,7 @@ interface PaymentFormProps {
 }
 
 interface PaymentMethod {
-    id: "card" | "yookassa" | "cloudpayments" | "yandex_split" | "dolemi";
+    id: "card" | "yookassa" | "cloudpayments" | "yandex_split" | "dolemi" | "paykeeper";
     name: string;
     description: string;
     icon: React.ReactNode;
@@ -59,7 +59,7 @@ export default function PaymentForm({
                                     }: PaymentFormProps) {
     const id = useId();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"card" | "yookassa" | "cloudpayments" | "yandex_split" | "dolemi">("card");
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"card" | "yookassa" | "cloudpayments" | "yandex_split" | "dolemi" | "paykeeper">("paykeeper");
     const [installmentCount, setInstallmentCount] = useState<number>(4);
 
     const {
@@ -104,6 +104,12 @@ export default function PaymentForm({
             id: "cloudpayments",
             name: "CloudPayments",
             description: "Рекуррентные платежи",
+            icon: <CreditCard className="h-5 w-5"/>,
+        },
+        {
+            id: "paykeeper",
+            name: "PayKeeper",
+            description: "Надежная платежная система",
             icon: <CreditCard className="h-5 w-5"/>,
         },
         {

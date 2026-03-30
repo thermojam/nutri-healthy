@@ -1,0 +1,25 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон с градиентом -->
+  <rect width="800" height="600" fill="url(#health-coaching-gradient)"/>
+  
+  <!-- Декоративные элементы -->
+  <circle cx="400" cy="300" r="150" fill="white" fill-opacity="0.1"/>
+  <circle cx="400" cy="300" r="100" fill="white" fill-opacity="0.15"/>
+  
+  <!-- Иконка сердца и рук -->
+  <path d="M400 350C400 350 340 300 340 260C340 230 365 210 390 210C400 210 400 220 400 220C400 220 400 210 410 210C435 210 460 230 460 260C460 300 400 350 400 350Z" fill="white" fill-opacity="0.9"/>
+  <circle cx="400" cy="280" r="30" fill="#7C3AED" fill-opacity="0.6"/>
+  <path d="M385 275L395 285L415 265" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Текст -->
+  <text x="400" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">HEALTH-КОУЧИНГ</text>
+  
+  <!-- Градиенты -->
+  <defs>
+    <linearGradient id="health-coaching-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED"/>
+      <stop offset="50%" style="stop-color:#6D28D9"/>
+      <stop offset="100%" style="stop-color:#5B21B6"/>
+    </linearGradient>
+  </defs>
+</svg>

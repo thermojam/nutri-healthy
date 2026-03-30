@@ -5,6 +5,7 @@ import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {cn} from "@/lib/utils";
+import Image from "next/image";
 import type {ObjectId} from "mongoose";
 
 interface Case {
@@ -26,6 +27,10 @@ interface Case {
     testimonial?: string;
     serviceName: string;
     duration: string;
+    image?: {
+        url: string;
+        alt: string;
+    };
 }
 
 interface CasesSectionProps {
@@ -52,8 +57,21 @@ export function CasesSection({cases}: CasesSectionProps) {
                 <Carousel showDots={true} showArrows={false}>
                     {cases.map((caseItem) => (
                         <CarouselItem key={caseItem._id.toString()}>
-                            <Card className="h-full hover:shadow-lg transition-shadow">
-                                <CardContent className="p-6 space-y-4">
+                            <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden">
+                                <CardContent className="p-0 space-y-4">
+                                    {/* Изображение кейса */}
+                                    {caseItem.image?.url && (
+                                        <div className="relative h-48 w-full overflow-hidden">
+                                            <Image
+                                                src={caseItem.image.url}
+                                                alt={caseItem.image.alt || caseItem.title}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                    )}
+                                    
+                                    <div className="p-6 space-y-4">
                                     {/* Заголовок и клиент */}
                                     <div className="flex items-start justify-between gap-4">
                                         <div className="flex items-center gap-3">
@@ -122,6 +140,7 @@ export function CasesSection({cases}: CasesSectionProps) {
                                             {caseItem.testimonial}
                                         </blockquote>
                                     )}
+                                    </div>
                                 </CardContent>
                             </Card>
                         </CarouselItem>

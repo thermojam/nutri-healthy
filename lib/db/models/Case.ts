@@ -13,6 +13,7 @@ export interface ICase extends Document {
     serviceId?: mongoose.Types.ObjectId;
     serviceName: string;
     duration: string;
+    image?: { url: string; alt: string };
     published: boolean;
     publishedAt?: Date;
     consentGiven: boolean;
@@ -44,6 +45,7 @@ const CaseSchema = new Schema<ICase>(
         serviceId: {type: Schema.Types.ObjectId, ref: "Service"},
         serviceName: {type: String, required: true},
         duration: String,
+        image: {url: String, alt: String},
         published: {type: Boolean, default: false},
         publishedAt: Date,
         consentGiven: {type: Boolean, required: true, default: false},

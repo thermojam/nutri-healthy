@@ -7,7 +7,7 @@ import {Consent} from "@/lib/db/models/Consent";
 import {Service} from "@/lib/db/models/Service";
 import {createAuditLog, getClientIP, getUserAgent} from "@/lib/db/audit";
 import {orderFormSchema, LEGAL_VERSIONS} from "@/lib/validations";
-import {yookassaService} from "@/lib/payments/yookassa";
+import {paymentService} from "@/lib/payments/payment-service";
 import {sendAdminEmail, sendEmail} from "@/lib/email";
 import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
 import {ClientOrderConfirmTemplate} from "@/lib/email/templates/client-order-confirm";
@@ -51,6 +51,7 @@ export async function POST(request: NextRequest) {
             contractAcceptance,
             marketingConsent,
             marketingChannels,
+            paymentMethod,
         } = validationResult.data;
 
         // Получение IP и User-Agent (152-ФЗ)
@@ -234,12 +235,15 @@ export async function POST(request: NextRequest) {
             },
         });
 
-        // Инициализация платежа через ЮKassa
+        // Инициализация платежа через активный платежный сервис
         let paymentUrl: string | undefined;
         let paymentData: any;
 
         try {
-            paymentData = await yookassaService.createPayment({
+            // Определяем провайдер на основе выбранного метода оплаты
+            const provider = paymentMethod === "paykeeper" ? "paykeeper" : "yookassa";
+            
+            paymentData = await paymentService.createPayment({
                 orderId: order._id.toString(),
                 amount: price,
                 currency: "RUB",
@@ -247,14 +251,19 @@ export async function POST(request: NextRequest) {
                 email,
             });
 
-            paymentUrl = paymentData?.confirmation?.confirmation_url;
+            paymentUrl = paymentData.paymentUrl;
 
-            // Сохранение ID платежа в заказ
-            order.paymentMethod = "yookassa";
-            order.metadata = {
-                yookassaPaymentId: paymentData.id,
-                confirmationUrl: paymentUrl,
-            };
+            // Сохранение информации о платеже в заказ
+            if (paymentData.success && paymentData.paymentId) {
+                order.paymentMethod = paymentMethod as any;
+                order.paymentId = paymentData.paymentId;
+                order.paymentProvider = provider as any;
+                order.metadata = {
+                    paymentUrl,
+                    paymentProvider: provider,
+                    paymentMethod: paymentMethod,
+                };
+            }
             await order.save();
         } catch (paymentError) {
             console.error("❌ Payment initialization error:", paymentError);

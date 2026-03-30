@@ -4,6 +4,7 @@ import {Order} from "@/lib/db/models/Order";
 import {Receipt} from "@/lib/db/models/Receipt";
 import {User} from "@/lib/db/models/User";
 import {createAuditLog} from "@/lib/db/audit";
+import {paymentService} from "@/lib/payments/payment-service";
 import {yookassaService} from "@/lib/payments/yookassa";
 import {cloudpaymentsService} from "@/lib/payments/cloudpayments";
 import {receiptService} from "@/lib/payments/receipts";
@@ -14,11 +15,12 @@ import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
 
 /**
  * POST /api/payment/webhook
- * Обработка webhook от платежных систем (ЮKassa, CloudPayments)
+ * Обработка webhook от платежных систем (ЮKassa, PayKeeper, CloudPayments)
  */
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
+        const signature = request.headers.get("x-signature") || undefined;
         const eventType = request.headers.get("x-event-type") || body.type || body.Event;
 
         console.log(`💳 Payment webhook received: ${eventType}`);
@@ -27,6 +29,7 @@ export async function POST(request: NextRequest) {
 
         let orderId: string;
         let status: string;
+        let paymentId: string;
 
         // Определение провайдера и обработка
         if (eventType?.includes("yookassa") || body.object?.metadata?.order_id) {
@@ -34,16 +37,25 @@ export async function POST(request: NextRequest) {
             const result = await yookassaService.handleWebhook(body);
             orderId = result.orderId;
             status = result.status;
+            paymentId = result.paymentId;
         } else if (eventType?.includes("cloudpayments") || body.Type) {
             // CloudPayments
             const result = await cloudpaymentsService.handleWebhook(body);
             orderId = result.orderId;
             status = result.status;
+            paymentId = result.paymentId;
         } else {
-            return NextResponse.json(
-                {success: false, error: "Unknown webhook type"},
-                {status: 400}
-            );
+            // PayKeeper или другой провайдер через универсальный сервис
+            const result = await paymentService.handleWebhook(body, signature);
+            if (!result.success) {
+                return NextResponse.json(
+                    {success: false, error: result.error},
+                    {status: 400}
+                );
+            }
+            orderId = result.orderId;
+            status = result.status;
+            paymentId = result.paymentId;
         }
 
         // Обновление статуса заказа

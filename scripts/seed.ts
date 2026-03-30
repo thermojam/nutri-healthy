@@ -56,7 +56,7 @@ async function seed() {
                 category: "nutrition",
                 icon: "🥗",
                 image: {
-                    url: "/images/services/nutrition.jpg",
+                    url: "/images/services/nutrition.svg",
                     alt: "Нутрициология",
                 },
                 pricing: {
@@ -107,7 +107,7 @@ async function seed() {
                 category: "health_coaching",
                 icon: "🎯",
                 image: {
-                    url: "/images/services/health-coaching.jpg",
+                    url: "/images/services/health-coaching.svg",
                     alt: "Health-коучинг",
                 },
                 pricing: {
@@ -159,7 +159,7 @@ async function seed() {
                 category: "slavic_gymnastics",
                 icon: "🧘",
                 image: {
-                    url: "/images/services/slavic-gymnastics.jpg",
+                    url: "/images/services/slavic-gymnastics.svg",
                     alt: "Славянская гимнастика",
                 },
                 pricing: {
@@ -247,12 +247,12 @@ async function seed() {
 - Чай или кофе без сахара
         `,
                 coverImage: {
-                    url: "/images/articles/breakfast.jpg",
+                    url: "/images/articles/nutrition.svg",
                     alt: "Здоровый завтрак",
                 },
                 author: {
                     name: "Ксения Каменская",
-                    photo: "/images/author.jpg",
+                    photo: "/images/authors/ksenia-kamenskaya.svg",
                 },
                 category: "nutrition",
                 tags: ["завтрак", "питание", "здоровье"],
@@ -288,12 +288,12 @@ async function seed() {
 Избыток сахара вызывает резкие скачки глюкозы и перепады настроения.
         `,
                 coverImage: {
-                    url: "/images/articles/emotions.jpg",
+                    url: "/images/articles/psychology.svg",
                     alt: "Эмоции и питание",
                 },
                 author: {
                     name: "Ксения Каменская",
-                    photo: "/images/author.jpg",
+                    photo: "/images/authors/ksenia-kamenskaya.svg",
                 },
                 category: "psychology",
                 tags: ["психология", "эмоции", "питание"],
@@ -331,12 +331,12 @@ async function seed() {
 Поддерживает иммунную систему и помогает усвоению железа.
         `,
                 coverImage: {
-                    url: "/images/articles/vitamins.jpg",
+                    url: "/images/articles/nutrition.svg",
                     alt: "Витамины для энергии",
                 },
                 author: {
                     name: "Ксения Каменская",
-                    photo: "/images/author.jpg",
+                    photo: "/images/authors/ksenia-kamenskaya.svg",
                 },
                 category: "nutrition",
                 tags: ["витамины", "энергия", "здоровье"],
@@ -360,7 +360,7 @@ async function seed() {
                     "Практическое руководство по формированию полезных привычек",
                 videoUrl: "https://www.youtube.com/watch?v=example1",
                 thumbnail: {
-                    url: "/images/videos/habits.jpg",
+                    url: "/images/videos/nutrition.svg",
                     alt: "Привычки здорового питания",
                 },
                 duration: 900, // 15 минут
@@ -377,7 +377,7 @@ async function seed() {
                     "Простая техника для снятия стресса и улучшения концентрации",
                 videoUrl: "https://www.youtube.com/watch?v=example2",
                 thumbnail: {
-                    url: "/images/videos/meditation.jpg",
+                    url: "/images/videos/wellness.svg",
                     alt: "Медитация",
                 },
                 duration: 600, // 10 минут
@@ -394,7 +394,7 @@ async function seed() {
                     "Комплекс упражнений для снятия напряжения с позвоночника",
                 videoUrl: "https://www.youtube.com/watch?v=example3",
                 thumbnail: {
-                    url: "/images/videos/back.jpg",
+                    url: "/images/videos/gymnastics.svg",
                     alt: "Упражнения для спины",
                 },
                 duration: 1200, // 20 минут
@@ -419,14 +419,14 @@ async function seed() {
                     "Комплексный подход к здоровью: питание, движение, мышление и эмоциональное благополучие.",
                 recordingUrl: "https://www.youtube.com/watch?v=webinar1",
                 thumbnail: {
-                    url: "/images/webinars/harmony.jpg",
+                    url: "/images/webinars/default.svg",
                     alt: "Гармония тела и сознания",
                 },
                 duration: 5400, // 90 минут
                 originalDate: new Date("2025-01-15"),
                 speaker: {
                     name: "Ксения Каменская",
-                    photo: "/images/author.jpg",
+                    photo: "/images/authors/ksenia-kamenskaya.svg",
                     bio: "Нутрициолог, health-коуч с 7-летним опытом",
                 },
                 topics: [
@@ -468,6 +468,10 @@ async function seed() {
                     {title: "Энергия", value: "8/10", metric: "вместо 3/10"},
                     {title: "Анализы", value: "В норме", metric: "все показатели"},
                 ],
+                image: {
+                    url: "/images/cases/weight-loss.svg",
+                    alt: "Снижение веса",
+                },
                 testimonial:
                     "Я наконец-то чувствую себя легко и энергично! Спасибо за индивидуальный подход и поддержку!",
                 serviceName: "Health-коучинг",
@@ -497,6 +501,10 @@ async function seed() {
                     {title: "Самооценка", value: "8/10", metric: "вместо 3/10"},
                     {title: "Отношения", value: "Гармония", metric: "с едой и телом"},
                 ],
+                image: {
+                    url: "/images/cases/habits.svg",
+                    alt: "Пищевые привычки",
+                },
                 testimonial:
                     "Я научилась слышать свой организм и получать удовольствие от еды без чувства вины. Это изменило мою жизнь!",
                 serviceName: "Нутрициология + Психология",
@@ -526,6 +534,10 @@ async function seed() {
                     {title: "Энергия", value: "Стабильная", metric: "весь день"},
                     {title: "Сон", value: "8 часов", metric: "без пробуждений"},
                 ],
+                image: {
+                    url: "/images/cases/energy.svg",
+                    alt: "Энергия и здоровье",
+                },
                 testimonial:
                     "После многих лет безуспешного лечения у врачей я наконец-то нашел решение. Рекомендую!",
                 serviceName: "Нутрициология",
@@ -675,6 +687,10 @@ async function seed() {
                 title: "Лучшее решение в моей жизни!",
                 content:
                     "Обратилась с проблемой лишнего веса после родов. За 4 месяца не только похудела на 15 кг, но и полностью изменила отношение к питанию. Энергия зашкаливает, кожа сияет, волосы блестят! Спасибо за индивидуальный подход и постоянную поддержку!",
+                image: {
+                    url: "/images/cases/weight-loss.svg",
+                    alt: "Снижение веса",
+                },
                 serviceName: "Health-коучинг",
                 verified: true,
                 published: true,
@@ -691,6 +707,10 @@ async function seed() {
                 title: "Наконец-то гармония с едой",
                 content:
                     "Долгие годы страдала от компульсивного переедания. Перепробовала всё: диеты, психологи, кодирование... Ничего не работало надолго. Только здесь я поняла корень проблемы и научилась слышать свой организм. 3 месяца без срывов!",
+                image: {
+                    url: "/images/cases/habits.svg",
+                    alt: "Пищевые привычки",
+                },
                 serviceName: "Нутрициология + Психология",
                 verified: true,
                 published: true,
@@ -707,6 +727,10 @@ async function seed() {
                 title: "Здоровье ЖКТ восстановлено",
                 content:
                     "После многих лет безуспешного лечения у гастроэнтерологов обратился за помощью. Через 2 месяца симптомы ушли на 90%. Просто изменил питание по рекомендациям. Жалею только об одном — что не обратился раньше!",
+                image: {
+                    url: "/images/cases/energy.svg",
+                    alt: "Энергия и здоровье",
+                },
                 serviceName: "Нутрициология",
                 verified: true,
                 published: true,
@@ -723,6 +747,10 @@ async function seed() {
                 title: "Славянская гимнастика — это чудо!",
                 content:
                     "В 50 лет я чувствую себя лучше, чем в 40! Боли в спине ушли, появилась гибкость, энергия бьет ключом. А главное — научилась расслабляться и получать удовольствие от движения. Рекомендую всем!",
+                image: {
+                    url: "/images/services/slavic-gymnastics.svg",
+                    alt: "Славянская гимнастика",
+                },
                 serviceName: "Славянская гимнастика",
                 verified: true,
                 published: true,
@@ -739,6 +767,10 @@ async function seed() {
                 title: "Профессиональный подход",
                 content:
                     "Очень понравился комплексный подход. Не просто дали список продуктов, а разобрали весь образ жизни: сон, стресс, движение, питание. Результат превзошел ожидания. Минус 8 кг и полное изменение качества жизни!",
+                image: {
+                    url: "/images/services/nutrition.svg",
+                    alt: "Нутрициология",
+                },
                 serviceName: "Нутрициология",
                 verified: true,
                 published: true,
@@ -755,6 +787,10 @@ async function seed() {
                 title: "Энергия вернулась!",
                 content:
                     "Постоянная усталость стала нормой жизни. После консультации и коррекции питания энергия вернулась на такой уровень, что я снова начал тренироваться. Это невероятно! Спасибо!",
+                image: {
+                    url: "/images/services/health-coaching.svg",
+                    alt: "Health-коучинг",
+                },
                 serviceName: "Health-коучинг",
                 verified: true,
                 published: true,

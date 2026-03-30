@@ -11,6 +11,7 @@ import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-childr
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { Spinner } from "@/components/ui/spinner";
+import Image from "next/image";
 
 interface Article {
   _id: string;
@@ -92,11 +93,14 @@ export default function ArticlesPage() {
                     <Link href={`/materials/articles/${article.slug}`}>
                       <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full">
                         <CardContent className="p-0">
-                          {/* Обложка placeholder */}
+                          {/* Обложка */}
                           <div className="relative aspect-video bg-gradient-to-br from-primary/20 to-accent/20">
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <FileText className="h-12 w-12 text-muted opacity-50" />
-                            </div>
+                            <Image
+                              src={`/images/articles/${article.category}.svg`}
+                              alt={article.title}
+                              fill
+                              className="object-cover"
+                            />
                             <Badge
                               className={`absolute top-2 left-2 ${
                                 categoryColors[article.category] || "bg-primary"

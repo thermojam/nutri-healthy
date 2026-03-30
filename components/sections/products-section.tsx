@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {FadeIn} from "@/components/motion/fade-in";
 import {Check, Star} from "lucide-react";
 import {Button} from "@/components/ui/button";
@@ -19,6 +20,10 @@ interface Service {
     title: string;
     description: string;
     icon?: string;
+    image?: {
+        url: string;
+        alt: string;
+    };
     pricing: {
         base: number;
         premium: number;
@@ -124,13 +129,26 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                         </div>
                                     )}
 
-                                    <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-                                        {/* Заголовок */}
-                                        <div className="text-center space-y-2">
-                                            <span className="text-3xl sm:text-4xl">{service.icon || "✨"}</span>
-                                            <h3 className="text-lg sm:text-xl md:text-2xl font-bold">{service.title}</h3>
-                                            <p className="text-xs sm:text-sm text-muted">{service.description}</p>
-                                        </div>
+                                    <CardContent className="p-0 space-y-4 sm:space-y-6">
+                                        {/* Изображение услуги */}
+                                        {service.image?.url && (
+                                            <div className="relative h-48 w-full overflow-hidden">
+                                                <Image
+                                                    src={service.image.url}
+                                                    alt={service.image.alt || service.title}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                        )}
+                                        
+                                        <div className="px-4 sm:px-6 space-y-4">
+                                            {/* Заголовок */}
+                                            <div className="text-center space-y-2">
+                                                <span className="text-3xl sm:text-4xl">{service.icon || "✨"}</span>
+                                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold">{service.title}</h3>
+                                                <p className="text-xs sm:text-sm text-muted">{service.description}</p>
+                                            </div>
 
                                         {/* Тарифы */}
                                         <div className="space-y-4">
@@ -230,6 +248,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                             >
                                                 Подробнее об услуге →
                                             </Link>
+                                        </div>
                                         </div>
                                     </CardContent>
                                 </Card>

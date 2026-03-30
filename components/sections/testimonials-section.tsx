@@ -4,6 +4,7 @@ import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {cn} from "@/lib/utils";
+import Image from "next/image";
 import type {ObjectId} from "mongoose";
 
 interface Testimonial {
@@ -17,6 +18,10 @@ interface Testimonial {
     content: string;
     serviceName: string;
     verified: boolean;
+    image?: {
+        url: string;
+        alt: string;
+    };
 }
 
 interface TestimonialsSectionProps {
@@ -41,8 +46,21 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                 <Carousel showDots={true} showArrows={false}>
                     {testimonials.map((testimonial) => (
                         <CarouselItem key={testimonial._id.toString()}>
-                            <Card className="h-full hover:shadow-lg transition-shadow">
-                                <CardContent className="p-6 space-y-4">
+                            <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden">
+                                <CardContent className="p-0 space-y-4">
+                                    {/* Изображение отзыва */}
+                                    {testimonial.image?.url && (
+                                        <div className="relative h-48 w-full overflow-hidden">
+                                            <Image
+                                                src={testimonial.image.url}
+                                                alt={testimonial.image.alt || testimonial.title}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                    )}
+                                    
+                                    <div className="p-6 space-y-4">
                                     {/* Автор и рейтинг */}
                                     <div className="flex items-start justify-between gap-4">
                                         <div className="flex items-center gap-3">
@@ -109,6 +127,7 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                                                 {testimonial.serviceName}
                                             </span>
                                         </p>
+                                    </div>
                                     </div>
                                 </CardContent>
                             </Card>

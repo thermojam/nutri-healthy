@@ -174,7 +174,7 @@ export class YooKassaService {
     /**
      * Обработка webhook от ЮKassa
      */
-    async handleWebhook(event: YooKassaWebhookEvent): Promise<{ orderId: string; status: string }> {
+    async handleWebhook(event: YooKassaWebhookEvent): Promise<{ orderId: string; status: string; paymentId: string }> {
         const {type, object} = event;
 
         console.log(`YooKassa webhook: ${type} for payment ${object.id}`);
@@ -182,6 +182,7 @@ export class YooKassaService {
         return {
             orderId: object.metadata.order_id,
             status: object.status,
+            paymentId: object.id,
         };
     }
 }

@@ -105,10 +105,11 @@ export default function FAQSection({data}: FAQSectionProps) {
             <div className="container">
                 <FadeIn className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                        {faqData.title}
+                        Ответы на ваши вопросы
                     </h2>
-                    <p className="text-lg text-muted max-w-2xl mx-auto">
-                        {faqData.subtitle}
+                    <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
+                        Честные ответы на вопросы, которые вы стесняетесь задать. 
+                        Если не нашли ответ — напишите мне, я отвечу в течение 24 часов.
                     </p>
                 </FadeIn>
 
@@ -136,12 +137,20 @@ export default function FAQSection({data}: FAQSectionProps) {
                 {/* CTA */}
                 <FadeIn delay={0.4}>
                     <div className="mt-12 text-center">
-                        <p className="text-muted mb-4">
-                            Не нашли ответ на свой вопрос?
-                        </p>
-                        <a href="#contact">
-                            <Button>Задать вопрос</Button>
-                        </a>
+                        <div className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-3xl p-6 sm:p-8 border border-primary/20">
+                            <h3 className="text-xl sm:text-2xl font-bold mb-4">
+                                Остались вопросы?
+                            </h3>
+                            <p className="text-sm sm:text-base text-muted max-w-2xl mx-auto mb-6">
+                                Задайте вопрос прямо сейчас — я отвечу в течение 24 часов. 
+                                Это бесплатно и ни к чему не обязывает.
+                            </p>
+                            <a href="#contact">
+                                <Button size="lg">
+                                    Задать вопрос в WhatsApp →
+                                </Button>
+                            </a>
+                        </div>
                     </div>
                 </FadeIn>
 

@@ -103,10 +103,13 @@ export function ProductsSection({services}: ProductsSectionProps) {
                 <div className="container">
                     <FadeIn className="text-center mb-8 sm:mb-12">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-                            Услуги и тарифы
+                            Услуги и программы
                         </h2>
-                        <p className="text-sm sm:text-lg text-muted max-w-2xl mx-auto">
-                            Выберите подходящую программу для достижения ваших целей
+                        <p className="text-base sm:text-lg text-muted max-w-3xl mx-auto leading-relaxed">
+                            Тело кричит о помощи, а вы не слышите? Хроническая усталость, лишний вес, 
+                            гормональные сбои — это сигналы, что пора действовать. 
+                            <strong className="text-foreground"> Я помогу найти истинную причину</strong> и 
+                            восстановить здоровье через работу с психосоматикой и биохимией тела.
                         </p>
                     </FadeIn>
 
@@ -261,15 +264,35 @@ export function ProductsSection({services}: ProductsSectionProps) {
                         <InfoBlockWithBadges
                             variant="accent"
                             icon="💳"
-                            title="Доступны рассрочки от партнеров"
+                            title="Оплата частями без переплат"
                             badges={["Яндекс.Рассрочка", "Долями", "Тинькофф", "Сплит"]}
                             className="mt-12"
                         >
-                            <p>
-                                Возможна оплата частями без процентов и переплат.
-                                Оформление онлайн за 5 минут.
+                            <p className="text-sm sm:text-base">
+                                Заботьтесь о здоровье уже сейчас — платите постепенно. 
+                                Оформление онлайн за 5 минут без справок и поручителей.
                             </p>
                         </InfoBlockWithBadges>
+                    </FadeIn>
+
+                    {/* CTA блок */}
+                    <FadeIn delay={0.7} className="mt-12">
+                        <div className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-3xl p-6 sm:p-8 border border-primary/20">
+                            <div className="text-center space-y-4">
+                                <h3 className="text-xl sm:text-2xl font-bold">
+                                    💫 Не знаете, с чего начать?
+                                </h3>
+                                <p className="text-sm sm:text-base text-muted max-w-2xl mx-auto">
+                                    Запишитесь на бесплатную 15-минутную консультацию. 
+                                    Я помогу определить вашу главную проблему и подберу оптимальную программу.
+                                </p>
+                                <Link href="/#contact">
+                                    <Button size="lg" className="mt-4">
+                                        Записаться на бесплатную консультацию
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
                     </FadeIn>
                 </div>
             </section>

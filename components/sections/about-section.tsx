@@ -41,7 +41,7 @@ export default function AboutSection() {
                 <FadeIn className="text-center mb-8 sm:mb-12">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Обо мне</h2>
                     <p className="text-base sm:text-lg text-muted max-w-2xl mx-auto">
-                        Мой путь в нутрициологии и health-коучинге
+                        Психосоматика × биохимия тела | Научный подход к здоровью
                     </p>
                 </FadeIn>
 
@@ -71,17 +71,16 @@ export default function AboutSection() {
                         <FadeIn direction="left" delay={0.3}>
                             <div className="prose dark:prose-invert max-w-none">
                                 <p className="text-sm sm:text-base md:text-lg text-muted leading-relaxed">
-                                    Привет! Меня зовут Ксения Каменская, и я сертифицированный нутрициолог и health-коуч
-                                    с более чем 7-летним опытом работы.
+                                    Привет! Меня зовут Ксения Каменская, и я нутрициолог, health-коуч и специалист по психосоматике. 
+                                    Помогаю женщинам восстановить здоровье через работу с эмоциями, питанием и биохимией тела.
                                 </p>
                                 <p className="text-sm sm:text-base md:text-lg text-muted leading-relaxed">
-                                    Моя миссия — помочь вам обрести здоровье, энергию и гармонию с телом через научно
-                                    обоснованный подход к питанию и образу жизни.
+                                    Моя миссия — научить вас быть Берегиней здоровья себе и семье, управлять эмоциями 
+                                    и переключать саботаж на ресурс для управления своей жизнью по-женски.
                                 </p>
                                 <p className="text-sm sm:text-base md:text-lg text-muted leading-relaxed">
-                                    Я верю, что каждый человек уникален, и не существует универсальных решений. Поэтому
-                                    я разработаю индивидуальную программу, которая подойдет именно вам и вашему образу
-                                    жизни.
+                                    Аккредитованный нутрициолог НАИС. Постоянно повышаю квалификацию на форумах по 
+                                    превентивной медицине, применяю научный подход к работе с микробиомом, гормонами и стрессом.
                                 </p>
                             </div>
                         </FadeIn>
@@ -91,8 +90,8 @@ export default function AboutSection() {
                             <div className="bg-primary/5 dark:bg-primary/10 p-4 sm:p-6 rounded-xl sm:rounded-2xl border-l-4 border-primary">
                                 <h3 className="text-base sm:text-lg font-semibold mb-2">Моя философия</h3>
                                 <p className="text-sm sm:text-base text-muted italic">
-                                    Здоровье — это не просто отсутствие болезней, это состояние полного физического,
-                                    психического и социального благополучия.
+                                    Устойчивое здоровье рождается на стыке понимания своей души и мудрой заботы о теле. 
+                                    Тело будет кричать нам, пока мы не услышим истину.
                                 </p>
                             </div>
                         </FadeIn>

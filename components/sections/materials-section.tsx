@@ -110,10 +110,12 @@ export function MaterialsSection() {
             <div className="container">
                 <FadeIn className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                        Полезные материалы
+                        База знаний о здоровье
                     </h2>
-                    <p className="text-lg text-muted max-w-2xl mx-auto">
-                        Статьи, видео и вебинары для вашего здоровья и развития
+                    <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
+                        Хотите разобраться в теме глубже? Статьи, видео и вебинары помогут вам 
+                        понять причины проблем со здоровьем и научиться заботиться о себе правильно. 
+                        <strong className="text-foreground"> Бесплатные материалы</strong> — первый шаг к осознанному здоровью.
                     </p>
                 </FadeIn>
 
@@ -304,12 +306,24 @@ export function MaterialsSection() {
                 {/* CTA */}
                 <FadeIn delay={0.6}>
                     <div className="mt-12 text-center">
-                        <p className="text-muted mb-4">
-                            Хотите получить доступ ко всем материалам?
-                        </p>
-                        <a href="#contact">
-                            <Button size="lg">Записаться на консультацию</Button>
-                        </a>
+                        <div className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-3xl p-6 sm:p-8 border border-primary/20">
+                            <h3 className="text-xl sm:text-2xl font-bold mb-4">
+                                🎁 Получите персональные рекомендации
+                            </h3>
+                            <p className="text-sm sm:text-base text-muted max-w-2xl mx-auto mb-6">
+                                Материалы дают общие знания, но ваше здоровье уникально. 
+                                На консультации я разработаю индивидуальный план с учетом ваших анализов, 
+                                образа жизни и целей.
+                            </p>
+                            <a href="#contact">
+                                <Button size="lg">
+                                    Записаться на консультацию →
+                                </Button>
+                            </a>
+                            <p className="text-xs text-muted mt-4">
+                                📍 Онлайн • Конфиденциально • Научный подход
+                            </p>
+                        </div>
                     </div>
                 </FadeIn>
             </div>

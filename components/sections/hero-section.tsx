@@ -32,10 +32,10 @@ export default function HeroSection({data}: HeroSectionProps) {
 
     // Данные по умолчанию, если не переданы
     const heroData = data || {
-        title: "Нутрициолог / Health-коуч",
-        subtitle: "Индивидуальный подход к вашему здоровью",
+        title: "Нутрициолог / Health-коуч / Психосоматика",
+        subtitle: "Экстракт женственности с Ксенией Каменской",
         description:
-            "Персональные планы питания, сопровождение и поддержка на пути к лучшей версии себя. Научный подход и забота о вашем здоровье.",
+            "Психосоматика × биохимия тела. Научный подход к здоровью: от работы с эмоциями до восполнения дефицитов. Стань Берегиней здоровья себе и семье.",
         ctaPrimary: "Выбрать программу",
         ctaSecondary: "Узнать больше",
         stats: [
@@ -62,7 +62,7 @@ export default function HeroSection({data}: HeroSectionProps) {
                       className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                 </span>
-                                Доступно для новых клиентов
+                                Аккредитованный нутрициолог НАИС | Доступно для новых клиентов
                             </div>
                         </FadeIn>
 

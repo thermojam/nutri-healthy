@@ -47,10 +47,13 @@ export function CasesSection({cases}: CasesSectionProps) {
             <div className="container">
                 <FadeIn className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                        Кейсы и результаты
+                        Истории трансформации
                     </h2>
-                    <p className="text-lg text-muted max-w-2xl mx-auto">
-                        Истории успеха моих клиентов с реальными результатами
+                    <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
+                        Эти женщины пришли с запросом «просто похудеть», 
+                        а обрели здоровье, энергию и гармонию в семье. 
+                        <strong className="text-foreground"> Их результат — ваша возможность</strong> увидеть, 
+                        что работает действительно.
                     </p>
                 </FadeIn>
 
@@ -150,12 +153,23 @@ export function CasesSection({cases}: CasesSectionProps) {
                 {/* CTA */}
                 <FadeIn delay={0.6}>
                     <div className="mt-12 text-center">
-                        <p className="text-muted mb-4">
-                            Хотите такой же результат? Запишитесь на консультацию!
-                        </p>
-                        <a href="#contact">
-                            <Button size="lg">Начать свой путь к здоровью</Button>
-                        </a>
+                        <div className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-3xl p-6 sm:p-8 border border-primary/20">
+                            <h3 className="text-xl sm:text-2xl font-bold mb-4">
+                                Ваша история успеха начинается здесь
+                            </h3>
+                            <p className="text-sm sm:text-base text-muted max-w-2xl mx-auto mb-6">
+                                Через 3 месяца вы сможете сказать: «Это было лучшее решение в моей жизни». 
+                                Как Екатерина, которая похудела на 15 кг и восстановила энергию.
+                            </p>
+                            <a href="#contact">
+                                <Button size="lg">
+                                    Начать свою трансформацию →
+                                </Button>
+                            </a>
+                            <p className="text-xs text-muted mt-4">
+                                🔒 100% конфиденциально • Без осуждения • С заботой
+                            </p>
+                        </div>
                     </div>
                 </FadeIn>
             </div>

@@ -1,4 +1,5 @@
 import {Quote, Star} from "lucide-react";
+import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
@@ -37,9 +38,13 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
         <section id="reviews" className="py-24 bg-background">
             <div className="container">
                 <FadeIn className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Отзывы клиентов</h2>
-                    <p className="text-lg text-muted max-w-2xl mx-auto">
-                        Истории и впечатления тех, кто уже прошел путь к здоровью
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Отзывы тех, кто уже с нами
+                    </h2>
+                    <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
+                        Более 500 женщин уже восстановили здоровье и обрели энергию. 
+                        <strong className="text-foreground"> 98% клиентов</strong> рекомендуют меня 
+                        подругам — это лучшая оценка моей работы. Читайте честные отзывы.
                     </p>
                 </FadeIn>
 
@@ -134,6 +139,37 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                         </CarouselItem>
                     ))}
                 </Carousel>
+
+                {/* CTA с социальным доказательством */}
+                <FadeIn delay={0.6}>
+                    <div className="mt-12 text-center">
+                        <div className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-3xl p-6 sm:p-8 border border-primary/20">
+                            <div className="flex items-center justify-center gap-2 mb-4">
+                                <div className="flex">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <Star key={star} className="h-6 w-6 fill-accent text-accent"/>
+                                    ))}
+                                </div>
+                                <span className="text-sm font-semibold">4.9/5</span>
+                            </div>
+                            <h3 className="text-xl sm:text-2xl font-bold mb-4">
+                                Станьте следующей историей успеха
+                            </h3>
+                            <p className="text-sm sm:text-base text-muted max-w-2xl mx-auto mb-6">
+                                Присоединяйтесь к сообществу женщин, которые выбрали здоровье, 
+                                энергию и гармонию. Ваша трансформация начинается сегодня.
+                            </p>
+                            <a href="#contact">
+                                <Button size="lg">
+                                    Записаться на консультацию →
+                                </Button>
+                            </a>
+                            <p className="text-xs text-muted mt-4">
+                                ✨ Первая 15-минутная консультация — бесплатно
+                            </p>
+                        </div>
+                    </div>
+                </FadeIn>
             </div>
         </section>
     );

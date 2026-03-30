@@ -29,7 +29,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({data}: HeroSectionProps) {
     const [gradientVariant, setGradientVariant] = useState(0);
-    
+
     // Данные по умолчанию, если не переданы
     const heroData = data || {
         title: "Нутрициолог / Health-коуч",
@@ -46,8 +46,8 @@ export default function HeroSection({data}: HeroSectionProps) {
     };
 
     return (
-        <AnimatedBackground 
-            className="relative min-h-screen flex justify-center items-center" 
+        <AnimatedBackground
+            className="relative min-h-screen flex justify-center items-center rounded-b-[3rem]"
             gradientVariant={gradientVariant}
         >
             <div className="container py-16 sm:py-24 md:py-32">
@@ -219,7 +219,7 @@ export default function HeroSection({data}: HeroSectionProps) {
             </div>
 
             {/* Переключатель градиентов для превью */}
-            <GradientPreview 
+            <GradientPreview
                 currentGradient={gradientVariant}
                 onGradientChange={setGradientVariant}
             />

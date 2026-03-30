@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {Instagram, Send, Youtube, Mail, Phone, MapPin} from "lucide-react";
-import {Button} from "@/components/ui/button";
 import {Logo} from "@/components/ui/logo";
 
 const socialLinks = [
@@ -53,13 +52,13 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="bg-card border-t border-border">
-            <div className="container py-12 md:py-16">
+        <footer className="bg-card border-t border-border mt-auto rounded-t-[3rem] md:rounded-t-[4rem] overflow-hidden">
+            <div className="container px-4 md:px-6 lg:px-8 py-12 md:py-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
                     {/* Brand */}
                     <div className="space-y-4">
                         <Link href="/" className="flex items-center gap-2">
-                            <Logo size="md" />
+                            <Logo size="md"/>
                             <div>
                                 <p className="font-semibold text-lg">Ксения Каменская</p>
                                 <p className="text-xs text-muted">Нутрициолог | Health-коучинг</p>

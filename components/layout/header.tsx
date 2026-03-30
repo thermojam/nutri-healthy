@@ -51,10 +51,8 @@ export default function Header() {
                 <div className="flex items-center justify-between h-16 md:h-20">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2">
-                        <Logo size="md" />
-                        <span className="hidden sm:inline-block font-semibold text-lg">Ксения Каменская</span>
+                        <Logo size="md"/>
                     </Link>
-
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center gap-6">
                         {navLinks.map((link) => (
@@ -71,7 +69,7 @@ export default function Header() {
                     {/* Actions */}
                     <div className="flex items-center gap-2">
                         {/* Theme Toggle */}
-                        {mounted && (
+                        {mounted && theme && (
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -122,7 +120,7 @@ export default function Header() {
             {/* Mobile Menu */}
             {mobileMenuOpen && (
                 <div className="md:hidden bg-background border-b border-border animate-fade-in">
-                    <div className="container py-4">
+                    <div className="container py-6">
                         <nav className="flex flex-col gap-4">
                             {navLinks.map((link) => (
                                 <Link

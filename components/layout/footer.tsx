@@ -25,6 +25,8 @@ const legalLinks = [
     {href: "/legal/personal-data-consent", label: "Согласие на ПДн"},
     {href: "/legal/marketing-consent", label: "Согласие на рассылку"},
     {href: "/legal/contract", label: "Договор оферты"},
+    {href: "/legal/return-policy", label: "Возврат"},
+    {href: "/legal/delivery-terms", label: "Порядок оказания услуг"},
 ];
 
 const contactInfo = [
@@ -184,10 +186,26 @@ export default function Footer() {
                         </p>
                     </div>
 
-                    {/* Developer Credit (optional) */}
+                    {/* Payment Methods */}
+                    <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-card border border-border rounded-lg">
+                            <span className="text-xs text-muted">Принимаем к оплате:</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <img src="/images/payment/visa.svg" alt="Visa" className="h-6" />
+                            <img src="/images/payment/mastercard.svg" alt="Mastercard" className="h-6" />
+                            <img src="/images/payment/mir.svg" alt="МИР" className="h-6" />
+                            <img src="/images/payment/sbp.svg" alt="СБП" className="h-6" />
+                        </div>
+                    </div>
+
+                    {/* Legal Info */}
                     <div className="mt-6 text-center">
                         <p className="text-xs text-muted">
                             ИП Каменская Ксения | ИНН 123456789012 | ОГРНИП 123456789012345
+                        </p>
+                        <p className="text-xs text-muted mt-1">
+                            123317, г. Москва, Пресненская наб., д. 10, стр. 2 | info@yoursite.ru
                         </p>
                     </div>
                 </div>

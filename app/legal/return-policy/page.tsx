@@ -1,190 +1,237 @@
 import type {Metadata} from "next";
-import Link from "next/link";
-import {ArrowLeft} from "lucide-react";
-import {Button} from "@/components/ui/button";
+import {ArrowLeft, Percent} from "lucide-react";
+import LegalPageLayout from "@/components/legal/legal-page-layout";
 
 export const metadata: Metadata = {
     title: "Возврат и обмен | Ксения Каменская",
-    description: "Порядок возврата и отказа от услуг нутрициологии и health-коучинга",
-    robots: {index: true, follow: true},
+    description: "Порядок возврата денежных средств за услуги нутрициологии",
 };
 
 export default function ReturnPolicyPage() {
     return (
-        <div className="min-h-screen bg-background">
-            {/* Header */}
-            <header className="border-b border-border">
-                <div className="container py-4">
-                    <Link href="/">
-                        <Button variant="ghost" size="sm" className="gap-2">
-                            <ArrowLeft className="h-4 w-4"/>
-                            На главную
-                        </Button>
-                    </Link>
+        <LegalPageLayout
+            title="Возврат и отказ от услуг"
+            description="Гарантируем честный возврат в соответствии с законом"
+            version="2.0"
+            icon={<Percent className="h-6 w-6 sm:h-7 sm:w-7"/>}
+        >
+            <section>
+                <h2>1. Общие положения</h2>
+                <p>
+                    Настоящий документ регулирует порядок возврата денежных средств за услуги 
+                    нутрициологии и health-коучинга, оказанные ИП Каменская Ксения (далее — Исполнитель).
+                </p>
+                <p>
+                    Возврат осуществляется в строгом соответствии с:
+                </p>
+                <ul>
+                    <li>Законом РФ «О защите прав потребителей» (ст. 29, 31, 32)</li>
+                    <li>Гражданским кодексом РФ (ст. 782)</li>
+                    <li>Правилами оказания платных услуг (Постановление Правительства РФ № 2463)</li>
+                    <li>Федеральным законом № 152-ФЗ «О персональных данных»</li>
+                </ul>
+                <div className="bg-primary/5 border-l-4 border-primary p-4 my-4">
+                    <p className="text-sm text-muted mb-0">
+                        <strong>Гарантия:</strong> Мы честно рассмотрим каждое обращение и вернем 
+                        деньги в случае обоснованной претензии в течение 10 рабочих дней.
+                    </p>
                 </div>
-            </header>
+            </section>
 
-            {/* Content */}
-            <main className="container py-12">
-                <article className="prose dark:prose-invert max-w-4xl mx-auto">
-                    <h1 className="mb-8">
-                        Возврат и отказ от услуг
-                    </h1>
+            <section>
+                <h2>2. Возврат до начала оказания услуг</h2>
+                <p>
+                    Заказчик вправе отказаться от исполнения договора в любое время <strong>до начала 
+                    оказания услуг</strong> при условии оплаты Исполнителю фактически понесенных расходов.
+                </p>
+                <h3>2.1. Порядок возврата:</h3>
+                <ol>
+                    <li>Направьте заявление на возврат на email: 
+                        <a href="mailto:info@yoursite.ru" className="text-primary hover:underline"> info@yoursite.ru</a>
+                    </li>
+                    <li>В заявлении укажите: ФИО, номер заказа, причину возврата, реквизиты для перевода</li>
+                    <li>Возврат осуществляется в течение <strong>10 рабочих дней</strong></li>
+                    <li>Комиссия платежных систем не возвращается (если услуга не оказывалась)</li>
+                </ol>
 
-                    <p className="text-muted text-lg mb-8">
-                        Порядок возврата денежных средств за услуги нутрициологии и health-коучинга
-                    </p>
-
-                    <p className="text-sm text-muted mb-12">
-                        <strong>Версия:</strong> 1.0 | <strong>Дата:</strong> {new Date().toLocaleDateString("ru-RU")}
-                    </p>
-
-                    <section>
-                        <h2>1. Общие положения</h2>
-                        <p>
-                            Настоящий документ регулирует порядок возврата денежных средств за услуги, оказанные ИП Каменская Ксения 
-                            (далее — Исполнитель) через сайт https://yoursite.ru (далее — Сайт).
-                        </p>
-                        <p>
-                            Возврат осуществляется в соответствии с:
-                        </p>
-                        <ul>
-                            <li>Законом РФ «О защите прав потребителей» (ст. 29, 31, 32)</li>
-                            <li>Гражданским кодексом РФ (ст. 782)</li>
-                            <li>Правилами оказания платных услуг (Постановление Правительства РФ № 2463)</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2>2. Возврат до начала оказания услуг</h2>
-                        <p>
-                            Заказчик вправе отказаться от исполнения договора в любое время до начала оказания услуг при условии 
-                            оплаты Исполнителю фактически понесенных расходов.
-                        </p>
-                        <p>
-                            <strong>Порядок возврата:</strong>
-                        </p>
-                        <ol>
-                            <li>Направьте заявление на возврат на email: <a href="mailto:info@yoursite.ru">info@yoursite.ru</a></li>
-                            <li>В заявлении укажите: ФИО, номер заказа, причину возврата, реквизиты для перевода</li>
-                            <li>Возврат осуществляется в течение 10 рабочих дней</li>
-                            <li>Комиссия платежных систем не возвращается</li>
-                        </ol>
-                    </section>
-
-                    <section>
-                        <h2>3. Возврат после начала оказания услуг</h2>
-                        <p>
-                            При отказе от услуг после начала их оказания Исполнитель вправе удержать часть стоимости 
-                            пропорционально фактически оказанным услугам.
-                        </p>
-                        <p>
-                            <strong>Пример расчета:</strong>
-                        </p>
-                        <div className="bg-card border border-border p-4 rounded-xl my-4">
-                            <p className="text-sm">
-                                Стоимость программы: <strong>15 000 ₽</strong><br/>
-                                Проведено консультаций: <strong>1 из 3</strong><br/>
-                                Стоимость одной консультации: <strong>5 000 ₽</strong><br/>
-                                <br/>
-                                <strong>К возврату: 10 000 ₽</strong> (15 000 - 5 000)
-                            </p>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h2>4. Возврат за цифровые продукты</h2>
-                        <p>
-                            Возврат за цифровые продукты (планы питания, гайды, чек-листы) возможен только в случае:
-                        </p>
-                        <ul>
-                            <li>Технической неисправности продукта</li>
-                            <li>Несоответствия продукта описанию на сайте</li>
-                        </ul>
-                        <p>
-                            Возврат не возможен, если:
-                        </p>
-                        <ul>
-                            <li>Продукт был скачан/активирован</li>
-                            <li>Прошло более 7 дней с момента покупки</li>
-                            <li>Претензии к содержанию продукта (субъективная оценка)</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2>5. Сроки возврата</h2>
-                        <p>
-                            Возврат денежных средств осуществляется в течение:
-                        </p>
-                        <ul>
-                            <li><strong>10 рабочих дней</strong> — для заявлений, поданных до начала оказания услуг</li>
-                            <li><strong>30 календарных дней</strong> — для заявлений, поданных после начала оказания услуг</li>
-                        </ul>
-                        <p>
-                            Денежные средства возвращаются тем же способом, которым была произведена оплата:
-                        </p>
-                        <ul>
-                            <li>На банковскую карту — в течение 3-10 рабочих дней</li>
-                            <li>Через платежную систему — в течение 1-3 рабочих дней</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2>6. Контакты для возврата</h2>
-                        <div className="bg-primary/5 border border-primary/20 p-6 rounded-xl my-4">
-                            <p className="font-semibold mb-2">Для оформления возврата:</p>
-                            <ul className="text-sm space-y-1">
-                                <li>📧 Email: <a href="mailto:info@yoursite.ru" className="text-primary">info@yoursite.ru</a></li>
-                                <li>📱 Телефон: <a href="tel:+79991234567" className="text-primary">+7 (999) 123-45-67</a></li>
-                                <li>💬 Telegram: <a href="https://t.me/username" className="text-primary">@username</a></li>
-                                <li>⏰ Режим работы: Пн-Пт 9:00-18:00 (МСК)</li>
-                            </ul>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h2>7. Образец заявления на возврат</h2>
-                        <div className="bg-card border border-border p-6 rounded-xl my-4 font-mono text-sm">
-                            <p className="mb-4">Директору ИП Каменская Ксения<br/>от [Ваше ФИО]<br/>Email: [ваш email]</p>
-                            
-                            <p className="mb-4 font-semibold">ЗАЯВЛЕНИЕ НА ВОЗВРАТ</p>
-                            
-                            <p className="mb-4">
-                                Прошу вернуть денежные средства в размере [сумма] ₽ за заказ №[номер] от [дата].<br/>
-                                Причина: [укажите причину]
-                            </p>
-                            
-                            <p className="mb-4">
-                                Реквизиты для возврата:<br/>
-                                Карта: [XXXX XXXX XXXX XXXX]<br/>
-                                Банк: [название банка]
-                            </p>
-                            
-                            <p className="mt-8">Дата: ___________</p>
-                            <p>Подпись: ___________</p>
-                        </div>
-                    </section>
-
-                    <div className="mt-12 p-6 bg-accent/5 border border-accent/20 rounded-xl">
-                        <h3 className="text-lg font-semibold mb-2">📞 Нужна помощь?</h3>
-                        <p className="text-sm text-muted mb-4">
-                            Если у вас возникли вопросы по возврату, свяжитесь с нашей службой поддержки.
-                        </p>
-                        <Link href="/#contact">
-                            <Button>Связаться с поддержкой</Button>
-                        </Link>
+                <div className="bg-card border border-border rounded-xl p-6 my-4">
+                    <h4 className="font-semibold mb-3">Образец заявления:</h4>
+                    <div className="text-sm text-muted space-y-2 font-mono bg-muted/50 p-4 rounded-lg">
+                        <p>Директору ИП Каменская Ксения</p>
+                        <p>от [Ваше ФИО]</p>
+                        <p>Email: [ваш email]</p>
+                        <br/>
+                        <p className="font-semibold">ЗАЯВЛЕНИЕ НА ВОЗВРАТ</p>
+                        <br/>
+                        <p>Прошу вернуть денежные средства в размере [сумма] ₽ за заказ №[номер] от [дата].</p>
+                        <p>Причина: [укажите причину]</p>
+                        <br/>
+                        <p>Реквизиты для возврата:</p>
+                        <p>Карта: [XXXX XXXX XXXX XXXX]</p>
+                        <p>Банк: [название банка]</p>
+                        <br/>
+                        <p>Дата: ___________</p>
+                        <p>Подпись: ___________</p>
                     </div>
-                </article>
-            </main>
+                </div>
+            </section>
 
-            {/* Footer */}
-            <footer className="border-t border-border py-8">
-                <div className="container">
-                    <p className="text-sm text-muted text-center">
-                        © {new Date().getFullYear()} Ксения Каменская. Все права защищены.
+            <section>
+                <h2>3. Возврат после начала оказания услуг</h2>
+                <p>
+                    При отказе от услуг <strong>после начала их оказания</strong> Исполнитель вправе 
+                    удержать часть стоимости пропорционально фактически оказанным услугам.
+                </p>
+                <h3>3.1. Пример расчета:</h3>
+                <div className="bg-accent/5 border-l-4 border-accent p-4 my-4">
+                    <p className="text-sm mb-2"><strong>Ситуация:</strong></p>
+                    <ul className="text-sm text-muted space-y-1 mb-3">
+                        <li>• Стоимость программы: <strong>15 000 ₽</strong></li>
+                        <li>• Проведено консультаций: <strong>1 из 3</strong></li>
+                        <li>• Стоимость одной консультации: <strong>5 000 ₽</strong></li>
+                    </ul>
+                    <p className="text-sm font-semibold">
+                        К возврату: 10 000 ₽ (15 000 - 5 000)
                     </p>
                 </div>
-            </footer>
-        </div>
+
+                <h3>3.2. Что считается началом оказания услуг:</h3>
+                <ul>
+                    <li>Проведенная консультация (онлайн или офлайн)</li>
+                    <li>Отправленный план питания / рекомендации</li>
+                    <li>Предоставленный доступ к материалам</li>
+                    <li>Начало работы в чате поддержки</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>4. Возврат за цифровые продукты</h2>
+                <p>
+                    Цифровые продукты (планы питания, гайды, чек-листы, видео-уроки) относятся к 
+                    товарам надлежащего качества, созданным в электронном виде.
+                </p>
+                <h3>4.1. Возврат возможен в случае:</h3>
+                <ul>
+                    <li>Технической неисправности продукта (файлы не открываются)</li>
+                    <li>Несоответствия продукта описанию на Сайте</li>
+                    <li>Дублирования покупки (случайная повторная оплата)</li>
+                </ul>
+                <h3>4.2. Возврат НЕ возможен, если:</h3>
+                <ul>
+                    <li>Продукт был скачан / активирован</li>
+                    <li>Прошло более 7 дней с момента покупки</li>
+                    <li>Претензии к содержанию (субъективная оценка)</li>
+                    <li>Передумали после ознакомления</li>
+                </ul>
+                <div className="bg-primary/5 border-l-4 border-primary p-4 my-4">
+                    <p className="text-sm text-muted mb-0">
+                        <strong>Важно:</strong> Согласно Постановлению Правительства РФ № 2463, 
+                        цифровые товары надлежащего качества возврату не подлежат.
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <h2>5. Сроки возврата</h2>
+                <p>Возврат денежных средств осуществляется в течение:</p>
+                <ul>
+                    <li><strong>10 рабочих дней</strong> — для заявлений, поданных до начала оказания услуг</li>
+                    <li><strong>30 календарных дней</strong> — для заявлений, поданных после начала оказания услуг</li>
+                </ul>
+                <h3>5.1. Способы возврата:</h3>
+                <p>Денежные средства возвращаются тем же способом, которым была произведена оплата:</p>
+                <ul>
+                    <li>На банковскую карту — в течение 3-10 рабочих дней</li>
+                    <li>Через платежную систему — в течение 1-3 рабочих дней</li>
+                    <li>На расчетный счет — в течение 5-10 рабочих дней</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>6. Основания для отказа в возврате</h2>
+                <p>Исполнитель вправе отказать в возврате в следующих случаях:</p>
+                <ul>
+                    <li>Истечение срока возврата (более 14 дней для цифровых продуктов)</li>
+                    <li>Продукт был использован (скачан, активирован)</li>
+                    <li>Нарушение условий договора со стороны Заказчика</li>
+                    <li>Предоставление ложных данных в заявлении</li>
+                </ul>
+                <p>
+                    В случае отказа Исполнитель предоставляет мотивированный ответ в письменной форме.
+                </p>
+            </section>
+
+            <section>
+                <h2>7. Досудебный порядок</h2>
+                <p>
+                    Перед обращением в суд обязательно соблюдение досудебного порядка. Направьте 
+                    претензию на email Исполнителя:
+                </p>
+                <div className="bg-card border border-border rounded-xl p-6 my-4">
+                    <p className="mb-2"><strong>Контакты для претензий:</strong></p>
+                    <p className="text-sm text-muted">
+                        Email: <a href="mailto:info@yoursite.ru" className="text-primary hover:underline">info@yoursite.ru</a>
+                    </p>
+                    <p className="text-sm text-muted">
+                        Телефон: <a href="tel:+79991234567" className="text-primary hover:underline">+7 (999) 123-45-67</a>
+                    </p>
+                    <p className="text-sm text-muted">
+                        Адрес: 123317, г. Москва, Пресненская наб., д. 10, стр. 2
+                    </p>
+                    <p className="text-sm text-muted mt-3">
+                        Срок рассмотрения претензии: <strong>30 календарных дней</strong>
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <h2>8. Частые вопросы</h2>
+                
+                <h3>Можно ли вернуть деньги, если результат не достигнут?</h3>
+                <p>
+                    Результат зависит от индивидуальных особенностей и соблюдения рекомендаций. 
+                    Если услуги оказаны в полном объеме, возврат не производится. Мы гарантируем 
+                    качественный сервис, но не конкретные цифры (похудение, набор веса и т.д.).
+                </p>
+
+                <h3>Что если мне не подошел формат работы?</h3>
+                <p>
+                    Если после первой консультации вы поняли, что формат не подходит, вернем 
+                    полную стоимость за вычетом стоимости проведенной консультации.
+                </p>
+
+                <h3>Можно ли перенести консультацию вместо возврата?</h3>
+                <p>
+                    Да, перенос возможен не позднее чем за 24 часа до назначенного времени. 
+                    Это бесплатно и не требует заявления.
+                </p>
+            </section>
+
+            <section>
+                <h2>9. Контакты</h2>
+                <p>
+                    По всем вопросам возврата обращайтесь:
+                </p>
+                <div className="bg-gradient-to-br from-primary/5 via-background to-accent/5 border border-primary/20 rounded-xl p-6 my-4">
+                    <div className="space-y-3">
+                        <p className="mb-2">
+                            <strong>ИП Каменская Ксения</strong>
+                        </p>
+                        <p className="text-sm text-muted">
+                            Email: <a href="mailto:info@yoursite.ru" className="text-primary hover:underline">info@yoursite.ru</a>
+                        </p>
+                        <p className="text-sm text-muted">
+                            Телефон: <a href="tel:+79991234567" className="text-primary hover:underline">+7 (999) 123-45-67</a>
+                        </p>
+                        <p className="text-sm text-muted">
+                            Режим работы: Пн-Пт 9:00-18:00 (МСК)
+                        </p>
+                        <p className="text-sm text-muted mt-3">
+                            Среднее время ответа: <strong>24 часа</strong>
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </LegalPageLayout>
     );
 }

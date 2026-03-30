@@ -12,6 +12,7 @@ import {InfoBlockWithBadges} from "@/components/ui/info-block";
 import OrderModal from "@/components/features/order-modal";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {CreditCard, Percent, Wallet} from "lucide-react";
+import {cn} from "@/lib/utils";
 import type {ObjectId} from "mongoose";
 
 interface Service {
@@ -58,6 +59,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
         price: number;
     } | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeTariffs, setActiveTariffs] = useState<Record<string, "base" | "premium" | "vip">>({});
 
     const handleTariffSelect = (service: Service, tariff: "base" | "premium" | "vip") => {
         setSelectedService({
@@ -77,6 +79,29 @@ export function ProductsSection({services}: ProductsSectionProps) {
 
     const handleOrderError = (error: string) => {
         console.error("Order error:", error);
+    };
+
+    const getTariffData = (service: Service, tariff: "base" | "premium" | "vip") => {
+        const prices = {
+            base: service.pricing.base,
+            premium: service.pricing.premium,
+            vip: service.pricing.vip,
+        };
+        const features = {
+            base: service.features.base,
+            premium: service.features.premium,
+            vip: service.features.vip,
+        };
+        const labels = {
+            base: "Базовый",
+            premium: "Оптимальный",
+            vip: "VIP",
+        };
+        return {
+            price: prices[tariff],
+            features: features[tariff],
+            label: labels[tariff],
+        };
     };
 
     // Если нет данных из БД
@@ -106,157 +131,148 @@ export function ProductsSection({services}: ProductsSectionProps) {
                             Услуги и программы
                         </h2>
                         <p className="text-base sm:text-lg text-muted max-w-3xl mx-auto leading-relaxed">
-                            Тело кричит о помощи, а вы не слышите? Хроническая усталость, лишний вес, 
-                            гормональные сбои — это сигналы, что пора действовать. 
-                            <strong className="text-foreground"> Я помогу найти истинную причину</strong> и 
+                            Тело кричит о помощи, а вы не слышите? Хроническая усталость, лишний вес,
+                            гормональные сбои — это сигналы, что пора действовать.
+                            <strong className="text-foreground"> Я помогу найти истинную причину</strong> и
                             восстановить здоровье через работу с психосоматикой и биохимией тела.
                         </p>
                     </FadeIn>
 
                     <Carousel showDots={true} showArrows={false}>
-                        {services.map((service) => (
-                            <CarouselItem key={service._id.toString()}>
-                                <Card
-                                    className={`relative h-full overflow-hidden ${
-                                        service.popular
-                                            ? "border-primary border-2 shadow-lg"
-                                            : "hover:shadow-lg transition-shadow"
-                                    }`}
-                                >
-                                    {service.popular && (
-                                        <div className="absolute top-0 right-0">
-                                            <Badge className="rounded-bl-xl rounded-tr-none bg-primary">
-                                                <Star className="h-3 w-3 mr-1"/>
-                                                Популярный
-                                            </Badge>
-                                        </div>
-                                    )}
+                        {services.map((service) => {
+                            const activeTariff = activeTariffs[service._id.toString()] || "premium";
+                            const tariffData = getTariffData(service, activeTariff);
 
-                                    <CardContent className="p-0 space-y-4 sm:space-y-6">
-                                        {/* Изображение услуги */}
-                                        {service.image?.url && (
-                                            <div className="relative h-48 w-full overflow-hidden">
-                                                <Image
-                                                    src={service.image.url}
-                                                    alt={service.image.alt || service.title}
-                                                    fill
-                                                    className="object-cover"
-                                                />
-                                            </div>
+                            return (
+                                <CarouselItem key={service._id.toString()}>
+                                    <Card
+                                        className={cn(
+                                            "relative h-full overflow-hidden transition-all duration-300",
+                                            service.popular ? "border-primary border-2 shadow-lg" : "hover:shadow-lg"
                                         )}
-                                        
-                                        <div className="px-4 sm:px-6 space-y-4">
-                                            {/* Заголовок */}
-                                            <div className="text-center space-y-2">
-                                                <span className="text-3xl sm:text-4xl">{service.icon || "✨"}</span>
-                                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold">{service.title}</h3>
-                                                <p className="text-xs sm:text-sm text-muted">{service.description}</p>
-                                            </div>
-
-                                        {/* Тарифы */}
-                                        <div className="space-y-4">
-                                            {/* Базовый */}
-                                            <div className="p-4 rounded-xl bg-card border border-border">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="font-medium">Базовый</span>
-                                                    <span className="text-lg font-bold">
-                                                        {formatPrice(service.pricing.base)}
-                                                    </span>
-                                                </div>
-                                                <ul className="space-y-2">
-                                                    {service.features.base.slice(0, 3).map((feature, i) => (
-                                                        <li key={i} className="flex items-start gap-2 text-sm">
-                                                            <Check className="h-4 w-4 text-success shrink-0 mt-0.5"/>
-                                                            <span className="text-muted">{feature}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                                <Button
-                                                    className="w-full mt-3"
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => handleTariffSelect(service, "base")}
-                                                >
-                                                    Выбрать
-                                                </Button>
-                                            </div>
-
-                                            {/* Премиум */}
-                                            <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="font-medium text-primary">
-                                                        Оптимальный
-                                                    </span>
-                                                    <span className="text-lg font-bold text-primary">
-                                                        {formatPrice(service.pricing.premium)}
-                                                    </span>
-                                                </div>
-                                                <ul className="space-y-2">
-                                                    {service.features.premium.slice(0, 4).map((feature, i) => (
-                                                        <li key={i} className="flex items-start gap-2 text-sm">
-                                                            <Check className="h-4 w-4 text-primary shrink-0 mt-0.5"/>
-                                                            <span className="text-muted">{feature}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                                <Button
-                                                    className="w-full mt-3"
-                                                    size="sm"
-                                                    onClick={() => handleTariffSelect(service, "premium")}
-                                                >
-                                                    Выбрать
-                                                </Button>
-                                            </div>
-
-                                            {/* VIP */}
-                                            <div className="p-4 rounded-xl bg-card border border-border">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="font-medium">VIP</span>
-                                                    <span className="text-lg font-bold">
-                                                        {formatPrice(service.pricing.vip)}
-                                                    </span>
-                                                </div>
-                                                <p className="text-xs text-muted mb-3">
-                                                    Максимальная поддержка и результат
-                                                </p>
-                                                <Button
-                                                    className="w-full"
-                                                    variant="outline"
-                                                    size="sm"
-                                                    onClick={() => handleTariffSelect(service, "vip")}
-                                                >
-                                                    Выбрать
-                                                </Button>
-                                            </div>
-                                        </div>
-
-                                        {/* Рассрочка */}
-                                        {service.pricing.premium >= 3000 && (
-                                            <div className="text-center">
-                                                <p className="text-sm text-muted">
-                                                    Или в рассрочку от{" "}
-                                                    <span className="font-semibold text-primary">
-                                                        {formatPrice(Math.round(service.pricing.premium / 4))}
-                                                    </span>{" "}
-                                                    / мес
-                                                </p>
+                                    >
+                                        {service.popular && (
+                                            <div className="absolute top-0 right-0 z-10">
+                                                <Badge className="rounded-bl-xl rounded-tr-none bg-primary">
+                                                    <Star className="h-3 w-3 mr-1"/>
+                                                    Популярный
+                                                </Badge>
                                             </div>
                                         )}
 
-                                        {/* Ссылка на подробную страницу */}
-                                        <div className="pt-4 border-t border-border">
-                                            <Link
-                                                href={`/services/${service.slug}`}
-                                                className="text-sm text-primary hover:underline flex items-center justify-center gap-1"
-                                            >
-                                                Подробнее об услуге →
-                                            </Link>
-                                        </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </CarouselItem>
-                        ))}
+                                        <CardContent className="p-0">
+                                            {/* Изображение услуги */}
+                                            {service.image?.url && (
+                                                <div className="relative h-40 sm:h-48 w-full overflow-hidden">
+                                                    <Image
+                                                        src={service.image.url}
+                                                        alt={service.image.alt || service.title}
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                            )}
+
+                                            <div className="p-4 sm:p-6 space-y-4">
+                                                {/* Заголовок */}
+                                                <div className="text-center space-y-2">
+                                                    <span className="text-3xl sm:text-4xl">{service.icon || "✨"}</span>
+                                                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold">{service.title}</h3>
+                                                    <p className="text-xs sm:text-sm text-muted">{service.description}</p>
+                                                </div>
+
+                                                {/* Вкладки тарифов - Вариант на выбор (сейчас активен Вариант 1) */}
+                                                ВАРИАНТ 1: Сегментированный контроль (как в iOS)
+                                                <div className="flex p-1 bg-muted/50 rounded-xl">
+                                                    {(["base", "premium", "vip"] as const).map((tariff) => {
+                                                        const isActive = activeTariff === tariff;
+                                                        const data = getTariffData(service, tariff);
+                                                        return (
+                                                            <button
+                                                                key={tariff}
+                                                                onClick={() => setActiveTariffs(prev => ({
+                                                                    ...prev,
+                                                                    [service._id.toString()]: tariff
+                                                                }))}
+                                                                className={cn(
+                                                                    "flex-1 px-2 py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200",
+                                                                    isActive
+                                                                        ? "bg-white dark:bg-card text-foreground shadow-sm"
+                                                                        : "text-muted hover:text-foreground hover:bg-muted/50"
+                                                                )}
+                                                            >
+                                                                <div
+                                                                    className="font-semibold whitespace-nowrap">{data.label}</div>
+                                                                <div className={cn(
+                                                                    "text-xs mt-1 font-semibold",
+                                                                    isActive ? "text-primary" : "text-muted"
+                                                                )}>
+                                                                    {formatPrice(data.price)}
+                                                                </div>
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+
+                                                {/* Контент активного тарифа */}
+                                                <div className="space-y-3 min-h-[280px]">
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="font-medium">{tariffData.label}</span>
+                                                        <span className="text-xl sm:text-2xl font-bold text-primary">
+                                                        {formatPrice(tariffData.price)}
+                                                    </span>
+                                                    </div>
+
+                                                    <ul className="space-y-2">
+                                                        {tariffData.features.slice(0, 5).map((feature, i) => (
+                                                            <li key={i} className="flex items-start gap-2 text-sm">
+                                                                <Check className={cn(
+                                                                    "h-4 w-4 shrink-0 mt-0.5",
+                                                                    activeTariff === "premium" ? "text-primary" : "text-success"
+                                                                )}/>
+                                                                <span className="text-muted">{feature}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+
+                                                    <Button
+                                                        className="w-full"
+                                                        size="sm"
+                                                        variant={activeTariff === "premium" ? "default" : "outline"}
+                                                        onClick={() => handleTariffSelect(service, activeTariff as "base" | "premium" | "vip")}
+                                                    >
+                                                        {activeTariff === "premium" ? "Выбрать оптимальный" : `Выбрать ${tariffData.label.toLowerCase()}`}
+                                                    </Button>
+
+                                                    {/* Рассрочка */}
+                                                    {tariffData.price >= 3000 && (
+                                                        <div className="text-center pt-2 border-t border-border">
+                                                            <p className="text-xs text-muted">
+                                                                Или в рассрочку от{" "}
+                                                                <span className="font-semibold text-primary">
+                                                                {formatPrice(Math.round(tariffData.price / 4))}
+                                                            </span>{" "}
+                                                                / мес
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {/* Ссылка на подробную страницу */}
+                                                <div className="pt-3 border-t border-border">
+                                                    <Link
+                                                        href={`/services/${service.slug}`}
+                                                        className="text-xs sm:text-sm text-primary hover:underline flex items-center justify-center gap-1"
+                                                    >
+                                                        Подробнее об услуге →
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </CarouselItem>
+                            );
+                        })}
                     </Carousel>
 
                     {/* Рассрочки и оплата */}
@@ -269,7 +285,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                             className="mt-12"
                         >
                             <p className="text-sm sm:text-base">
-                                Заботьтесь о здоровье уже сейчас — платите постепенно. 
+                                Заботьтесь о здоровье уже сейчас — платите постепенно.
                                 Оформление онлайн за 5 минут без справок и поручителей.
                             </p>
                         </InfoBlockWithBadges>
@@ -277,13 +293,14 @@ export function ProductsSection({services}: ProductsSectionProps) {
 
                     {/* CTA блок */}
                     <FadeIn delay={0.7} className="mt-12">
-                        <div className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-3xl p-6 sm:p-8 border border-primary/20">
+                        <div
+                            className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-3xl p-6 sm:p-8 border border-primary/20">
                             <div className="text-center space-y-4">
                                 <h3 className="text-xl sm:text-2xl font-bold">
                                     💫 Не знаете, с чего начать?
                                 </h3>
                                 <p className="text-sm sm:text-base text-muted max-w-2xl mx-auto">
-                                    Запишитесь на бесплатную 15-минутную консультацию. 
+                                    Запишитесь на бесплатную 15-минутную консультацию.
                                     Я помогу определить вашу главную проблему и подберу оптимальную программу.
                                 </p>
                                 <Link href="/#contact">

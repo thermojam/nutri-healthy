@@ -63,7 +63,6 @@ export default function Footer() {
                             <Logo size="md"/>
                             <div>
                                 <p className="font-semibold text-lg">Ксения Каменская</p>
-                                <p className="text-xs text-muted">Нутрициолог | Health-коучинг</p>
                             </div>
                         </Link>
                         <p className="text-sm text-muted">

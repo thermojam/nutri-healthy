@@ -3,6 +3,7 @@ import {Nunito} from "next/font/google";
 import {ThemeProvider} from "next-themes";
 import {AnalyticsProvider} from "@/components/analytics";
 import {ErrorBoundary} from "@/components/ui/error-boundary";
+import {CookieBannerWrapper} from "@/components/features/cookie-banner";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -105,6 +106,7 @@ export default function RootLayout({
             <ErrorBoundary>
                 <AnalyticsProvider>
                     {children}
+                    <CookieBannerWrapper />
                 </AnalyticsProvider>
             </ErrorBoundary>
         </ThemeProvider>

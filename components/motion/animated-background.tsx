@@ -25,7 +25,7 @@ export function AnimatedBackground({
     );
 
     return (
-        <div className={cn("relative min-h-screen overflow-hidden", className)}>
+        <div className={cn("relative min-h-screen", className)}>
             {/* Градиентный фон */}
             <div className={cn("absolute inset-0", gradientClass)}/>
 

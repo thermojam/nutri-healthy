@@ -46,14 +46,16 @@ export default function HeroSection({data}: HeroSectionProps) {
     };
 
     return (
-        <AnimatedBackground
-            className="relative min-h-screen flex justify-center items-center rounded-b-[3rem]"
-            gradientVariant={gradientVariant}
-        >
-            <div className="container py-16 sm:py-24 md:py-32">
+        <div className="relative min-h-screen overflow-hidden pt-20 rounded-b-[4rem] md:rounded-b-[5rem] lg:rounded-b-[8rem]">
+            <AnimatedBackground
+                className="absolute inset-0"
+                gradientVariant={gradientVariant}
+            />
+            <div className="relative z-10 container py-16 sm:py-24 md:py-32">
                 <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                     {/* Левая часть - Контент */}
-                    <div className="space-y-6 sm:space-y-8 text-center lg:text-left mx-auto lg:mx-0 max-w-3xl lg:max-w-none">
+                    <div
+                        className="space-y-6 sm:space-y-8 text-center lg:text-left mx-auto lg:mx-0 max-w-3xl lg:max-w-none">
                         <FadeIn direction="up" delay={0.2}>
                             <div
                                 className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/20 text-xs sm:text-sm text-primary">
@@ -98,7 +100,8 @@ export default function HeroSection({data}: HeroSectionProps) {
                         {/* Статистика */}
                         {heroData.stats && (
                             <FadeIn direction="up" delay={0.6}>
-                                <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 pt-4 justify-center lg:justify-start">
+                                <div
+                                    className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 pt-4 justify-center lg:justify-start">
                                     {heroData.stats.map((stat, index) => (
                                         <motion.div
                                             key={stat.label}
@@ -148,71 +151,10 @@ export default function HeroSection({data}: HeroSectionProps) {
                                     src="/images/main-image.png"
                                     alt="Нутрициолог"
                                     fill
-                                    className="object-cover rounded-full"
+                                    className="object-cover"
                                     priority
                                 />
-
-                                {/* Декоративные круги (по референсу template.png) */}
-                                <motion.div
-                                    className="absolute inset-0 rounded-full border border-primary/20"
-                                    animate={{
-                                        scale: [1, 1.05, 1],
-                                        rotate: [0, 5, -5, 0],
-                                    }}
-                                    transition={{
-                                        duration: 8,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                    }}
-                                />
-                                <motion.div
-                                    className="absolute inset-8 rounded-full border border-accent/20"
-                                    animate={{
-                                        scale: [1.05, 1, 1.05],
-                                        rotate: [0, -5, 5, 0],
-                                    }}
-                                    transition={{
-                                        duration: 10,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                    }}
-                                />
                             </div>
-
-                            {/* Плавающие карточки */}
-                            <motion.div
-                                className="absolute top-1/4 -left-4 bg-card rounded-2xl shadow-lg p-4 border border-border"
-                                animate={{y: [0, -10, 0]}}
-                                transition={{duration: 4, repeat: Infinity, ease: "easeInOut"}}
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div
-                                        className="w-10 h-10 rounded-full bg-success/20 flex items-center justify-center">
-                                        <span className="text-xl">✨</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-semibold">Результат</p>
-                                        <p className="text-xs text-muted">-10 кг за 3 месяца</p>
-                                    </div>
-                                </div>
-                            </motion.div>
-
-                            <motion.div
-                                className="absolute bottom-1/4 -right-4 bg-card rounded-2xl shadow-lg p-4 border border-border"
-                                animate={{y: [0, 10, 0]}}
-                                transition={{duration: 5, repeat: Infinity, ease: "easeInOut"}}
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div
-                                        className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
-                                        <span className="text-xl">🎯</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-semibold">Подход</p>
-                                        <p className="text-xs text-muted">Индивидуальный</p>
-                                    </div>
-                                </div>
-                            </motion.div>
                         </div>
                     </FadeIn>
                 </div>
@@ -223,6 +165,6 @@ export default function HeroSection({data}: HeroSectionProps) {
                 currentGradient={gradientVariant}
                 onGradientChange={setGradientVariant}
             />
-        </AnimatedBackground>
+        </div>
     );
 }

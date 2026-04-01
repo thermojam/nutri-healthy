@@ -4,4 +4,3 @@
 
 export * from "./yandex";
 export * from "./dolemi";
-export * from "./tinkoff";

@@ -14,11 +14,11 @@ export interface IOrder extends Document {
         | "in_progress";
     price: number;
     currency: "RUB";
-    paymentMethod?: "yookassa" | "cloudpayments" | "yandex_split" | "dolemi" | "tinkoff" | "paykeeper";
-    paymentProvider?: "yookassa" | "paykeeper" | "cloudpayments"; // Активный платежный провайдер
+    paymentMethod?: "yookassa" | "yandex_split" | "dolemi" | "paykeeper";
+    paymentProvider?: "yookassa" | "paykeeper"; // Активный платежный провайдер
     paymentId?: string; // ID платежа в платежной системе
     installmentPlan?: {
-        provider: "yandex" | "dolemi" | "tinkoff";
+        provider: "yandex" | "dolemi";
         installments: number;
         amountPerInstallment: number;
         status: "pending" | "approved" | "rejected" | "active" | "closed";
@@ -104,11 +104,11 @@ const OrderSchema = new Schema<IOrder>(
         },
         paymentMethod: {
             type: String,
-            enum: ["yookassa", "cloudpayments", "yandex_split", "dolemi", "tinkoff", "paykeeper"],
+            enum: ["yookassa", "yandex_split", "dolemi", "paykeeper"],
         },
         paymentProvider: {
             type: String,
-            enum: ["yookassa", "paykeeper", "cloudpayments"],
+            enum: ["yookassa", "paykeeper"],
         },
         paymentId: {
             type: String,
@@ -117,7 +117,7 @@ const OrderSchema = new Schema<IOrder>(
         installmentPlan: {
             provider: {
                 type: String,
-                enum: ["yandex", "dolemi", "tinkoff"],
+                enum: ["yandex", "dolemi"],
             },
             installments: Number,
             amountPerInstallment: Number,

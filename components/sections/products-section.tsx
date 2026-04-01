@@ -1,7 +1,8 @@
 "use client";
 
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Link from "next/link";
+import {useRouter, useSearchParams} from "next/navigation";
 import Image from "next/image";
 import {FadeIn} from "@/components/motion/fade-in";
 import {Check, Star} from "lucide-react";
@@ -9,6 +10,7 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {InfoBlockWithBadges} from "@/components/ui/info-block";
+import {Spinner} from "@/components/ui/spinner";
 import OrderModal from "@/components/features/order-modal";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {CreditCard, Percent, Wallet} from "lucide-react";
@@ -60,6 +62,20 @@ export function ProductsSection({services}: ProductsSectionProps) {
     } | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeTariffs, setActiveTariffs] = useState<Record<string, "base" | "premium" | "vip">>({});
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    // Проверка возврата с платежной системы
+    useEffect(() => {
+        const orderId = searchParams.get("order_id");
+        const payment = searchParams.get("payment");
+
+        // Если есть order_id и payment - пользователь вернулся с платежной системы
+        if (orderId && payment) {
+            // Перенаправляем на страницу успеха
+            router.push(`/payment/success?order_id=${orderId}`);
+        }
+    }, [searchParams, router]);
 
     const handleTariffSelect = (service: Service, tariff: "base" | "premium" | "vip") => {
         setSelectedService({
@@ -73,12 +89,16 @@ export function ProductsSection({services}: ProductsSectionProps) {
 
     const handleOrderSuccess = (orderId: string) => {
         console.log("Order created:", orderId);
-        setIsModalOpen(false);
-        window.location.href = "/payment/success";
+        // Модалка закроется автоматически после редиректа на платежную систему
+        // Не показываем успех здесь - пользователь будет перенаправлен на платежную страницу
     };
 
     const handleOrderError = (error: string) => {
         console.error("Order error:", error);
+        // Показываем ошибку пользователю через toast или alert
+        if (typeof window !== "undefined") {
+            alert(`Ошибка при создании заказа: ${error}`);
+        }
     };
 
     const getTariffData = (service: Service, tariff: "base" | "premium" | "vip") => {
@@ -113,9 +133,9 @@ export function ProductsSection({services}: ProductsSectionProps) {
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                             Услуги и тарифы
                         </h2>
-                        <p className="text-sm sm:text-lg text-muted max-w-2xl mx-auto">
-                            Загрузка услуг...
-                        </p>
+                        <div className="flex justify-center items-center">
+                            <Spinner size="lg" />
+                        </div>
                     </FadeIn>
                 </div>
             </section>

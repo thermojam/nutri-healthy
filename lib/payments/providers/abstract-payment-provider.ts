@@ -86,7 +86,7 @@ export abstract class PaymentProvider {
     /**
      * Обработка вебхука от платежной системы
      * @param payload Тело запроса
-     * @param signature Подпись запроса
+     * @param signature Подпись запроса (для YooKassa - x-signature header)
      * @returns Распарсенные данные вебхука
      */
     abstract handleWebhook(payload: unknown, signature?: string): Promise<{
@@ -99,7 +99,7 @@ export abstract class PaymentProvider {
 /**
  * Тип для фабрики платежных провайдеров
  */
-export type PaymentProviderType = "yookassa" | "paykeeper" | "cloudpayments";
+export type PaymentProviderType = "yookassa" | "paykeeper";
 
 /**
  * Конфигурация для создания провайдера

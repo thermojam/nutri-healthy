@@ -99,9 +99,10 @@ export async function POST(request: NextRequest) {
             if (phone) user.phone = phone;
             await user.save();
         } else {
+            // Создание нового — телефон только если не пустой
             user = await User.create({
                 email,
-                phone,
+                phone: phone || undefined, // Не сохраняем пустую строку
                 firstName,
                 lastName,
                 patronymic,
@@ -242,7 +243,7 @@ export async function POST(request: NextRequest) {
         try {
             // Определяем провайдер на основе выбранного метода оплаты
             const provider = paymentMethod === "paykeeper" ? "paykeeper" : "yookassa";
-            
+
             paymentData = await paymentService.createPayment({
                 orderId: order._id.toString(),
                 amount: price,
@@ -251,22 +252,65 @@ export async function POST(request: NextRequest) {
                 email,
             });
 
+            // Проверяем успешность создания платежа
+            if (!paymentData.success || !paymentData.paymentUrl) {
+                console.error("❌ Payment creation failed:", paymentData.error);
+                
+                // Помечаем заказ как ожидающий оплаты
+                order.status = "pending";
+                order.paymentMethod = paymentMethod as any;
+                order.metadata = {
+                    paymentProvider: provider,
+                    paymentMethod: paymentMethod,
+                    paymentError: paymentData.error,
+                };
+                await order.save();
+                
+                return NextResponse.json({
+                    success: false,
+                    error: "Не удалось инициировать платеж. Попробуйте другой способ оплаты.",
+                    order: {
+                        id: order._id,
+                        price,
+                        tariff,
+                    },
+                }, { status: 400 });
+            }
+
             paymentUrl = paymentData.paymentUrl;
 
             // Сохранение информации о платеже в заказ
-            if (paymentData.success && paymentData.paymentId) {
-                order.paymentMethod = paymentMethod as any;
-                order.paymentId = paymentData.paymentId;
-                order.paymentProvider = provider as any;
-                order.metadata = {
-                    paymentUrl,
-                    paymentProvider: provider,
-                    paymentMethod: paymentMethod,
-                };
-            }
+            order.paymentMethod = paymentMethod as any;
+            order.paymentId = paymentData.paymentId;
+            order.paymentProvider = provider as any;
+            order.status = "pending";
+            order.metadata = {
+                paymentUrl,
+                paymentProvider: provider,
+                paymentMethod: paymentMethod,
+            };
             await order.save();
         } catch (paymentError) {
             console.error("❌ Payment initialization error:", paymentError);
+            
+            // Помечаем заказ как ожидающий оплаты
+            order.status = "pending";
+            order.paymentMethod = paymentMethod as any;
+            order.metadata = {
+                paymentMethod: paymentMethod,
+                paymentError: paymentError instanceof Error ? paymentError.message : "Unknown error",
+            };
+            await order.save();
+            
+            return NextResponse.json({
+                success: false,
+                error: "Ошибка при создании платежа. Попробуйте позже или выберите другой способ оплаты.",
+                order: {
+                    id: order._id,
+                    price,
+                    tariff,
+                },
+            }, { status: 400 });
         }
 
         // Письма отправляются ТОЛЬКО после успешной оплаты (webhook)
@@ -297,11 +341,12 @@ export async function POST(request: NextRequest) {
         }
     } catch (error) {
         console.error("❌ Order creation error:", error);
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
         return NextResponse.json(
             {
                 success: false,
-                error: "Внутренняя ошибка сервера"
+                error: `Внутренняя ошибка сервера: ${errorMessage}`
             },
             {status: 500}
         );

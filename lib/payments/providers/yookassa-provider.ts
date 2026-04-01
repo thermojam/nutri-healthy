@@ -15,6 +15,7 @@ import {
 interface YooKassaConfig {
     shopId: string;
     secretKey: string;
+    webhookSecret: string;
     returnUrl: string;
     testMode: boolean;
 }
@@ -35,8 +36,11 @@ export class YooKassaPaymentProvider extends PaymentProvider {
         this.config = {
             shopId: process.env.YOOKASSA_SHOP_ID || "",
             secretKey: process.env.YOOKASSA_SECRET_KEY || "",
+            webhookSecret: process.env.YOOKASSA_WEBHOOK_SECRET || "",
             returnUrl: process.env.YOOKASSA_RETURN_URL || "",
-            testMode: process.env.NODE_ENV === "development",
+            testMode: process.env.NODE_ENV === "development" ||
+                     process.env.YOOKASSA_SECRET_KEY?.startsWith("test_") ||
+                     false,
         };
     }
 
@@ -61,17 +65,25 @@ export class YooKassaPaymentProvider extends PaymentProvider {
 
     async createPayment(data: PaymentData): Promise<PaymentConfirmation> {
         if (!this.config) {
+            console.error("YooKassa: Config is null");
             throw new Error("YooKassa not initialized");
         }
+
+        // Добавляем order_id к return_url
+        const returnUrlWithOrder = `${this.config.returnUrl}?order_id=${data.orderId}&payment=yookassa`;
+        
+        // Генерируем ключ идемпотентности для предотвращения дублирования
+        const idempotenceKey = `${data.orderId}-${Date.now()}`;
 
         try {
             const response = await fetch(`${this.baseUrl}payments`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Basic ${Buffer.from(
+                    "Authorization": `Basic ${Buffer.from(
                         `${this.config.shopId}:${this.config.secretKey}`
                     ).toString("base64")}`,
+                    "Idempotence-Key": idempotenceKey,
                 },
                 body: JSON.stringify({
                     amount: {
@@ -82,11 +94,13 @@ export class YooKassaPaymentProvider extends PaymentProvider {
                     description: data.description,
                     confirmation: {
                         type: "redirect",
-                        return_url: this.config.returnUrl,
+                        return_url: returnUrlWithOrder,
                     },
-                    payment_method_data: {
-                        type: "bank_card",
-                    },
+                    // НЕ ограничиваем метод оплаты — ЮKassa покажет все доступные:
+                    // - Банковская карта
+                    // - СБП (Система быстрых платежей)
+                    // - ЮMoney
+                    // - И другие
                 }),
             });
 
@@ -173,14 +187,42 @@ export class YooKassaPaymentProvider extends PaymentProvider {
     }
 
     async handleWebhook(
-        payload: unknown
+        payload: unknown,
+        signature?: string
     ): Promise<{ orderId: string; status: string; paymentId: string }> {
+        if (!this.config?.webhookSecret) {
+            console.warn("YooKassa: Webhook secret not configured, skipping signature verification");
+        } else {
+            // Проверка подписи вебхука (HMAC-SHA256)
+            const crypto = await import("crypto");
+            const payloadString = JSON.stringify(payload);
+            const expectedSignature = crypto
+                .createHmac("sha256", this.config.webhookSecret)
+                .update(payloadString)
+                .digest("hex");
+
+            if (signature !== expectedSignature) {
+                console.error("YooKassa: Invalid webhook signature");
+                throw new Error("Invalid webhook signature");
+            }
+        }
+
         const data = payload as Record<string, unknown>;
-        const object = data.object as { metadata?: { order_id?: string }; id?: string } | undefined;
+        const object = data.object as { metadata?: { order_id?: string }; id?: string; status?: string } | undefined;
+
+        // Логирование cancellation_details для аналитики отказов
+        if (object?.status === "canceled") {
+            const cancellationDetails = (data.object as { cancellation_details?: { reason?: string; message?: string } })?.cancellation_details;
+            console.warn("YooKassa: Payment canceled", {
+                paymentId: object?.id,
+                reason: cancellationDetails?.reason,
+                message: cancellationDetails?.message,
+            });
+        }
 
         return {
             orderId: String(object?.metadata?.order_id || ""),
-            status: String(data.event || "unknown"),
+            status: String(data.event || object?.status || "unknown"),
             paymentId: String(object?.id || ""),
         };
     }

@@ -79,11 +79,14 @@ export class PayKeeperPaymentProvider extends PaymentProvider {
             throw new Error("PayKeeper not initialized");
         }
 
+        // Добавляем order_id к return_url
+        const returnUrlWithOrder = `${this.config.returnUrl}?order_id=${data.orderId}&payment=paykeeper`;
+
         // Тестовый режим - возвращаем тестовую ссылку
         if (this.config.testMode) {
             console.log("PayKeeper: TEST MODE - creating test payment");
             return {
-                confirmationUrl: `http://localhost:3000/payment/success?test=true&order_id=${data.orderId}`,
+                confirmationUrl: `${returnUrlWithOrder}&test=true`,
                 paymentId: `test_${Date.now()}`,
                 status: "pending",
             };
@@ -104,7 +107,7 @@ export class PayKeeperPaymentProvider extends PaymentProvider {
                     email: data.email || "",
                     phone: data.phone || "",
                     description: data.description,
-                    return_url: this.config.returnUrl,
+                    return_url: returnUrlWithOrder,
                 }),
             });
 

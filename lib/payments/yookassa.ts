@@ -8,6 +8,7 @@ import crypto from "crypto";
 interface YooKassaConfig {
     shopId: string;
     secretKey: string;
+    webhookSecret: string;
     returnUrl: string;
 }
 
@@ -173,11 +174,44 @@ export class YooKassaService {
 
     /**
      * Обработка webhook от ЮKassa
+     * @param event Тело вебхука
+     * @param signature Подпись из заголовка x-signature (опционально)
      */
-    async handleWebhook(event: YooKassaWebhookEvent): Promise<{ orderId: string; status: string; paymentId: string }> {
+    async handleWebhook(
+        event: YooKassaWebhookEvent,
+        signature?: string
+    ): Promise<{ orderId: string; status: string; paymentId: string }> {
+        // Проверка подписи вебхука (если секрет настроен)
+        if (this.config.webhookSecret) {
+            const payloadString = JSON.stringify(event);
+            const expectedSignature = crypto
+                .createHmac('sha256', this.config.webhookSecret)
+                .update(payloadString)
+                .digest('hex');
+
+            if (signature !== expectedSignature) {
+                console.error('YooKassa: Invalid webhook signature');
+                throw new Error('Invalid webhook signature');
+            }
+        }
+
         const {type, object} = event;
 
         console.log(`YooKassa webhook: ${type} for payment ${object.id}`);
+
+        // Логирование cancellation_details для аналитики отказов
+        const eventWithCancellation = event as YooKassaWebhookEvent & {
+            object?: { status?: string; cancellation_details?: { reason?: string; message?: string } }
+        };
+        
+        if (object.status === 'canceled') {
+            const cancellationDetails = (eventWithCancellation.object as any)?.cancellation_details;
+            console.warn('YooKassa: Payment canceled', {
+                paymentId: object.id,
+                reason: cancellationDetails?.reason,
+                message: cancellationDetails?.message,
+            });
+        }
 
         return {
             orderId: object.metadata.order_id,
@@ -191,5 +225,6 @@ export class YooKassaService {
 export const yookassaService = new YooKassaService({
     shopId: process.env.YOOKASSA_SHOP_ID || '',
     secretKey: process.env.YOOKASSA_SECRET_KEY || '',
+    webhookSecret: process.env.YOOKASSA_WEBHOOK_SECRET || '',
     returnUrl: process.env.YOOKASSA_RETURN_URL || 'http://localhost:3000/payment/success',
 });

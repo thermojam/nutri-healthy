@@ -109,16 +109,13 @@ export const VIDEO_CATEGORIES = {
 
 export const PAYMENT_METHODS = {
     YOOKASSA: "yookassa",
-    CLOUD_PAYMENTS: "cloudpayments",
     YANDEX_SPLIT: "yandex_split",
     DOLEMI: "dolemi",
-    TINKOFF: "tinkoff",
 } as const;
 
 export const INSTALLMENT_PROVIDERS = {
     YANDEX: "yandex",
     DOLEMI: "dolemi",
-    TINKOFF: "tinkoff",
 } as const;
 
 export const ORDER_STATUS = {

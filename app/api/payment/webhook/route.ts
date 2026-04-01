@@ -6,7 +6,6 @@ import {User} from "@/lib/db/models/User";
 import {createAuditLog} from "@/lib/db/audit";
 import {paymentService} from "@/lib/payments/payment-service";
 import {yookassaService} from "@/lib/payments/yookassa";
-import {cloudpaymentsService} from "@/lib/payments/cloudpayments";
 import {receiptService} from "@/lib/payments/receipts";
 import {sendEmail, sendAdminEmail} from "@/lib/email";
 import {ClientWelcomeTemplate} from "@/lib/email/templates/client-welcome";
@@ -15,7 +14,12 @@ import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
 
 /**
  * POST /api/payment/webhook
- * Обработка webhook от платежных систем (ЮKassa, PayKeeper, CloudPayments)
+ * Обработка webhook от платежных систем (ЮKassa, PayKeeper)
+ * 
+ * Особенности:
+ * - Проверка подписи вебхука (для YooKassa)
+ * - Идемпотентность: обработка дублирующихся вебхуков
+ * - Логирование cancellation_details для аналитики
  */
 export async function POST(request: NextRequest) {
     try {
@@ -23,7 +27,13 @@ export async function POST(request: NextRequest) {
         const signature = request.headers.get("x-signature") || undefined;
         const eventType = request.headers.get("x-event-type") || body.type || body.Event;
 
-        console.log(`💳 Payment webhook received: ${eventType}`);
+        // Извлекаем paymentId для идемпотентности
+        const paymentIdFromBody = (body.object as { id?: string })?.id;
+        
+        console.log(`💳 Payment webhook received: ${eventType}`, {
+            paymentId: paymentIdFromBody,
+            eventId: (body.object as { id?: string })?.id,
+        });
 
         await connectDB();
 
@@ -34,13 +44,7 @@ export async function POST(request: NextRequest) {
         // Определение провайдера и обработка
         if (eventType?.includes("yookassa") || body.object?.metadata?.order_id) {
             // ЮKassa
-            const result = await yookassaService.handleWebhook(body);
-            orderId = result.orderId;
-            status = result.status;
-            paymentId = result.paymentId;
-        } else if (eventType?.includes("cloudpayments") || body.Type) {
-            // CloudPayments
-            const result = await cloudpaymentsService.handleWebhook(body);
+            const result = await yookassaService.handleWebhook(body, signature);
             orderId = result.orderId;
             status = result.status;
             paymentId = result.paymentId;
@@ -68,6 +72,29 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // ✅ ПРОВЕРКА НА ДУБЛИРУЮЩИЙСЯ ВЕБХУК (Idempotency)
+        // Если заказ уже оплачен, а пришел повторный вебхук с тем же статусом - игнорируем
+        if (order.status === "paid" && (status === "succeeded" || status === "waiting_for_capture")) {
+            console.log(`⚠️ Duplicate webhook for already paid order ${orderId}, ignoring`);
+            return NextResponse.json({
+                success: true,
+                orderId,
+                status: order.status,
+                message: "Order already paid, webhook ignored (idempotency)",
+            });
+        }
+
+        // Если заказ уже отменен, а пришел вебхук - игнорируем
+        if (order.status === "cancelled" && status === "canceled") {
+            console.log(`⚠️ Duplicate webhook for already cancelled order ${orderId}, ignoring`);
+            return NextResponse.json({
+                success: true,
+                orderId,
+                status: order.status,
+                message: "Order already cancelled, webhook ignored (idempotency)",
+            });
+        }
+
         // Маппинг статусов
         const statusMap: Record<string, string> = {
             // ЮKassa
@@ -76,16 +103,23 @@ export async function POST(request: NextRequest) {
             succeeded: "paid",
             canceled: "cancelled",
             refunded: "refunded",
-            // CloudPayments
-            Completed: "paid",
-            Rejected: "cancelled",
-            Refunded: "refunded",
         };
 
         const newStatus = statusMap[status] || "pending";
 
-        order.status = newStatus as any;
-        await order.save();
+        // Обновляем статус только если он изменился
+        if (order.status !== newStatus) {
+            order.status = newStatus as any;
+            order.metadata = {
+                ...order.metadata,
+                lastWebhookReceived: new Date().toISOString(),
+                lastWebhookStatus: status,
+            };
+            await order.save();
+            console.log(`✅ Order ${orderId} status updated: ${order.status} → ${newStatus}`);
+        } else {
+            console.log(`ℹ️ Order ${orderId} status unchanged: ${newStatus}`);
+        }
 
         // Если оплата успешна - создаем чек и отправляем письма
         if (newStatus === "paid") {
@@ -226,7 +260,7 @@ export async function POST(request: NextRequest) {
             details: {
                 previousStatus: order.status,
                 newStatus,
-                paymentProvider: eventType?.includes("yookassa") ? "yookassa" : "cloudpayments",
+                paymentProvider: eventType?.includes("yookassa") ? "yookassa" : "paykeeper",
             },
         });
 

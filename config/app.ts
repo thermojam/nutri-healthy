@@ -45,8 +45,6 @@ export const appConfig = {
      */
     analytics: {
         yandexMetrica: process.env.YANDEX_METRICA_ID,
-        ga4: process.env.GA4_MEASUREMENT_ID,
-        vkPixel: process.env.VK_PIXEL_ID,
     },
 };
 

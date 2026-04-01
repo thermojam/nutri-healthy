@@ -34,9 +34,12 @@ export async function connectDB(): Promise<typeof mongoose> {
             .connect(MONGODB_URI!, {
                 bufferCommands: false,
                 maxPoolSize: 10,
-                serverSelectionTimeoutMS: 5000,
-                socketTimeoutMS: 45000,
-                family: 4,
+                serverSelectionTimeoutMS: 10000, // Увеличено с 5000 до 10000
+                socketTimeoutMS: 60000, // Увеличено с 45000 до 60000
+                connectTimeoutMS: 30000, // Добавлен таймаут подключения
+                family: 4, // IPv4
+                retryWrites: true,
+                retryReads: true,
             })
             .then((mongoose) => {
                 console.log("✅ MongoDB connected successfully");

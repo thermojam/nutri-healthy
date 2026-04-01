@@ -3,5 +3,4 @@
  */
 
 export * from "./yookassa";
-export * from "./cloudpayments";
 export * from "./receipts";

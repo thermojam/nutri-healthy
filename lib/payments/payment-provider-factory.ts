@@ -159,7 +159,18 @@ export class PaymentProviderManager {
  * Утилита для получения активного провайдера
  */
 export function getPaymentProvider(): PaymentProvider {
-    return PaymentProviderManager.getInstance().getActiveProvider();
+    const manager = PaymentProviderManager.getInstance();
+    // Автоматическая инициализация при первом вызове
+    if (!manager["initialized"]) {
+        manager["initialized"] = true;
+        
+        const yookassa = new YooKassaPaymentProvider();
+        const paykeeper = new PayKeeperPaymentProvider();
+        
+        manager.registerProvider("yookassa", yookassa);
+        manager.registerProvider("paykeeper", paykeeper);
+    }
+    return manager.getActiveProvider();
 }
 
 /**

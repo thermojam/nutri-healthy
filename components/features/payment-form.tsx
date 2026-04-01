@@ -42,7 +42,7 @@ interface PaymentFormProps {
 }
 
 interface PaymentMethod {
-    id: "card" | "yookassa" | "cloudpayments" | "yandex_split" | "dolemi" | "paykeeper";
+    id: "yookassa" | "yandex_split" | "dolemi" | "paykeeper";
     name: string;
     description: string;
     icon: React.ReactNode;
@@ -59,7 +59,7 @@ export default function PaymentForm({
                                     }: PaymentFormProps) {
     const id = useId();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"card" | "yookassa" | "cloudpayments" | "yandex_split" | "dolemi" | "paykeeper">("paykeeper");
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"yookassa" | "yandex_split" | "dolemi" | "paykeeper">("yookassa");
     const [installmentCount, setInstallmentCount] = useState<number>(4);
 
     const {
@@ -89,27 +89,15 @@ export default function PaymentForm({
     // Методы оплаты
     const paymentMethods: PaymentMethod[] = [
         {
-            id: "card",
-            name: "Банковская карта",
-            description: "Visa, Mastercard, МИР",
-            icon: <CreditCard className="h-5 w-5"/>,
-        },
-        {
             id: "yookassa",
             name: "ЮKassa",
-            description: "Быстрая оплата онлайн",
+            description: "Карта, СБП, ЮMoney (redirect)",
             icon: <Building className="h-5 w-5"/>,
-        },
-        {
-            id: "cloudpayments",
-            name: "CloudPayments",
-            description: "Рекуррентные платежи",
-            icon: <CreditCard className="h-5 w-5"/>,
         },
         {
             id: "paykeeper",
             name: "PayKeeper",
-            description: "Надежная платежная система",
+            description: "Карта, СБП (redirect)",
             icon: <CreditCard className="h-5 w-5"/>,
         },
         {
@@ -134,6 +122,14 @@ export default function PaymentForm({
     const onSubmit = async (data: OrderFormData) => {
         setIsSubmitting(true);
 
+        console.log("PaymentForm submit:", {
+            ...data,
+            serviceId,
+            tariff,
+            paymentMethod: selectedPaymentMethod,
+            installments: installmentCount,
+        });
+
         try {
             const response = await fetch("/api/create-order", {
                 method: "POST",
@@ -150,18 +146,25 @@ export default function PaymentForm({
             });
 
             const result = await response.json();
+            console.log("API response:", result);
 
             if (!response.ok) {
                 throw new Error(result.error || "Ошибка при создании заказа");
             }
 
-            // Если есть URL для оплаты - перенаправляем
+            // Если есть URL для оплаты - перенаправляем на платежную систему
             if (result.payment_url) {
+                // Пользователь будет перенаправлен на страницу успеха после оплаты
                 window.location.href = result.payment_url;
+            } else if (result.success === false) {
+                // Платеж не создан - показываем ошибку
+                throw new Error(result.error || "Не удалось создать платеж");
             } else {
+                // Платеж создан но нет URL (например рассрочка)
                 onSuccess?.(result.order.id);
             }
         } catch (error) {
+            console.error("PaymentForm error:", error);
             const errorMessage = error instanceof Error ? error.message : "Произошла ошибка";
             onError?.(errorMessage);
         } finally {

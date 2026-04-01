@@ -40,7 +40,7 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { provider } = body as { provider: string };
 
-        if (!provider || !["yookassa", "paykeeper", "cloudpayments"].includes(provider)) {
+        if (!provider || !["yookassa", "paykeeper"].includes(provider)) {
             return NextResponse.json(
                 {
                     success: false,

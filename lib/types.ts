@@ -150,7 +150,7 @@ export interface PaymentConfirmation {
 }
 
 export interface InstallmentData {
-    provider: "yandex" | "dolemi" | "tinkoff";
+    provider: "yandex" | "dolemi";
     amount: number;
     installments: number;
     orderId: string;

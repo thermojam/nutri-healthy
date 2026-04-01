@@ -197,7 +197,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                                 {/* Заголовок */}
                                                 <div className="text-center space-y-2">
                                                     <span className="text-3xl sm:text-4xl">{service.icon || "✨"}</span>
-                                                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold">{service.title}</h3>
+                                                    <h3 className="text-lg sm:text-xl font-bold">{service.title}</h3>
                                                     <p className="text-xs sm:text-sm text-muted">{service.description}</p>
                                                 </div>
 
@@ -215,7 +215,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                                                     [service._id.toString()]: tariff
                                                                 }))}
                                                                 className={cn(
-                                                                    "flex-1 px-2 py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200",
+                                                                    "flex-1 px-2 py-3 rounded-lg text-xs font-medium transition-all duration-200",
                                                                     isActive
                                                                         ? "bg-white dark:bg-card text-foreground shadow-sm"
                                                                         : "text-muted hover:text-foreground hover:bg-muted/50"
@@ -256,12 +256,11 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                                     </ul>
 
                                                     <Button
-                                                        className="w-full"
-                                                        size="sm"
+                                                        className="w-full text-sm"
                                                         variant={activeTariff === "premium" ? "default" : "outline"}
                                                         onClick={() => handleTariffSelect(service, activeTariff as "base" | "premium" | "vip")}
                                                     >
-                                                        {activeTariff === "premium" ? "Выбрать оптимальный" : `Выбрать ${tariffData.label.toLowerCase()}`}
+                                                        {activeTariff === "premium" ? "Выбрать" : `Выбрать (${tariffData.label})`}
                                                     </Button>
 
                                                     {/* Рассрочка */}
@@ -276,16 +275,15 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                                             </p>
                                                         </div>
                                                     )}
-                                                </div>
 
-                                                {/* Ссылка на подробную страницу */}
-                                                <div className="pt-3 border-t border-border">
-                                                    <Link
-                                                        href={`/services/${service.slug}`}
-                                                        className="text-xs sm:text-sm text-primary hover:underline flex items-center justify-center gap-1"
-                                                    >
-                                                        Подробнее об услуге →
-                                                    </Link>
+                                                    <div className="pt-3 border-t border-border">
+                                                        <Link
+                                                            href={`/services/${service.slug}`}
+                                                            className="text-xs sm:text-sm text-primary hover:underline flex items-center justify-center gap-1"
+                                                        >
+                                                            Подробнее об услуге →
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </CardContent>
@@ -304,7 +302,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                             badges={["Яндекс.Рассрочка", "Долями", "Тинькофф", "Сплит"]}
                             className="mt-12"
                         >
-                            <p className="text-sm sm:text-base">
+                            <p className="text-sm">
                                 Заботьтесь о здоровье уже сейчас — платите постепенно.
                                 Оформление онлайн за 5 минут без справок и поручителей.
                             </p>
@@ -314,18 +312,18 @@ export function ProductsSection({services}: ProductsSectionProps) {
                     {/* CTA блок */}
                     <FadeIn delay={0.7} className="mt-12">
                         <div
-                            className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-3xl p-6 sm:p-8 border border-primary/20">
-                            <div className="text-center space-y-4">
-                                <h3 className="text-xl sm:text-2xl font-bold">
+                            className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-primary/20">
+                            <div className="text-center space-y-3 sm:space-y-4">
+                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold px-2">
                                     💫 Не знаете, с чего начать?
                                 </h3>
-                                <p className="text-sm sm:text-base text-muted max-w-2xl mx-auto">
+                                <p className="text-xs sm:text-sm text-muted max-w-2xl mx-auto px-2">
                                     Запишитесь на бесплатную 15-минутную консультацию.
                                     Я помогу определить вашу главную проблему и подберу оптимальную программу.
                                 </p>
-                                <Link href="/#contact">
-                                    <Button size="lg" className="mt-4">
-                                        Записаться на бесплатную консультацию
+                                <Link href="/#contact" className="block w-full max-w-xs mx-auto">
+                                    <Button size="lg" className="w-full">
+                                        Бесплатная консультация
                                     </Button>
                                 </Link>
                             </div>

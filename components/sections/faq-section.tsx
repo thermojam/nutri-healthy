@@ -101,32 +101,32 @@ export default function FAQSection({data}: FAQSectionProps) {
     };
 
     return (
-        <section id="faq" className="py-24 bg-card">
-            <div className="container">
-                <FadeIn className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        <section id="faq" className="py-16 sm:py-24 bg-card">
+            <div className="container px-3 sm:px-4 md:px-6">
+                <FadeIn className="text-center mb-8 sm:mb-12">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                         Ответы на ваши вопросы
                     </h2>
-                    <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
-                        Честные ответы на вопросы, которые вы стесняетесь задать. 
+                    <p className="text-base sm:text-lg text-muted max-w-3xl mx-auto leading-relaxed px-2 sm:px-0">
+                        Честные ответы на популярные вопросы о моих услугах и подходе.
                         Если не нашли ответ — напишите мне, я отвечу в течение 24 часов.
                     </p>
                 </FadeIn>
 
                 <FadeIn delay={0.2}>
                     <div className="max-w-3xl mx-auto">
-                        <Accordion type="single" collapsible className="space-y-4">
+                        <Accordion type="single" collapsible className="space-y-3 sm:space-y-4">
                             {faqData.faqs?.map((faq, index) => (
                                 <AccordionItem
                                     key={faq.id}
                                     value={faq.id}
-                                    className="border border-border rounded-2xl px-6"
+                                    className="border border-border rounded-xl sm:rounded-2xl px-4 sm:px-6"
                                 >
-                                    <AccordionTrigger className="text-left py-5 hover:no-underline">
-                                        <span className="font-medium">{faq.question}</span>
+                                    <AccordionTrigger className="text-left py-4 sm:py-5 hover:no-underline">
+                                        <span className="font-medium text-sm sm:text-base pr-2">{faq.question}</span>
                                     </AccordionTrigger>
-                                    <AccordionContent className="pb-5 pt-0">
-                                        <p className="text-muted leading-relaxed">{faq.answer}</p>
+                                    <AccordionContent className="pb-4 sm:pb-5 pt-0">
+                                        <p className="text-muted text-sm sm:text-base leading-relaxed">{faq.answer}</p>
                                     </AccordionContent>
                                 </AccordionItem>
                             ))}
@@ -136,18 +136,18 @@ export default function FAQSection({data}: FAQSectionProps) {
 
                 {/* CTA */}
                 <FadeIn delay={0.4}>
-                    <div className="mt-12 text-center">
-                        <div className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-3xl p-6 sm:p-8 border border-primary/20">
-                            <h3 className="text-xl sm:text-2xl font-bold mb-4">
+                    <div className="mt-8 sm:mt-12 text-center">
+                        <div className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-primary/20">
+                            <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4 px-2">
                                 Остались вопросы?
                             </h3>
-                            <p className="text-sm sm:text-base text-muted max-w-2xl mx-auto mb-6">
-                                Задайте вопрос прямо сейчас — я отвечу в течение 24 часов. 
+                            <p className="text-xs sm:text-sm text-muted max-w-2xl mx-auto mb-4 sm:mb-6 px-2">
+                                Задайте вопрос прямо сейчас — я отвечу в течение 24 часов.
                                 Это бесплатно и ни к чему не обязывает.
                             </p>
-                            <a href="#contact">
-                                <Button size="lg">
-                                    Задать вопрос в WhatsApp →
+                            <a href="#contact" className="block w-full max-w-xs mx-auto">
+                                <Button size="lg" className="w-full">
+                                    Задать вопрос →
                                 </Button>
                             </a>
                         </div>
@@ -156,33 +156,33 @@ export default function FAQSection({data}: FAQSectionProps) {
 
                 {/* Дополнительная информация */}
                 <FadeIn delay={0.5}>
-                    <div className="mt-12 max-w-3xl mx-auto">
-                        <div className="p-6 bg-primary/5 rounded-2xl border border-primary/20">
-                            <h3 className="font-semibold mb-3 flex items-center gap-2">
-                                <span className="text-xl">💡</span>
+                    <div className="mt-8 sm:mt-12 max-w-3xl mx-auto">
+                        <div className="p-4 sm:p-6 bg-primary/5 rounded-xl sm:rounded-2xl border border-primary/20">
+                            <h3 className="font-semibold mb-3 flex items-center gap-2 text-sm sm:text-base">
+                                <span className="text-lg sm:text-xl">💡</span>
                                 Важно знать
                             </h3>
-                            <ul className="space-y-2 text-sm text-muted">
+                            <ul className="space-y-2 text-xs sm:text-sm text-muted">
                                 <li className="flex items-start gap-2">
-                                    <span className="text-primary mt-1">•</span>
+                                    <span className="text-primary mt-1 flex-shrink-0">•</span>
                                     <span>
-                    Все консультации конфиденциальны. Я не передаю информацию
-                    третьим лицам.
-                  </span>
+                                        Все консультации конфиденциальны. Я не передаю информацию
+                                        третьим лицам.
+                                    </span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                    <span className="text-primary mt-1">•</span>
+                                    <span className="text-primary mt-1 flex-shrink-0">•</span>
                                     <span>
-                    Вы можете отменить или перенести консультацию не позднее чем
-                    за 24 часа.
-                  </span>
+                                        Вы можете отменить или перенести консультацию не позднее чем
+                                        за 24 часа.
+                                    </span>
                                 </li>
                                 <li className="flex items-start gap-2">
-                                    <span className="text-primary mt-1">•</span>
+                                    <span className="text-primary mt-1 flex-shrink-0">•</span>
                                     <span>
-                    После каждой консультации вы получаете запись встречи и
-                    письменные рекомендации.
-                  </span>
+                                        После каждой консультации вы получаете запись встречи и
+                                        письменные рекомендации.
+                                    </span>
                                 </li>
                             </ul>
                         </div>

@@ -82,6 +82,7 @@ export function Carousel({
                         size="icon"
                         className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 hidden lg:flex bg-background/80 backdrop-blur hover:bg-background"
                         onClick={scrollPrev}
+                        aria-label="Предыдущий слайд"
                     >
                         <ArrowLeft className="h-5 w-5"/>
                     </Button>
@@ -90,6 +91,7 @@ export function Carousel({
                         size="icon"
                         className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 hidden lg:flex bg-background/80 backdrop-blur hover:bg-background"
                         onClick={scrollNext}
+                        aria-label="Следующий слайд"
                     >
                         <ArrowRight className="h-5 w-5"/>
                     </Button>
@@ -97,7 +99,7 @@ export function Carousel({
             )}
 
             {/* Embla viewport */}
-            <div className="overflow-hidden -mx-2 px-2 lg:-mx-4 lg:px-4" ref={emblaRef}>
+            <div className="overflow-hidden px-3 sm:px-4 lg:px-6" ref={emblaRef}>
                 <div className="flex">
                     {children}
                 </div>
@@ -134,12 +136,12 @@ export function CarouselItem({children, className}: CarouselItemProps) {
     return (
         <div
             className={cn(
-                // Mobile: 1 карточка с отступами
-                "flex-[0_0_100%] min-w-0 px-2",
-                // Tablet: 2 карточки с отступами
-                "sm:flex-[0_0_50%] sm:max-w-[calc(50%-0.75rem)]",
-                // Desktop: 3 карточки с отступами
-                "lg:flex-[0_0_33.333%] lg:max-w-[calc(33.333%-1rem)]",
+                // Mobile: 1 карточка на 100% ширины с минимальными отступами
+                "flex-[0_0_100%] min-w-0 px-1",
+                // Tablet: 2 карточки
+                "sm:flex-[0_0_50%] sm:max-w-[calc(50%-0.5rem)] sm:px-2",
+                // Desktop: 3 карточки
+                "lg:flex-[0_0_33.333%] lg:max-w-[calc(33.333%-1rem)] lg:px-3",
                 className
             )}
         >

@@ -13,6 +13,27 @@ import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
 import {ClientOrderConfirmTemplate} from "@/lib/email/templates/client-order-confirm";
 
 /**
+ * Нормализация номера телефона — приведение к единому формату
+ * +7 (999) 123-45-67 → +79991234567
+ * Пустая строка или маска → undefined
+ */
+function normalizePhone(phone?: string): string | undefined {
+    if (!phone) return undefined;
+    const trimmed = phone.trim();
+    // Если пустая строка или только спецсимволы маски
+    if (!trimmed || /^[\s()\-_]+$/.test(trimmed)) return undefined;
+    // Удаляем все кроме цифр и плюса
+    const cleaned = trimmed.replace(/[^\d+]/g, "");
+    // Если начинается с 8, заменяем на +7
+    const normalized = cleaned.replace(/^8/, "+7");
+    // Если начинается с 7, добавляем +
+    if (normalized.startsWith("7") && !normalized.startsWith("+")) {
+        return "+" + normalized;
+    }
+    return normalized;
+}
+
+/**
  * POST /api/create-order
  * Создание заказа на услугу
  *
@@ -61,6 +82,20 @@ export async function POST(request: NextRequest) {
 
         await connectDB();
 
+        // Миграция: удаляем старый индекс phone_1 если он существует
+        try {
+            const indexes = await User.collection.indexes();
+            const phoneIndex = indexes.find(
+                (idx: any) => idx.key && idx.key.phone && !idx.unique
+            );
+            if (phoneIndex) {
+                await User.collection.dropIndex("phone_1");
+                console.log("✅ Удалён старый индекс phone_1");
+            }
+        } catch (e) {
+            // Индекс может уже не существовать — игнорируем
+        }
+
         // Получение услуги из БД для проверки цены и доступности
         const service = await Service.findById(serviceId);
 
@@ -88,6 +123,9 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // Нормализация телефона
+        const normalizedPhone = normalizePhone(phone);
+
         // Поиск или создание пользователя
         let user = await User.findOne({email});
 
@@ -96,13 +134,18 @@ export async function POST(request: NextRequest) {
             user.firstName = firstName;
             user.lastName = lastName;
             user.patronymic = patronymic || user.patronymic;
-            if (phone) user.phone = phone;
+            if (normalizedPhone) {
+                user.phone = normalizedPhone;
+            } else if (normalizedPhone === undefined && phone) {
+                // Если телефон был пустой — очищаем
+                user.phone = undefined;
+            }
             await user.save();
         } else {
             // Создание нового — телефон только если не пустой
             user = await User.create({
                 email,
-                phone: phone || undefined, // Не сохраняем пустую строку
+                phone: normalizedPhone || undefined,
                 firstName,
                 lastName,
                 patronymic,

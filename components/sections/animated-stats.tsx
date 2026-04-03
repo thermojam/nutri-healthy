@@ -1,3 +1,4 @@
+import {useState, useEffect} from "react";
 import {Users, Award, Star} from "lucide-react";
 import {useCountUp} from "@/lib/hooks/use-count-up";
 
@@ -56,10 +57,15 @@ interface StatItemProps {
 function StatItem({icon: Icon, end, suffix, label, delay, mobileVertical = false}: StatItemProps) {
     const {count, ref, formatted} = useCountUp({
         end,
-        duration: 2000,
+        duration: 4000,
         suffix,
         startOnView: true,
     });
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     return (
         <div
@@ -70,10 +76,10 @@ function StatItem({icon: Icon, end, suffix, label, delay, mobileVertical = false
             }
             style={{animationDelay: `${delay}s`}}
         >
-            {/* Иконка с градиентом - круглая с тенью */}
+            {/* Иконка - круглая без тени */}
             <div className="relative flex-shrink-0">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center backdrop-blur-sm">
-                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]"/>
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 text-white"/>
                 </div>
             </div>
 
@@ -82,10 +88,10 @@ function StatItem({icon: Icon, end, suffix, label, delay, mobileVertical = false
                 ? "flex flex-col items-center sm:items-center"
                 : "flex flex-col"
             }>
-                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
-                    {formatted}
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight">
+                    {mounted ? formatted : ""}
                 </p>
-                <p className="text-[10px] sm:text-xs text-white/80 leading-tight text-center lg:text-left font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
+                <p className="text-[10px] sm:text-xs text-white/80 leading-tight text-center lg:text-left font-medium">
                     {label}
                 </p>
             </div>

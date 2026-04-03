@@ -42,11 +42,6 @@ export const contactFormSchema = z.object({
     email: z.string().email("Некорректный email адрес"),
     phone: z
         .string()
-        .min(10, "Введите корректный номер телефона")
-        .regex(
-            /^[\d\s()+-]+$/,
-            "Номер телефона должен содержать только цифры, пробелы и символы +()-"
-        )
         .optional()
         .or(z.literal("")),
     // Согласия (152-ФЗ требование)

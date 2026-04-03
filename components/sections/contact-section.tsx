@@ -7,6 +7,7 @@ import {z} from "zod";
 import {Send, CheckCircle, AlertCircle} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
+import {PhoneInput} from "@/components/ui/phone-input";
 import {Card, CardContent} from "@/components/ui/card";
 import {FadeIn} from "@/components/motion/fade-in";
 import {LegalConsentCheckboxes} from "@/components/features/legal-consent-checkboxes";
@@ -302,12 +303,11 @@ export default function ContactSection({data}: ContactSectionProps) {
                                         <label htmlFor="phone" className="text-sm font-medium">
                                             Телефон
                                         </label>
-                                        <Input
+                                        <PhoneInput
                                             id="phone"
-                                            type="tel"
-                                            placeholder="+7 (999) 123-45-67"
-                                            {...register("phone")}
-                                            className={errors.phone ? "border-error" : ""}
+                                            value={watch("phone")}
+                                            onChange={(value) => setValue("phone", value)}
+                                            error={!!errors.phone}
                                         />
                                         {errors.phone && (
                                             <p className="text-xs text-error">{errors.phone.message}</p>

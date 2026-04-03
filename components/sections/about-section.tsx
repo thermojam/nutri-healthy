@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from "react";
 import Image from "next/image";
+import {motion} from "framer-motion";
 import {FadeIn} from "@/components/motion/fade-in";
 import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
 import {Spinner} from "@/components/ui/spinner";
@@ -60,9 +61,19 @@ export default function AboutSection() {
                                 />
                             </div>
 
-                            {/* Декоративный элемент - адаптирован для мобильных */}
-                            <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-20 h-20 sm:w-32 sm:h-32 bg-primary/20 rounded-2xl -z-10"/>
-                            <div className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 w-16 h-16 sm:w-24 sm:h-24 bg-accent/20 rounded-full -z-10"/>
+                            {/* Декоративные элементы с задержанной анимацией */}
+                            <motion.div
+                                className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-20 h-20 sm:w-32 sm:h-32 bg-primary/20 rounded-2xl -z-10"
+                                initial={{scale: 0, opacity: 0}}
+                                animate={{scale: 1, opacity: 1}}
+                                transition={{delay: 1.5, duration: 0.8, ease: "easeOut"}}
+                            />
+                            <motion.div
+                                className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 w-16 h-16 sm:w-24 sm:h-24 bg-accent/20 rounded-full -z-10"
+                                initial={{scale: 0, opacity: 0}}
+                                animate={{scale: 1, opacity: 1}}
+                                transition={{delay: 1.8, duration: 0.8, ease: "easeOut"}}
+                            />
                         </div>
                     </FadeIn>
 

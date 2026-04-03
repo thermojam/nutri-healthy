@@ -19,6 +19,25 @@ body {
     min-height: 100%;
 }
 
+/* ===========================================
+   GLOBAL CURSOR POINTER FOR INTERACTIVE ELEMENTS
+   =========================================== */
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+label[for],
+select,
+details,
+summary,
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
 /* Цветовая палитра - Light Theme (default) */
 :root {
     /* Primary - фиолетовый (основной бренд) */

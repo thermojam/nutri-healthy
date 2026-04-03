@@ -7,6 +7,21 @@ import {createAuditLog, getClientIP, getUserAgent} from "@/lib/db/audit";
 import {contactFormSchema, LEGAL_VERSIONS} from "@/lib/validations";
 
 /**
+ * Нормализация номера телефона
+ */
+function normalizePhone(phone?: string): string | undefined {
+    if (!phone) return undefined;
+    const trimmed = phone.trim();
+    if (!trimmed || /^[\s()\-_]+$/.test(trimmed)) return undefined;
+    const cleaned = trimmed.replace(/[^\d+]/g, "");
+    const normalized = cleaned.replace(/^8/, "+7");
+    if (normalized.startsWith("7") && !normalized.startsWith("+")) {
+        return "+" + normalized;
+    }
+    return normalized;
+}
+
+/**
  * POST /api/send-form
  * Обработка формы обратной связи (лид-магнит)
  *
@@ -48,6 +63,9 @@ export async function POST(request: NextRequest) {
         // marketingChannels может приходить отдельно, т.к. не в схеме валидации
         const marketingChannels = body.marketingChannels || [];
 
+        // Нормализация телефона
+        const normalizedPhone = normalizePhone(phone);
+
         // Получение IP и User-Agent для логирования (152-ФЗ)
         const ipAddress = await getClientIP();
         const userAgent = await getUserAgent();
@@ -55,6 +73,20 @@ export async function POST(request: NextRequest) {
 
         // Подключение к MongoDB
         await connectDB();
+
+        // Миграция: удаляем старый индекс phone_1 если он существует
+        try {
+            const indexes = await User.collection.indexes();
+            const phoneIndex = indexes.find(
+                (idx: any) => idx.key && idx.key.phone && !idx.unique
+            );
+            if (phoneIndex) {
+                await User.collection.dropIndex("phone_1");
+                console.log("✅ send-form: Удалён старый индекс phone_1");
+            }
+        } catch (e) {
+            // Индекс может уже не существовать — игнорируем
+        }
 
         // Проверка существующего пользователя
         let user = await User.findOne({email});
@@ -64,14 +96,15 @@ export async function POST(request: NextRequest) {
             user.firstName = firstName;
             user.lastName = lastName;
             user.patronymic = patronymic || user.patronymic;
-            if (phone) user.phone = phone;
-
+            if (normalizedPhone) {
+                user.phone = normalizedPhone;
+            }
             await user.save();
         } else {
-            // Создание нового пользователя
+            // Создание нового пользователя — телефон только если заполнен
             user = await User.create({
                 email,
-                phone,
+                phone: normalizedPhone || undefined,
                 firstName,
                 lastName,
                 patronymic,
@@ -85,7 +118,7 @@ export async function POST(request: NextRequest) {
                     marketing: {
                         given: marketingConsent || false,
                         givenAt: marketingConsent ? timestamp : undefined,
-                        channels: marketingConsent ? ["email"] : [],
+                        channels: marketingConsent ? (marketingChannels.length > 0 ? marketingChannels : ["email"]) : [],
                     },
                     contract: {
                         given: contractAcceptance,

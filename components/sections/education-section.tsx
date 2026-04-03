@@ -98,9 +98,9 @@ export default function EducationSection() {
 
                                     <CardContent className="p-6 relative z-10 flex-1 flex flex-col">
                                         {/* Заголовок и бейдж */}
-                                        <div className="flex items-start justify-between gap-2">
+                                        <div className="flex items-start justify-between gap-2 mb-4">
                                             <div
-                                                className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center border border-primary/20">
+                                                className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center border border-primary/50">
                                                 <DocumentIcon className="h-5 w-5 text-primary"/>
                                             </div>
                                             {item.degree && (

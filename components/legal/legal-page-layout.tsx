@@ -51,25 +51,29 @@ export default function LegalPage({
                 {/* Заголовок страницы */}
                 <div className="max-w-4xl mx-auto mb-8 sm:mb-12">
                     <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/50">
                             {icon}
                         </div>
                         <div>
                             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">{title}</h1>
-                            <p className="text-sm sm:text-base text-muted mt-1">{description}</p>
+                            <p className="text-sm sm:text-base text-muted mt-2">{description}</p>
                         </div>
                     </div>
 
                     {/* Информация о версии */}
                     <Card className="bg-primary/5 border-primary/20">
-                        <CardContent className="p-4 flex flex-wrap items-center gap-4 text-sm">
+                        <CardContent className="p-4 pt-5 flex flex-wrap items-center gap-4 text-sm">
                             <div className="flex items-center gap-2">
-                                <FileText className="h-4 w-4 text-primary"/>
+                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/50">
+                                    <FileText className="h-4 w-4 text-primary"/>
+                                </div>
                                 <span className="text-muted">Версия:</span>
                                 <span className="font-semibold">{version}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Shield className="h-4 w-4 text-primary"/>
+                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/50">
+                                    <Shield className="h-4 w-4 text-primary"/>
+                                </div>
                                 <span className="text-muted">Обновлено:</span>
                                 <span className="font-semibold">{lastUpdated.toLocaleDateString("ru-RU", {
                                     year: "numeric",
@@ -78,7 +82,9 @@ export default function LegalPage({
                                 })}</span>
                             </div>
                             <div className="flex items-center gap-2 ml-auto">
-                                <Mail className="h-4 w-4 text-primary"/>
+                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/50">
+                                    <Mail className="h-4 w-4 text-primary"/>
+                                </div>
                                 <a href="mailto:info@yoursite.ru" className="text-primary hover:underline font-medium">
                                     info@yoursite.ru
                                 </a>
@@ -88,7 +94,7 @@ export default function LegalPage({
                 </div>
 
                 {/* Основной контент */}
-                <article className="prose dark:prose-invert max-w-4xl mx-auto prose-headings:font-bold prose-headings:text-foreground prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:pt-6 prose-h2:border-t prose-h2:border-border prose-p:text-muted prose-p:leading-relaxed prose-li:text-muted prose-li:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm">
+                <article className="prose dark:prose-invert max-w-4xl mx-auto prose-headings:font-bold prose-headings:text-foreground prose-h2:text-xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pt-8 prose-h2:border-t prose-h2:border-border prose-p:text-muted prose-p:leading-relaxed prose-li:text-muted prose-li:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-ul:my-6 prose-ol:my-6 prose-section:my-8">
                     {children}
                 </article>
 
@@ -98,7 +104,9 @@ export default function LegalPage({
                         <CardContent className="p-6 sm:p-8">
                             <div className="text-center space-y-4">
                                 <div className="flex items-center justify-center gap-2 text-primary">
-                                    <Scale className="h-5 w-5"/>
+                                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/50">
+                                        <Scale className="h-5 w-5"/>
+                                    </div>
                                     <span className="font-semibold">Юридическая информация</span>
                                 </div>
                                 <p className="text-sm text-muted max-w-2xl mx-auto">

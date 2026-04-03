@@ -7,6 +7,7 @@ import {z} from "zod";
 import {CreditCard, Smartphone, Building, CheckCircle, AlertCircle, Loader2} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
+import {PhoneInput} from "@/components/ui/phone-input";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {Checkbox} from "@/components/ui/checkbox";
@@ -20,7 +21,7 @@ const orderFormSchema = z.object({
     lastName: z.string().min(2, "Фамилия должна содержать не менее 2 символов"),
     patronymic: z.string().optional().or(z.literal("")),
     email: z.string().email("Некорректный email адрес"),
-    phone: z.string().min(10, "Введите корректный номер телефона").optional().or(z.literal("")),
+    phone: z.string().optional().or(z.literal("")),
     personalDataConsent: z.boolean().refine((val) => val === true, {
         message: "Необходимо согласие на обработку персональных данных",
     }),
@@ -28,6 +29,9 @@ const orderFormSchema = z.object({
         message: "Необходимо принять условия договора оферты",
     }),
     marketingConsent: z.boolean().optional(),
+    marketingChannels: z
+        .array(z.enum(["email", "sms", "telegram", "whatsapp"]))
+        .optional(),
 });
 
 type OrderFormData = z.infer<typeof orderFormSchema>;
@@ -79,12 +83,14 @@ export default function PaymentForm({
             personalDataConsent: false,
             contractAcceptance: false,
             marketingConsent: false,
+            marketingChannels: [],
         },
     });
 
     const personalDataConsent = watch("personalDataConsent");
     const contractAcceptance = watch("contractAcceptance");
     const marketingConsent = watch("marketingConsent");
+    const marketingChannels = watch("marketingChannels");
 
     // Методы оплаты
     const paymentMethods: PaymentMethod[] = [
@@ -142,6 +148,7 @@ export default function PaymentForm({
                     tariff,
                     paymentMethod: selectedPaymentMethod,
                     installments: installmentCount,
+                    marketingChannels: marketingChannels || [],
                 }),
             });
 
@@ -268,12 +275,11 @@ export default function PaymentForm({
                         <label htmlFor={`${id}-phone`} className="text-sm font-medium">
                             Телефон
                         </label>
-                        <Input
+                        <PhoneInput
                             id={`${id}-phone`}
-                            type="tel"
-                            placeholder="+7 (999) 123-45-67"
-                            {...register("phone")}
-                            className={errors.phone ? "border-error" : ""}
+                            value={watch("phone")}
+                            onChange={(value) => setValue("phone", value)}
+                            error={!!errors.phone}
                         />
                         {errors.phone && (
                             <p className="text-xs text-error">{errors.phone.message}</p>
@@ -360,9 +366,11 @@ export default function PaymentForm({
                             personalDataConsent={personalDataConsent}
                             contractAcceptance={contractAcceptance}
                             marketingConsent={marketingConsent}
+                            marketingChannels={marketingChannels}
                             onPersonalDataChange={(checked) => setValue("personalDataConsent", checked)}
                             onContractChange={(checked) => setValue("contractAcceptance", checked)}
                             onMarketingChange={(checked) => setValue("marketingConsent", checked)}
+                            onMarketingChannelsChange={(channels) => setValue("marketingChannels", channels)}
                         />
                     </div>
 

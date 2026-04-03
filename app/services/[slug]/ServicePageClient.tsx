@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {ArrowLeft, Check, Star} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
@@ -113,20 +114,48 @@ export default function ServicePageClient({service}: { service: Service }) {
                                 </p>
 
                                 <div className="flex items-center gap-4">
-                                    <div className="flex -space-x-3">
-                                        {[1, 2, 3, 4].map((i) => (
-                                            <div
-                                                key={i}
-                                                className="w-10 h-10 rounded-full bg-primary/20 border-2 border-background flex items-center justify-center"
-                                            >
-                                                <span className="text-xs">👤</span>
+                                    {/* Доверие - реальные фото клиентов */}
+                                    <div className="flex items-center justify-center gap-3 sm:gap-4 mt-8">
+                                        <div className="flex -space-x-2 sm:-space-x-3">
+                                            {[
+                                                { url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face", alt: "Анна" },
+                                                { url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face", alt: "Мария" },
+                                                { url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face", alt: "Елена" },
+                                                { url: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop&crop=face", alt: "Ольга" },
+                                                { url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face", alt: "Наталья" },
+                                            ].map((person, i) => (
+                                                <div
+                                                    key={i}
+                                                    className="relative w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full border-2 border-background overflow-hidden shadow-md"
+                                                >
+                                                    <Image
+                                                        src={person.url}
+                                                        alt={person.alt}
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="flex-1 max-w-xs text-left">
+                                            <div className="flex items-center gap-1 mb-0.5">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <svg
+                                                        key={star}
+                                                        className="w-3 h-3 sm:w-4 sm:h-4 fill-accent"
+                                                        viewBox="0 0 20 20"
+                                                    >
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                    </svg>
+                                                ))}
                                             </div>
-                                        ))}
+                                            <p className="text-xs sm:text-sm text-muted">
+                                                <span className="font-semibold text-foreground">500+</span>{" "}
+                                                довольных клиентов
+                                            </p>
+                                        </div>
                                     </div>
-                                    <p className="text-sm text-muted">
-                                        <span className="font-semibold text-foreground">500+</span>{" "}
-                                        довольных клиентов
-                                    </p>
+
                                 </div>
                             </div>
 
@@ -166,8 +195,8 @@ export default function ServicePageClient({service}: { service: Service }) {
 
                         <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                             {/* Базовый */}
-                            <Card className="hover:shadow-lg transition-shadow">
-                                <CardContent className="p-6 space-y-6">
+                            <Card className="hover:shadow-lg transition-shadow flex flex-col">
+                                <CardContent className="p-6 space-y-6 flex-1 flex flex-col">
                                     <div className="text-center">
                                         <h3 className="text-2xl font-bold mb-2">Базовый</h3>
                                         <p className="text-4xl font-bold text-primary">
@@ -178,7 +207,7 @@ export default function ServicePageClient({service}: { service: Service }) {
                                         </p>
                                     </div>
 
-                                    <ul className="space-y-3">
+                                    <ul className="space-y-3 flex-1">
                                         {service.features.base.map((feature, i) => (
                                             <li key={i} className="flex items-start gap-2 text-sm">
                                                 <Check className="h-4 w-4 text-success shrink-0 mt-0.5"/>
@@ -188,17 +217,27 @@ export default function ServicePageClient({service}: { service: Service }) {
                                     </ul>
 
                                     <Button
-                                        className="w-full"
+                                        className="w-full mt-auto"
                                         size="lg"
                                         onClick={() => handleTariffSelect("base")}
                                     >
                                         Выбрать тариф
                                     </Button>
+
+                                    {service.pricing.base >= 3000 && (
+                                        <p className="text-center text-xs text-muted">
+                                            Или в рассрочку от{" "}
+                                            <span className="font-semibold text-primary">
+                                                {formatPrice(Math.round(service.pricing.base / 4))}
+                                            </span>{" "}
+                                            / мес
+                                        </p>
+                                    )}
                                 </CardContent>
                             </Card>
 
                             {/* Премиум */}
-                            <Card className={`border-primary border-2 shadow-lg relative ${service.popular ? "" : ""}`}>
+                            <Card className={`border-primary border-2 shadow-lg relative ${service.popular ? "" : ""} flex flex-col`}>
                                 {service.popular && (
                                     <div className="absolute top-0 right-0">
                                         <Badge className="rounded-bl-xl rounded-tr-none bg-primary">
@@ -208,7 +247,7 @@ export default function ServicePageClient({service}: { service: Service }) {
                                     </div>
                                 )}
 
-                                <CardContent className="p-6 space-y-6">
+                                <CardContent className="p-6 space-y-6 flex-1 flex flex-col">
                                     <div className="text-center">
                                         <h3 className="text-2xl font-bold mb-2">Оптимальный</h3>
                                         <p className="text-4xl font-bold text-primary">
@@ -219,7 +258,7 @@ export default function ServicePageClient({service}: { service: Service }) {
                                         </p>
                                     </div>
 
-                                    <ul className="space-y-3">
+                                    <ul className="space-y-3 flex-1">
                                         {service.features.premium.map((feature, i) => (
                                             <li key={i} className="flex items-start gap-2 text-sm">
                                                 <Check className="h-4 w-4 text-primary shrink-0 mt-0.5"/>
@@ -229,7 +268,7 @@ export default function ServicePageClient({service}: { service: Service }) {
                                     </ul>
 
                                     <Button
-                                        className="w-full"
+                                        className="w-full mt-auto"
                                         size="lg"
                                         onClick={() => handleTariffSelect("premium")}
                                     >
@@ -249,8 +288,8 @@ export default function ServicePageClient({service}: { service: Service }) {
                             </Card>
 
                             {/* VIP */}
-                            <Card className="hover:shadow-lg transition-shadow">
-                                <CardContent className="p-6 space-y-6">
+                            <Card className="hover:shadow-lg transition-shadow flex flex-col">
+                                <CardContent className="p-6 space-y-6 flex-1 flex flex-col">
                                     <div className="text-center">
                                         <h3 className="text-2xl font-bold mb-2">VIP</h3>
                                         <p className="text-4xl font-bold text-primary">
@@ -261,7 +300,7 @@ export default function ServicePageClient({service}: { service: Service }) {
                                         </p>
                                     </div>
 
-                                    <ul className="space-y-3">
+                                    <ul className="space-y-3 flex-1">
                                         {service.features.vip.map((feature, i) => (
                                             <li key={i} className="flex items-start gap-2 text-sm">
                                                 <Check className="h-4 w-4 text-success shrink-0 mt-0.5"/>
@@ -271,65 +310,43 @@ export default function ServicePageClient({service}: { service: Service }) {
                                     </ul>
 
                                     <Button
-                                        className="w-full"
+                                        className="w-full mt-auto"
                                         size="lg"
                                         onClick={() => handleTariffSelect("vip")}
                                     >
                                         Выбрать тариф
                                     </Button>
+
+                                    {service.pricing.vip >= 3000 && (
+                                        <p className="text-center text-xs text-muted">
+                                            Или в рассрочку от{" "}
+                                            <span className="font-semibold text-primary">
+                                                {formatPrice(Math.round(service.pricing.vip / 4))}
+                                            </span>{" "}
+                                            / мес
+                                        </p>
+                                    )}
                                 </CardContent>
                             </Card>
                         </div>
                     </div>
                 </section>
 
-                {/* Формат работы */}
+                {/* CTA - призыв к действию */}
                 <section className="py-24 bg-background">
-                    <div className="container">
-                        <h2 className="text-3xl font-bold text-center mb-12">
-                            Формат работы
-                        </h2>
-
-                        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                            {service.format.map((format, index) => (
-                                <Card key={index}>
-                                    <CardContent className="p-6 text-center">
-                                        <div
-                                            className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                                            <span className="text-2xl">
-                                                {format === "online" ? "💻" : format === "offline" ? "🏢" : "🔄"}
-                                            </span>
-                                        </div>
-                                        <h3 className="font-semibold mb-2">
-                                            {format === "online" ? "Онлайн" : format === "offline" ? "Офлайн" : "Гибридный"}
-                                        </h3>
-                                        <p className="text-sm text-muted">
-                                            {format === "online"
-                                                ? "Видеоконсультации через Zoom/Skype"
-                                                : format === "offline"
-                                                    ? "Личные встречи в офисе"
-                                                    : "Комбинация онлайн и офлайн"}
-                                        </p>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* CTA */}
-                <section className="py-24 bg-card">
                     <div className="container">
                         <div className="max-w-2xl mx-auto text-center space-y-6">
                             <h2 className="text-3xl font-bold">
-                                Готовы начать?
+                                Остались вопросы?
                             </h2>
                             <p className="text-lg text-muted">
-                                Запишитесь на консультацию и получите индивидуальный план действий
+                                Свяжитесь со мной любым удобным способом — я помогу выбрать оптимальную программу
                             </p>
-                            <Button size="lg" onClick={() => handleTariffSelect("premium")}>
-                                Записаться на консультацию
-                            </Button>
+                            <Link href="/#contact">
+                                <Button size="lg">
+                                    Написать мне →
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </section>

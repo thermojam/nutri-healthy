@@ -8,6 +8,16 @@ import {cn} from "@/lib/utils";
 import Image from "next/image";
 import type {ObjectId} from "mongoose";
 
+// Fallback изображения для отзывов с Unsplash (реальные люди)
+const testimonialImageFallbacks = [
+    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=400&fit=crop",
+];
+
 interface Testimonial {
     _id: string | ObjectId;
     author: {
@@ -49,23 +59,23 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                 </FadeIn>
 
                 <Carousel showDots={true} showArrows={false}>
-                    {testimonials.map((testimonial) => (
+                    {testimonials.map((testimonial, index) => (
                         <CarouselItem key={testimonial._id.toString()}>
-                            <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden">
-                                <CardContent className="p-0 space-y-4">
+                            <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
+                                <CardContent className="p-0 flex-1 flex flex-col">
                                     {/* Изображение отзыва */}
-                                    {testimonial.image?.url && (
+                                    {(testimonial.image?.url || testimonialImageFallbacks[index % testimonialImageFallbacks.length]) && (
                                         <div className="relative h-40 sm:h-48 w-full overflow-hidden">
                                             <Image
-                                                src={testimonial.image.url}
-                                                alt={testimonial.image.alt || testimonial.title}
+                                                src={testimonial.image?.url || testimonialImageFallbacks[index % testimonialImageFallbacks.length]}
+                                                alt={testimonial.image?.alt || testimonial.title}
                                                 fill
                                                 className="object-cover"
                                             />
                                         </div>
                                     )}
 
-                                    <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                                    <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 flex-1 flex flex-col">
                                     {/* Автор и рейтинг */}
                                     <div className="flex items-start justify-between gap-2 sm:gap-4">
                                         <div className="flex items-center gap-2 sm:gap-3">
@@ -118,16 +128,16 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                                         "{testimonial.title}"
                                     </h3>
 
-                                    {/* Текст отзыва */}
-                                    <blockquote className="relative">
+                                    {/* Текст отзыва - растягивается */}
+                                    <blockquote className="relative flex-1">
                                         <Quote className="absolute -top-2 -left-2 h-5 w-5 sm:h-6 sm:w-6 text-primary/20"/>
                                         <p className="text-muted text-sm leading-relaxed pl-4">
                                             {testimonial.content}
                                         </p>
                                     </blockquote>
 
-                                    {/* Услуга */}
-                                    <div className="pt-3 sm:pt-4 border-t border-border">
+                                    {/* Услуга - всегда внизу */}
+                                    <div className="pt-3 sm:pt-4 border-t border-border mt-auto">
                                         <p className="text-xs text-muted">
                                             Услуга:{" "}
                                             <span className="font-medium text-foreground">

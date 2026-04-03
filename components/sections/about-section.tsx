@@ -71,33 +71,41 @@ export default function AboutSection() {
                         <FadeIn direction="left" delay={0.3}>
                             <div className="prose dark:prose-invert max-w-none">
                                 <p className="text-sm sm:text-base md:text-lg text-muted leading-relaxed">
-                                    Привет! Меня зовут Ксения Каменская, и я нутрициолог, health-коуч и специалист по психосоматике. 
+                                    Привет! Меня зовут Ксения Каменская, и я нутрициолог, health-коуч и специалист по психосоматике.
                                     Помогаю женщинам восстановить здоровье через работу с эмоциями, питанием и биохимией тела.
                                 </p>
                                 <p className="text-sm sm:text-base md:text-lg text-muted leading-relaxed">
-                                    Моя миссия — научить вас быть Берегиней здоровья себе и семье, управлять эмоциями 
+                                    Моя миссия — научить вас быть Берегиней здоровья себе и семье, управлять эмоциями
                                     и переключать саботаж на ресурс для управления своей жизнью по-женски.
                                 </p>
                                 <p className="text-sm sm:text-base md:text-lg text-muted leading-relaxed">
-                                    Аккредитованный нутрициолог НАИС. Постоянно повышаю квалификацию на форумах по 
+                                    Аккредитованный нутрициолог НАИС. Постоянно повышаю квалификацию на форумах по
                                     превентивной медицине, применяю научный подход к работе с микробиомом, гормонами и стрессом.
                                 </p>
                             </div>
                         </FadeIn>
 
-                        {/* Философия */}
+                        {/* Философия - градиентный блок */}
                         <FadeIn direction="left" delay={0.4}>
-                            <div className="bg-primary/5 dark:bg-primary/10 p-4 sm:p-6 rounded-xl sm:rounded-2xl border-l-4 border-primary">
-                                <h3 className="text-base sm:text-lg font-semibold mb-2">Моя философия</h3>
-                                <p className="text-sm sm:text-base text-muted italic">
-                                    Устойчивое здоровье рождается на стыке понимания своей души и мудрой заботы о теле. 
-                                    Тело будет кричать нам, пока мы не услышим истину.
-                                </p>
+                            <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-primary/10 via-background to-accent/10 border border-primary/20 p-4 sm:p-6 backdrop-blur-sm">
+                                {/* Декоративный элемент */}
+                                <div className="absolute top-0 right-0 w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-full opacity-50"/>
+
+                                <div className="relative z-10">
+                                    <h3 className="text-base sm:text-lg font-semibold mb-2 flex items-center gap-2">
+                                        <span className="text-xl">✨</span>
+                                        Моя философия
+                                    </h3>
+                                    <p className="text-sm sm:text-base text-muted italic leading-relaxed">
+                                        Устойчивое здоровье рождается на стыке понимания своей души и мудрой заботы о теле.
+                                        Тело будет кричать нам, пока мы не услышим истину.
+                                    </p>
+                                </div>
                             </div>
                         </FadeIn>
 
                         {/* Timeline пути */}
-                        <FadeIn direction="left" delay={0.5}>
+                        <FadeIn direction="left" delay={0.6}>
                             <div>
                                 <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Мой путь</h3>
                                 {loading ? (

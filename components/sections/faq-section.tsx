@@ -156,7 +156,7 @@ export default function FAQSection({data}: FAQSectionProps) {
 
                 {/* Дополнительная информация */}
                 <FadeIn delay={0.5}>
-                    <div className="mt-8 sm:mt-12 max-w-3xl mx-auto">
+                    <div className="mt-8 sm:mt-12 mx-auto">
                         <div className="p-4 sm:p-6 bg-primary/5 rounded-xl sm:rounded-2xl border border-primary/20">
                             <h3 className="font-semibold mb-3 flex items-center gap-2 text-sm sm:text-base">
                                 <span className="text-lg sm:text-xl">💡</span>

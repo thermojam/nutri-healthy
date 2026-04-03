@@ -17,6 +17,13 @@ import {CreditCard, Percent, Wallet} from "lucide-react";
 import {cn} from "@/lib/utils";
 import type {ObjectId} from "mongoose";
 
+// Fallback изображения для услуг с Unsplash
+const serviceImageFallbacks = [
+    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=400&fit=crop",  // Нутрициология
+    "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop",  // Health-коучинг
+    "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=400&fit=crop",  // Гимнастика
+];
+
 interface Service {
     _id: string | ObjectId;
     slug: string;
@@ -159,7 +166,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                     </FadeIn>
 
                     <Carousel showDots={true} showArrows={false}>
-                        {services.map((service) => {
+                        {services.map((service, index) => {
                             const activeTariff = activeTariffs[service._id.toString()] || "premium";
                             const tariffData = getTariffData(service, activeTariff);
 
@@ -182,11 +189,11 @@ export function ProductsSection({services}: ProductsSectionProps) {
 
                                         <CardContent className="p-0">
                                             {/* Изображение услуги */}
-                                            {service.image?.url && (
+                                            {(service.image?.url || serviceImageFallbacks[index]) && (
                                                 <div className="relative h-40 sm:h-48 w-full overflow-hidden">
                                                     <Image
-                                                        src={service.image.url}
-                                                        alt={service.image.alt || service.title}
+                                                        src={service.image?.url || serviceImageFallbacks[index]}
+                                                        alt={service.image?.alt || service.title}
                                                         fill
                                                         className="object-cover"
                                                     />
@@ -201,8 +208,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                                     <p className="text-xs sm:text-sm text-muted">{service.description}</p>
                                                 </div>
 
-                                                {/* Вкладки тарифов - Вариант на выбор (сейчас активен Вариант 1) */}
-                                                ВАРИАНТ 1: Сегментированный контроль (как в iOS)
+                                                {/* Вкладки тарифов */}
                                                 <div className="flex p-1 bg-muted/50 rounded-xl">
                                                     {(["base", "premium", "vip"] as const).map((tariff) => {
                                                         const isActive = activeTariff === tariff;

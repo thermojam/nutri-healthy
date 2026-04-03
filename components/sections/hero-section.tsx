@@ -8,6 +8,7 @@ import {Button} from "@/components/ui/button";
 import {FadeIn} from "@/components/motion/fade-in";
 import {AnimatedBackground} from "@/components/motion/animated-background";
 import {GradientPreview} from "@/components/features/gradient-preview";
+import {AnimatedStats} from "@/components/sections/animated-stats";
 
 interface HeroSectionProps {
     data?: {
@@ -97,47 +98,54 @@ export default function HeroSection({data}: HeroSectionProps) {
                             </div>
                         </FadeIn>
 
-                        {/* Статистика */}
+                        {/* Статистика - анимированный счетчик */}
                         {heroData.stats && (
                             <FadeIn direction="up" delay={0.6}>
-                                <div
-                                    className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 pt-4 justify-center lg:justify-start">
-                                    {heroData.stats.map((stat, index) => (
-                                        <motion.div
-                                            key={stat.label}
-                                            initial={{opacity: 0, y: 20}}
-                                            whileInView={{opacity: 1, y: 0}}
-                                            viewport={{once: true}}
-                                            transition={{delay: 0.7 + index * 0.1}}
-                                            className="text-center sm:text-left"
-                                        >
-                                            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
-                                                {stat.value}
-                                            </p>
-                                            <p className="text-xs sm:text-sm text-muted">{stat.label}</p>
-                                        </motion.div>
-                                    ))}
-                                </div>
+                                <AnimatedStats stats={heroData.stats}/>
                             </FadeIn>
                         )}
 
-                        {/* Доверие */}
+                        {/* Доверие - реальные фото клиентов */}
                         <FadeIn direction="up" delay={0.8}>
-                            <div className="flex items-center gap-2 sm:gap-4 pt-4 justify-center lg:justify-start">
+                            <div className="flex items-center gap-3 sm:gap-4 pt-4">
                                 <div className="flex -space-x-2 sm:-space-x-3">
-                                    {[1, 2, 3, 4].map((i) => (
+                                    {[
+                                        { url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face", alt: "Анна" },
+                                        { url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face", alt: "Мария" },
+                                        { url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face", alt: "Елена" },
+                                        { url: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop&crop=face", alt: "Ольга" },
+                                        { url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face", alt: "Наталья" },
+                                    ].map((person, i) => (
                                         <div
                                             key={i}
-                                            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/20 border-2 border-background flex items-center justify-center"
+                                            className="relative w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full border-2 border-background overflow-hidden shadow-md"
                                         >
-                                            <span className="text-xs sm:text-xs text-primary">👤</span>
+                                            <Image
+                                                src={person.url}
+                                                alt={person.alt}
+                                                fill
+                                                className="object-cover"
+                                            />
                                         </div>
                                     ))}
                                 </div>
-                                <p className="text-xs sm:text-sm text-muted">
-                                    <span className="font-semibold text-foreground">500+</span>{" "}
-                                    довольных клиентов
-                                </p>
+                                <div className="flex-1">
+                                    <div className="flex items-center gap-1 mb-0.5">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <svg
+                                                key={star}
+                                                className="w-3 h-3 sm:w-4 sm:h-4 fill-accent"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        ))}
+                                    </div>
+                                    <p className="text-xs sm:text-sm text-muted">
+                                        <span className="font-semibold text-foreground">500+</span>{" "}
+                                        довольных клиентов
+                                    </p>
+                                </div>
                             </div>
                         </FadeIn>
                     </div>

@@ -149,7 +149,7 @@ export default function WebinarsPage() {
                 </section>
 
                 {/* CTA */}
-                <section className="py-24 bg-card">
+                <section className="py-24 bg-background">
                     <div className="container">
                         <FadeIn>
                             <div className="max-w-3xl mx-auto text-center space-y-6">

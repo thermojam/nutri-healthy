@@ -341,7 +341,7 @@ export default async function PaymentSuccessPage({searchParams}: PaymentSuccessP
                 </section>
 
                 {/* CTA */}
-                <section className="py-16 bg-card">
+                <section className="py-16 bg-background">
                     <div className="container">
                         <div className="max-w-3xl mx-auto text-center space-y-6">
                             <h2 className="text-3xl font-bold">

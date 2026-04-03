@@ -192,10 +192,10 @@ export default async function ArticlePage({params}: { params: Promise<{ slug: st
                 </section>
 
                 {/* Автор */}
-                <section className="py-16 bg-card">
+                <section className="py-16 bg-background">
                     <div className="container">
                         <div className="max-w-3xl mx-auto">
-                            <Card className="p-6">
+                            <Card className="p-6 border-2">
                                 <CardContent className="space-y-4">
                                     <h3 className="text-xl font-bold">Об авторе</h3>
                                     <div className="flex items-center gap-4">

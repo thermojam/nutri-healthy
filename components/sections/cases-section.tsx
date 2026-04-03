@@ -8,6 +8,16 @@ import {cn} from "@/lib/utils";
 import Image from "next/image";
 import type {ObjectId} from "mongoose";
 
+// Fallback изображения для кейсов с Unsplash (реальные люди)
+const caseImageFallbacks = [
+    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=400&fit=crop",
+];
+
 interface Case {
     _id: string | ObjectId;
     slug: string;
@@ -58,23 +68,23 @@ export function CasesSection({cases}: CasesSectionProps) {
                 </FadeIn>
 
                 <Carousel showDots={true} showArrows={false}>
-                    {cases.map((caseItem) => (
+                    {cases.map((caseItem, index) => (
                         <CarouselItem key={caseItem._id.toString()}>
-                            <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden">
-                                <CardContent className="p-0 space-y-4">
+                            <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
+                                <CardContent className="p-0 flex-1 flex flex-col">
                                     {/* Изображение кейса */}
-                                    {caseItem.image?.url && (
+                                    {(caseItem.image?.url || caseImageFallbacks[index % caseImageFallbacks.length]) && (
                                         <div className="relative h-40 sm:h-48 w-full overflow-hidden">
                                             <Image
-                                                src={caseItem.image.url}
-                                                alt={caseItem.image.alt || caseItem.title}
+                                                src={caseItem.image?.url || caseImageFallbacks[index % caseImageFallbacks.length]}
+                                                alt={caseItem.image?.alt || caseItem.title}
                                                 fill
                                                 className="object-cover"
                                             />
                                         </div>
                                     )}
 
-                                    <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                                    <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 flex-1 flex flex-col">
                                     {/* Заголовок и клиент */}
                                     <div className="flex items-start justify-between gap-2 sm:gap-4">
                                         <div className="flex items-center gap-2 sm:gap-3">
@@ -118,8 +128,8 @@ export function CasesSection({cases}: CasesSectionProps) {
                                         <p className="text-sm">{caseItem.problem}</p>
                                     </div>
 
-                                    {/* Результаты */}
-                                    <div className="space-y-1.5 sm:space-y-2">
+                                    {/* Результаты - растягивается */}
+                                    <div className="space-y-1.5 sm:space-y-2 flex-1">
                                         <p className="text-xs sm:text-sm text-muted font-medium">Результаты:</p>
                                         {caseItem.results.map((result, i) => (
                                             <div key={i} className="flex items-start gap-1.5 sm:gap-2 text-sm">
@@ -134,10 +144,10 @@ export function CasesSection({cases}: CasesSectionProps) {
                                         ))}
                                     </div>
 
-                                    {/* Отзыв */}
+                                    {/* Отзыв - всегда внизу */}
                                     {caseItem.testimonial && (
                                         <blockquote
-                                            className="border-l-2 sm:border-l-4 border-primary pl-3 sm:pl-4 italic text-muted text-sm"
+                                            className="border-l-2 sm:border-l-4 border-primary pl-3 sm:pl-4 italic text-muted text-sm mt-auto"
                                         >
                                             <Quote className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 sm:mr-2 -mt-1 opacity-50"/>
                                             <span className="break-words">{caseItem.testimonial}</span>

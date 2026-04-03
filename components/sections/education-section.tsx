@@ -89,12 +89,18 @@ export default function EducationSection() {
 
                         return (
                             <CarouselItem key={item._id}>
-                                <Card className="h-full hover:shadow-lg transition-shadow">
-                                    <CardContent className="p-6 space-y-4">
+                                <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden relative flex flex-col">
+                                    {/* Градиентный фон как в статистике */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5"/>
+
+                                    {/* Декоративный элемент */}
+                                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full"/>
+
+                                    <CardContent className="p-6 relative z-10 flex-1 flex flex-col">
                                         {/* Заголовок и бейдж */}
                                         <div className="flex items-start justify-between gap-2">
                                             <div
-                                                className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                                className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center border border-primary/20">
                                                 <DocumentIcon className="h-5 w-5 text-primary"/>
                                             </div>
                                             {item.degree && (
@@ -102,8 +108,8 @@ export default function EducationSection() {
                                             )}
                                         </div>
 
-                                        {/* Основная информация */}
-                                        <div className="space-y-2">
+                                        {/* Основная информация - растягивается */}
+                                        <div className="space-y-2 flex-1">
                                             <h3 className="text-lg font-semibold leading-tight">
                                                 {item.title}
                                             </h3>
@@ -113,15 +119,15 @@ export default function EducationSection() {
                                             <p className="text-sm text-muted">{item.specialty}</p>
                                         </div>
 
-                                        {/* Год */}
-                                        <div className="flex items-center justify-between pt-4 border-t border-border">
-                      <span className="text-sm font-semibold text-primary">
-                        {item.year}
-                      </span>
+                                        {/* Год и документы - всегда внизу */}
+                                        <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
+                                            <span className="text-sm font-semibold text-primary whitespace-nowrap">
+                                                {item.year}
+                                            </span>
 
-                                            {/* Документы */}
-                                            {item.documents && item.documents.length > 0 && (
-                                                <div className="flex gap-2">
+                                            {/* Документы - прижаты вправо */}
+                                            {item.documents && item.documents.length > 0 ? (
+                                                <div className="flex gap-2 ml-auto">
                                                     {item.documents.map((doc, index) => {
                                                         const DocIcon = documentIcons[doc.type];
                                                         return (
@@ -138,6 +144,8 @@ export default function EducationSection() {
                                                         );
                                                     })}
                                                 </div>
+                                            ) : (
+                                                <span className="text-xs text-muted ml-auto">Документы по запросу</span>
                                             )}
                                         </div>
                                     </CardContent>

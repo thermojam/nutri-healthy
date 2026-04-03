@@ -6,6 +6,7 @@ import {Badge} from "@/components/ui/badge";
 import {Card, CardContent} from "@/components/ui/card";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import {articleRepository} from "@/lib/db/repositories/article.repository";
 
 interface Article {
     _id: string;
@@ -38,12 +39,9 @@ const categoryColors: Record<string, string> = {
 
 async function getArticle(slug: string): Promise<Article | null> {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/api/articles/${slug}`, {
-            cache: "no-store",
-        });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.data || null;
+        const article = await articleRepository.findBySlug(slug);
+        if (!article) return null;
+        return JSON.parse(JSON.stringify(article));
     } catch (error) {
         console.error("Failed to fetch article:", error);
         return null;

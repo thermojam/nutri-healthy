@@ -6,6 +6,7 @@ import {Badge} from "@/components/ui/badge";
 import {Card, CardContent} from "@/components/ui/card";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import {webinarRepository} from "@/lib/db/repositories/webinar.repository";
 
 interface Webinar {
     _id: string;
@@ -24,6 +25,17 @@ interface Webinar {
     views?: number;
 }
 
+async function getWebinar(slug: string): Promise<Webinar | null> {
+    try {
+        const webinar = await webinarRepository.findBySlug(slug);
+        if (!webinar) return null;
+        return JSON.parse(JSON.stringify(webinar));
+    } catch (error) {
+        console.error("Failed to fetch webinar:", error);
+        return null;
+    }
+}
+
 function formatDuration(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
     if (minutes >= 60) {
@@ -32,20 +44,6 @@ function formatDuration(seconds: number): string {
         return `${hours}ч ${remainingMinutes}мин`;
     }
     return `${minutes} мин`;
-}
-
-async function getWebinar(slug: string): Promise<Webinar | null> {
-    try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/api/webinars/${slug}`, {
-            cache: "no-store",
-        });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.data || null;
-    } catch (error) {
-        console.error("Failed to fetch webinar:", error);
-        return null;
-    }
 }
 
 export default async function WebinarPage({params}: { params: Promise<{ slug: string }> }) {

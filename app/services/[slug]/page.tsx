@@ -1,5 +1,6 @@
 import {notFound} from "next/navigation";
 import ServicePageClient from "./ServicePageClient";
+import {serviceRepository} from "@/lib/db/repositories/service.repository";
 
 interface Service {
     _id: string;
@@ -31,12 +32,9 @@ interface Service {
 
 async function getService(slug: string): Promise<Service | null> {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/api/services/${slug}`, {
-            cache: "no-store",
-        });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.data || null;
+        const service = await serviceRepository.findBySlug(slug);
+        if (!service) return null;
+        return JSON.parse(JSON.stringify(service));
     } catch (error) {
         console.error("Failed to fetch service:", error);
         return null;

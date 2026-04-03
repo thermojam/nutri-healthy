@@ -6,6 +6,7 @@ import {Badge} from "@/components/ui/badge";
 import {Card, CardContent} from "@/components/ui/card";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import {videoRepository} from "@/lib/db/repositories/video.repository";
 
 interface Video {
     _id: string;
@@ -30,12 +31,9 @@ const categoryLabels: Record<string, string> = {
 
 async function getVideo(slug: string): Promise<Video | null> {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/api/videos/${slug}`, {
-            cache: "no-store",
-        });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.data || null;
+        const video = await videoRepository.findBySlug(slug);
+        if (!video) return null;
+        return JSON.parse(JSON.stringify(video));
     } catch (error) {
         console.error("Failed to fetch video:", error);
         return null;

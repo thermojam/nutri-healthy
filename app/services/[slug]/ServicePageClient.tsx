@@ -160,12 +160,23 @@ export default function ServicePageClient({service}: { service: Service }) {
                             </div>
 
                             {/* Изображение */}
-                            <div
-                                className="relative aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-8xl">{service.icon || "✨"}</span>
+                            {service.image?.url ? (
+                                <div className="relative aspect-video rounded-2xl overflow-hidden">
+                                    <Image
+                                        src={service.image.url}
+                                        alt={service.image.alt || service.title}
+                                        fill
+                                        className="object-cover"
+                                    />
                                 </div>
-                            </div>
+                            ) : (
+                                <div
+                                    className="relative aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20">
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <span className="text-8xl">{service.icon || "✨"}</span>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>

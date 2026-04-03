@@ -10,12 +10,12 @@ import type {ObjectId} from "mongoose";
 
 // Fallback изображения для отзывов с Unsplash (реальные люди)
 const testimonialImageFallbacks = [
-    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=600&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=400&fit=crop&crop=face",  // Екатерина
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=400&fit=crop&crop=face",  // Анна
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&crop=face",  // Михаил (мужчина)
+    "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=600&h=400&fit=crop&crop=face",  // Ольга
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=400&fit=crop&crop=face",  // Ирина
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=400&fit=crop&crop=face",  // Дмитрий (мужчина)
 ];
 
 interface Testimonial {
@@ -78,42 +78,24 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                                     <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 flex-1 flex flex-col">
                                     {/* Автор и рейтинг */}
                                     <div className="flex items-start justify-between gap-2 sm:gap-4">
-                                        <div className="flex items-center gap-2 sm:gap-3">
-                                            <div
-                                                className={cn(
-                                                    "w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0",
-                                                    testimonial.author.anonymized
-                                                        ? "bg-primary/20"
-                                                        : "bg-gradient-to-br from-primary to-accent"
-                                                )}
-                                            >
-                                                {testimonial.author.anonymized ? (
-                                                    <span className="text-lg sm:text-xl">👤</span>
-                                                ) : (
-                                                    <span className="text-lg sm:text-xl font-bold text-white">
-                                                        {testimonial.author.name[0]}
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <div className="min-w-0">
-                                                <h4 className="font-semibold text-sm sm:text-base truncate">
-                                                    {testimonial.author.anonymized
-                                                        ? "Анонимно"
-                                                        : testimonial.author.name}
-                                                </h4>
-                                                <div className="flex items-center gap-0.5 sm:gap-1">
-                                                    {[...Array(5)].map((_, i) => (
-                                                        <Star
-                                                            key={i}
-                                                            className={cn(
-                                                                "h-3 w-3 sm:h-4 sm:w-4",
-                                                                i < testimonial.rating
-                                                                    ? "fill-accent text-accent"
-                                                                    : "text-border"
-                                                            )}
-                                                        />
-                                                    ))}
-                                                </div>
+                                        <div className="min-w-0 flex-1">
+                                            <h4 className="font-semibold text-sm sm:text-base truncate">
+                                                {testimonial.author.anonymized
+                                                    ? "Анонимно"
+                                                    : testimonial.author.name}
+                                            </h4>
+                                            <div className="flex items-center gap-0.5 sm:gap-1">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <Star
+                                                        key={i}
+                                                        className={cn(
+                                                            "h-3 w-3 sm:h-4 sm:w-4",
+                                                            i < testimonial.rating
+                                                                ? "fill-accent text-accent"
+                                                                : "text-border"
+                                                        )}
+                                                    />
+                                                ))}
                                             </div>
                                         </div>
                                         {testimonial.verified && (

@@ -203,7 +203,6 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                             <div className="p-4 sm:p-6 space-y-4">
                                                 {/* Заголовок */}
                                                 <div className="text-center space-y-2">
-                                                    <span className="text-3xl sm:text-4xl">{service.icon || "✨"}</span>
                                                     <h3 className="text-lg sm:text-xl font-bold">{service.title}</h3>
                                                     <p className="text-xs sm:text-sm text-muted">{service.description}</p>
                                                 </div>

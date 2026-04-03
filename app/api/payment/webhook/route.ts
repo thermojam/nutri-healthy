@@ -14,18 +14,13 @@ import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
 
 /**
  * Фоновая отправка email — не блокирует ответ webhook
- * Для Vercel: after() выполнится в фоне
- * Для локальной разработки: выполнится синхронно
+ * На Vercel работает асинхронно, локально — синхронно
  */
-async function runAfter(callback: () => Promise<void>) {
-    try {
-        // @ts-ignore — after() доступен в Next.js 15+ на Vercel
-        const {after} = await import("next/after");
-        after(callback);
-    } catch {
-        console.log("⚠️ after() not available, running synchronously");
-        await callback();
-    }
+function runAfter(callback: () => Promise<void>) {
+    // Выполняем без await — webhook отвечает сразу
+    callback().catch((err) => {
+        console.error("❌ Background email task failed:", err);
+    });
 }
 
 /**

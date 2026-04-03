@@ -45,7 +45,6 @@ const WebinarSchema = new Schema<IWebinar>(
     {timestamps: true}
 );
 
-WebinarSchema.index({slug: 1}, {unique: true});
 WebinarSchema.index({published: 1, publishedAt: -1});
 WebinarSchema.index({featured: 1});
 

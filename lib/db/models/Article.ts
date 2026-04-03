@@ -47,7 +47,6 @@ const ArticleSchema = new Schema<IArticle>(
     {timestamps: true}
 );
 
-ArticleSchema.index({slug: 1}, {unique: true});
 ArticleSchema.index({published: 1, publishedAt: -1});
 ArticleSchema.index({category: 1});
 ArticleSchema.index({featured: 1});

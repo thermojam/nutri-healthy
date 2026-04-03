@@ -497,7 +497,7 @@ async function seed() {
         const cases = await Case.insertMany([
             {
                 slug: "minus-15-kg-za-4-mesyaca",
-                title: "Минус 15 кг за 4 месяца",
+                title: "Минус 15 кг за 4 месяца без стресса",
                 client: {
                     name: "Екатерина",
                     anonymized: false,
@@ -571,7 +571,7 @@ async function seed() {
                     gender: "male",
                 },
                 problem:
-                    "Хронические проблемы с пищеварением, вздутие, усталость после еды",
+                    "Хронические проблемы с пищеварением после еды",
                 challenge:
                     "После многих лет безуспешного лечения у врачей найти причину проблем",
                 solution:

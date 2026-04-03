@@ -1,4 +1,9 @@
-import { MetadataRoute } from 'next';
+import {MetadataRoute} from 'next';
+import {serviceRepository} from '@/lib/db/repositories/service.repository';
+import {articleRepository} from '@/lib/db/repositories/article.repository';
+import {videoRepository} from '@/lib/db/repositories/video.repository';
+import {webinarRepository} from '@/lib/db/repositories/webinar.repository';
+import {caseRepository} from '@/lib/db/repositories/case.repository';
 
 /**
  * Sitemap для поисковых систем
@@ -66,77 +71,66 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 }
 
 /**
- * Получить динамические URL из БД
+ * Получить динамические URL из БД напрямую (без HTTP запросов)
  */
 async function getDynamicUrls(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = BASE_URL;
     const urls: MetadataRoute.Sitemap = [];
 
     try {
         // Услуги
-        const services = await fetch(`${baseUrl}/api/services`).then(res => res.json());
-        if (services.data) {
-            services.data.forEach((service: any) => {
-                urls.push({
-                    url: `${baseUrl}/services/${service.slug}`,
-                    lastModified: new Date(service.updatedAt),
-                    changeFrequency: 'weekly' as const,
-                    priority: 0.8,
-                });
+        const services = await serviceRepository.findAll(100);
+        services.forEach((service) => {
+            urls.push({
+                url: `${BASE_URL}/services/${service.slug}`,
+                lastModified: new Date(service.updatedAt || service.createdAt),
+                changeFrequency: 'weekly' as const,
+                priority: 0.8,
             });
-        }
+        });
 
         // Статьи
-        const articles = await fetch(`${baseUrl}/api/articles`).then(res => res.json());
-        if (articles.data) {
-            articles.data.forEach((article: any) => {
-                urls.push({
-                    url: `${baseUrl}/materials/articles/${article.slug}`,
-                    lastModified: new Date(article.updatedAt),
-                    changeFrequency: 'monthly' as const,
-                    priority: 0.7,
-                });
+        const articles = await articleRepository.findPublished(100);
+        articles.forEach((article) => {
+            urls.push({
+                url: `${BASE_URL}/materials/articles/${article.slug}`,
+                lastModified: new Date(article.updatedAt || article.createdAt),
+                changeFrequency: 'monthly' as const,
+                priority: 0.7,
             });
-        }
+        });
 
         // Видео
-        const videos = await fetch(`${baseUrl}/api/videos`).then(res => res.json());
-        if (videos.data) {
-            videos.data.forEach((video: any) => {
-                urls.push({
-                    url: `${baseUrl}/materials/videos/${video.slug}`,
-                    lastModified: new Date(video.updatedAt),
-                    changeFrequency: 'monthly' as const,
-                    priority: 0.6,
-                });
+        const videos = await videoRepository.findPublished(100);
+        videos.forEach((video) => {
+            urls.push({
+                url: `${BASE_URL}/materials/videos/${video.slug}`,
+                lastModified: new Date(video.updatedAt || video.createdAt),
+                changeFrequency: 'monthly' as const,
+                priority: 0.6,
             });
-        }
+        });
 
         // Вебинары
-        const webinars = await fetch(`${baseUrl}/api/webinars`).then(res => res.json());
-        if (webinars.data) {
-            webinars.data.forEach((webinar: any) => {
-                urls.push({
-                    url: `${baseUrl}/materials/webinars/${webinar.slug}`,
-                    lastModified: new Date(webinar.updatedAt),
-                    changeFrequency: 'monthly' as const,
-                    priority: 0.6,
-                });
+        const webinars = await webinarRepository.findPublished(100);
+        webinars.forEach((webinar) => {
+            urls.push({
+                url: `${BASE_URL}/materials/webinars/${webinar.slug}`,
+                lastModified: new Date(webinar.updatedAt || webinar.createdAt),
+                changeFrequency: 'monthly' as const,
+                priority: 0.6,
             });
-        }
+        });
 
         // Кейсы
-        const cases = await fetch(`${baseUrl}/api/cases`).then(res => res.json());
-        if (cases.data) {
-            cases.data.forEach((caseItem: any) => {
-                urls.push({
-                    url: `${baseUrl}/cases/${caseItem.slug}`,
-                    lastModified: new Date(caseItem.updatedAt),
-                    changeFrequency: 'monthly' as const,
-                    priority: 0.7,
-                });
+        const cases = await caseRepository.findAll(100);
+        cases.forEach((caseItem) => {
+            urls.push({
+                url: `${BASE_URL}/cases/${caseItem.slug}`,
+                lastModified: new Date(caseItem.updatedAt || caseItem.createdAt),
+                changeFrequency: 'monthly' as const,
+                priority: 0.7,
             });
-        }
+        });
     } catch (error) {
         console.error('Error fetching dynamic URLs for sitemap:', error);
     }

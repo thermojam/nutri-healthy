@@ -51,7 +51,6 @@ const VideoSchema = new Schema<IVideo>(
     {timestamps: true}
 );
 
-VideoSchema.index({slug: 1}, {unique: true});
 VideoSchema.index({published: 1, publishedAt: -1});
 VideoSchema.index({category: 1});
 VideoSchema.index({featured: 1});

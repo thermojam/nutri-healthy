@@ -70,27 +70,6 @@ export default function OrderModal({
 
                 {/* Content - Scrollable */}
                 <div className="p-4 sm:p-6">
-                    {/* Информация о заказе - Compact */}
-                    <div className="p-3 sm:p-4 bg-primary/5 rounded-xl border border-primary/20 mb-4">
-                        <div className="flex justify-between items-start gap-3">
-                            <div className="flex-1 min-w-0">
-                                <h3 className="font-semibold text-sm sm:text-base truncate">{serviceName}</h3>
-                                <p className="text-xs sm:text-sm text-muted capitalize">
-                                    {tariff === "base" ? "Базовый" : tariff === "premium" ? "Оптимальный" : "VIP"}
-                                </p>
-                            </div>
-                            <div className="text-right shrink-0">
-                                <p className="text-lg sm:text-xl font-bold text-primary">
-                                    {new Intl.NumberFormat("ru-RU", {
-                                        style: "currency",
-                                        currency: "RUB",
-                                        minimumFractionDigits: 0,
-                                    }).format(price)}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
                     <PaymentForm
                         serviceId={serviceId}
                         serviceName={serviceName}

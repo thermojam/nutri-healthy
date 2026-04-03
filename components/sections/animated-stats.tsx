@@ -6,11 +6,12 @@ interface AnimatedStatsProps {
         value: string;
         label: string;
     }[];
+    mobileVertical?: boolean;
 }
 
 const statIcons = [Users, Award, Star];
 
-export function AnimatedStats({stats}: AnimatedStatsProps) {
+export function AnimatedStats({stats, mobileVertical = false}: AnimatedStatsProps) {
     // Парсим значения для анимации
     const parseValue = (value: string): {end: number; suffix: string} => {
         const num = parseInt(value.replace(/\D/g, ""), 10);
@@ -19,7 +20,10 @@ export function AnimatedStats({stats}: AnimatedStatsProps) {
     };
 
     return (
-        <div className="flex items-center gap-4 sm:gap-6 md:gap-8 pt-4">
+        <div className={mobileVertical
+            ? "flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-start gap-3 sm:gap-4 md:gap-6 lg:gap-8"
+            : "flex items-center justify-center lg:justify-start gap-3 sm:gap-4 md:gap-6 lg:gap-8"
+        }>
             {stats.map((stat, index) => {
                 const {end, suffix} = parseValue(stat.value);
                 const Icon = statIcons[index] || Star;
@@ -32,6 +36,7 @@ export function AnimatedStats({stats}: AnimatedStatsProps) {
                         suffix={suffix}
                         label={stat.label}
                         delay={index * 0.15}
+                        mobileVertical={mobileVertical}
                     />
                 );
             })}
@@ -45,9 +50,10 @@ interface StatItemProps {
     suffix: string;
     label: string;
     delay: number;
+    mobileVertical?: boolean;
 }
 
-function StatItem({icon: Icon, end, suffix, label, delay}: StatItemProps) {
+function StatItem({icon: Icon, end, suffix, label, delay, mobileVertical = false}: StatItemProps) {
     const {count, ref, formatted} = useCountUp({
         end,
         duration: 2000,
@@ -58,24 +64,28 @@ function StatItem({icon: Icon, end, suffix, label, delay}: StatItemProps) {
     return (
         <div
             ref={ref}
-            className="flex items-center gap-2 sm:gap-3"
+            className={mobileVertical
+                ? "flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-2 md:gap-3"
+                : "flex items-center gap-1.5 sm:gap-2 md:gap-3"
+            }
             style={{animationDelay: `${delay}s`}}
         >
-            {/* Иконка с градиентом */}
-            <div className="relative">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 flex items-center justify-center">
-                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary"/>
+            {/* Иконка с градиентом - круглая с тенью */}
+            <div className="relative flex-shrink-0">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center backdrop-blur-sm">
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]"/>
                 </div>
-                {/* Glow эффект */}
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity"/>
             </div>
 
             {/* Число и подпись */}
-            <div className="flex flex-col">
-                <p className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <div className={mobileVertical
+                ? "flex flex-col items-center sm:items-center"
+                : "flex flex-col"
+            }>
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
                     {formatted}
                 </p>
-                <p className="text-[10px] sm:text-xs text-muted leading-tight">
+                <p className="text-[10px] sm:text-xs text-white/80 leading-tight text-center lg:text-left font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
                     {label}
                 </p>
             </div>

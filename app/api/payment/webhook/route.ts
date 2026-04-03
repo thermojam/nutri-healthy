@@ -13,6 +13,22 @@ import {ClientReceiptTemplate} from "@/lib/email/templates/client-receipt";
 import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
 
 /**
+ * Фоновая отправка email — не блокирует ответ webhook
+ * Для Vercel: after() выполнится в фоне
+ * Для локальной разработки: выполнится синхронно
+ */
+async function runAfter(callback: () => Promise<void>) {
+    try {
+        // @ts-ignore — after() доступен в Next.js 15+ на Vercel
+        const {after} = await import("next/after");
+        after(callback);
+    } catch {
+        console.log("⚠️ after() not available, running synchronously");
+        await callback();
+    }
+}
+
+/**
  * POST /api/payment/webhook
  * Обработка webhook от платежных систем (ЮKassa, PayKeeper)
  * 
@@ -121,134 +137,121 @@ export async function POST(request: NextRequest) {
             console.log(`ℹ️ Order ${orderId} status unchanged: ${newStatus}`);
         }
 
-        // Если оплата успешна - создаем чек и отправляем письма
+        // Если оплата успешна - создаем чек и отправляем письма (фоновая задача)
         if (newStatus === "paid") {
-            console.log(`💰 Payment succeeded for order ${orderId}. Sending emails...`);
-            
-            try {
-                // СОЗДАНИЕ ЧЕКА (54-ФЗ)
-                // Примечание: Для реальной фискализации нужна интеграция с ОФД (Атол/Мой Налог)
-                // Сейчас создаем запись в БД для учета
-                
-                console.log("   📝 Creating receipt record in database...");
-                
-                const receipt = await Receipt.create({
-                    order: order._id,
-                    user: order.user,
-                    type: "payment",
-                    status: "sent", // Сразу помечаем как отправленный
-                    provider: "manual", // Временно без реальной фискализации
-                    fiscalData: {
-                        fiscalNumber: `CHK-${Date.now()}`, // Временный номер
-                        fiscalSign: "TEMP", // Временно
-                        fiscalDate: new Date(),
-                        registrationNumber: "TEMP",
-                        factoryNumber: "TEMP",
-                    },
-                    items: [{
-                        name: order.serviceName,
-                        quantity: 1,
-                        price: order.price,
-                        amount: order.price,
-                        taxRate: "none",
-                        paymentMethod: "full_payment",
-                        paymentObject: "service",
-                    }],
-                    payment: [{
-                        form: "electronic",
-                        amount: order.price,
-                    }],
-                    total: order.price,
-                    vatTotal: 0,
-                    customer: {
-                        email: order.client.email,
-                        phone: order.client.phone,
-                    },
-                    sno: "npd",
-                    sentAt: new Date(),
-                });
-                
-                console.log(`   ✅ Receipt created: ${receipt._id}`);
+            console.log(`💰 Payment succeeded for order ${orderId}. Scheduling emails...`);
 
-                order.receipt = {
-                    id: receipt._id.toString(),
-                    status: "sent",
-                    sentAt: new Date(),
-                };
-                await order.save();
+            const orderData = order.toObject ? order.toObject() : {...order};
 
-                // Аудит
-                await createAuditLog({
-                    userId: order.user.toString(),
-                    action: "receipt_generated",
-                    entityType: "receipt",
-                    entityId: receipt._id.toString(),
-                    details: {
-                        orderId: order._id.toString(),
-                        receiptId: receipt._id.toString(),
-                    },
-                });
+            runAfter(async () => {
+                try {
+                    // СОЗДАНИЕ ЧЕКА (54-ФЗ)
+                    console.log("   📝 Creating receipt record...");
 
-                // ОТПРАВКА ПИСЕМ ПОСЛЕ УСПЕШНОЙ ОПЛАТЫ
-                
-                // 1. Письмо админу об ОПЛАЧЕННОМ заказе
-                console.log("   📧 Sending email to admin...");
-                const adminResult = await sendAdminEmail({
-                    subject: `✅ Заказ оплачен #${order._id.toString().slice(-6).toUpperCase()}`,
-                    template: AdminNewOrderTemplate({
-                        orderId: order._id.toString(),
-                        clientName: `${order.client.firstName} ${order.client.lastName}`,
-                        clientEmail: order.client.email,
-                        clientPhone: order.client.phone,
-                        serviceName: order.serviceName,
-                        tariff: order.tariff,
-                        price: order.price,
-                        paymentMethod: order.paymentMethod || "yookassa",
-                        orderDate: new Date().toISOString(),
-                    }),
-                    tags: [{name: "order_id", value: order._id.toString()}],
-                });
-                console.log(`   Admin email result: ${adminResult.success ? '✅' : '❌'} ${adminResult.id || adminResult.error}`);
+                    const receipt = await Receipt.create({
+                        order: orderData._id,
+                        user: orderData.user,
+                        type: "payment",
+                        status: "sent",
+                        provider: "manual",
+                        fiscalData: {
+                            fiscalNumber: `CHK-${Date.now()}`,
+                            fiscalSign: "TEMP",
+                            fiscalDate: new Date(),
+                            registrationNumber: "TEMP",
+                            factoryNumber: "TEMP",
+                        },
+                        items: [{
+                            name: orderData.serviceName,
+                            quantity: 1,
+                            price: orderData.price,
+                            amount: orderData.price,
+                            taxRate: "none",
+                            paymentMethod: "full_payment",
+                            paymentObject: "service",
+                        }],
+                        payment: [{
+                            form: "electronic",
+                            amount: orderData.price,
+                        }],
+                        total: orderData.price,
+                        vatTotal: 0,
+                        customer: {
+                            email: orderData.client?.email,
+                            phone: orderData.client?.phone,
+                        },
+                        sno: "npd",
+                        sentAt: new Date(),
+                    });
 
-                // 2. Письмо клиенту - чек об оплате (54-ФЗ)
-                console.log("   📧 Sending receipt to client...");
-                const receiptResult = await sendEmail({
-                    to: order.client.email,
-                    subject: "🧾 Чек об оплате",
-                    template: ClientReceiptTemplate({
-                        clientName: `${order.client.firstName} ${order.client.lastName}`,
-                        orderId: order._id.toString(),
-                        serviceName: order.serviceName,
-                        tariff: order.tariff,
-                        price: order.price,
-                        paymentDate: new Date().toISOString(),
-                        paymentMethod: order.paymentMethod || "yookassa",
-                        fiscalNumber: receipt.fiscalData.fiscalNumber,
-                        fiscalSign: receipt.fiscalData.fiscalSign,
-                    }),
-                    tags: [{name: "order_id", value: order._id.toString()}],
-                });
-                console.log(`   Client receipt result: ${receiptResult.success ? '✅' : '❌'} ${receiptResult.id || receiptResult.error}`);
+                    console.log(`   ✅ Receipt created: ${receipt._id}`);
 
-                // 3. Письмо клиенту - Welcome с инструкциями
-                console.log("   📧 Sending welcome to client...");
-                const welcomeResult = await sendEmail({
-                    to: order.client.email,
-                    subject: "🎉 Добро пожаловать! Оплата подтверждена",
-                    template: ClientWelcomeTemplate({
-                        clientName: order.client.firstName,
-                        serviceName: order.serviceName,
-                        tariff: order.tariff,
-                        orderDate: new Date().toISOString(),
-                        nextStep: `${process.env.NEXT_PUBLIC_URL}/dashboard/orders/${order._id}`,
-                    }),
-                    tags: [{name: "order_id", value: order._id.toString()}],
-                });
-                console.log(`   Client welcome result: ${welcomeResult.success ? '✅' : '❌'} ${welcomeResult.id || welcomeResult.error}`);
-            } catch (error) {
-                console.error("❌ Failed to create receipt or send emails:", error);
-                // Не прерываем процесс, если чек не создался
-            }
+                    // Обновляем заказ с receipt info
+                    await Order.findByIdAndUpdate(orderData._id, {
+                        "receipt.id": receipt._id.toString(),
+                        "receipt.status": "sent",
+                        "receipt.sentAt": new Date(),
+                    });
+
+                    // 1. Письмо админу
+                    console.log("   📧 Sending admin notification...");
+                    const adminResult = await sendAdminEmail({
+                        subject: `✅ Заказ оплачен #${orderData._id.toString().slice(-6).toUpperCase()}`,
+                        template: AdminNewOrderTemplate({
+                            orderId: orderData._id.toString(),
+                            clientName: `${orderData.client?.firstName || ''} ${orderData.client?.lastName || ''}`,
+                            clientEmail: orderData.client?.email || '',
+                            clientPhone: orderData.client?.phone || '',
+                            serviceName: orderData.serviceName,
+                            tariff: orderData.tariff,
+                            price: orderData.price,
+                            paymentMethod: orderData.paymentMethod || "yookassa",
+                            orderDate: new Date().toISOString(),
+                        }),
+                        tags: [{name: "order_id", value: orderData._id.toString()}],
+                    });
+                    console.log(`   Admin email: ${adminResult.success ? '✅' : '❌'}`);
+
+                    // 2. Чек клиенту
+                    console.log("   📧 Sending receipt to client...");
+                    const receiptResult = await sendEmail({
+                        to: orderData.client?.email || '',
+                        subject: "🧾 Чек об оплате — подтверждение",
+                        template: ClientReceiptTemplate({
+                            clientName: orderData.client?.firstName || 'Клиент',
+                            orderId: orderData._id.toString(),
+                            serviceName: orderData.serviceName,
+                            tariff: orderData.tariff,
+                            price: orderData.price,
+                            paymentDate: new Date().toISOString(),
+                            paymentMethod: orderData.paymentMethod || "yookassa",
+                            fiscalNumber: receipt.fiscalData?.fiscalNumber,
+                            fiscalSign: receipt.fiscalData?.fiscalSign,
+                        }),
+                        tags: [{name: "order_id", value: orderData._id.toString()}],
+                    });
+                    console.log(`   Client receipt: ${receiptResult.success ? '✅' : '❌'}`);
+
+                    // 3. Welcome письмо
+                    console.log("   📧 Sending welcome email...");
+                    const welcomeResult = await sendEmail({
+                        to: orderData.client?.email || '',
+                        subject: "🎉 Добро пожаловать! Оплата подтверждена",
+                        template: ClientWelcomeTemplate({
+                            clientName: orderData.client?.firstName || 'Клиент',
+                            serviceName: orderData.serviceName,
+                            tariff: orderData.tariff,
+                            orderDate: new Date().toISOString(),
+                            nextStep: `${process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'}/dashboard/orders/${orderData._id}`,
+                        }),
+                        tags: [{name: "order_id", value: orderData._id.toString()}],
+                    });
+                    console.log(`   Client welcome: ${welcomeResult.success ? '✅' : '❌'}`);
+
+                } catch (error) {
+                    console.error("❌ Failed to process payment emails:", error);
+                }
+            });
         }
 
         // Аудит изменения статуса заказа

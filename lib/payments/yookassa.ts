@@ -79,7 +79,7 @@ export class YooKassaService {
                 capture: true,
                 confirmation: {
                     type: 'redirect',
-                    return_url: this.config.returnUrl,
+                    return_url: `${this.config.returnUrl}?order_id=${data.orderId}&payment=yookassa`,
                 },
                 description: data.description,
                 metadata: {

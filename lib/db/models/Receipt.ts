@@ -154,8 +154,7 @@ const ReceiptSchema = new Schema<IReceipt>(
     }
 );
 
-// Индексы для производительности
-ReceiptSchema.index({order: 1});
+// Индексы для производительности (order и user уже имеют index: true в полях)
 ReceiptSchema.index({user: 1, createdAt: -1});
 ReceiptSchema.index({status: 1, createdAt: -1});
 ReceiptSchema.index({"fiscalData.fiscalNumber": 1});

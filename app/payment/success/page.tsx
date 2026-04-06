@@ -1,7 +1,7 @@
 "use client";
 
 import {useState, useEffect, useCallback} from "react";
-import {redirect} from "next/navigation";
+import {useSearchParams, useRouter} from "next/navigation";
 import Link from "next/link";
 import {CheckCircle, XCircle, ArrowRight, Download, Mail, Loader2, RefreshCw} from "lucide-react";
 import {Button} from "@/components/ui/button";
@@ -25,12 +25,12 @@ interface OrderData {
     };
 }
 
-export default function PaymentSuccessPage({
-    searchParams,
-}: {
-    searchParams: Promise<{order_id?: string; payment_id?: string}>;
-}) {
-    const [orderId, setOrderId] = useState<string | null>(null);
+export default function PaymentSuccessPage() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    
+    const orderId = searchParams.get("order_id");
+    
     const [order, setOrder] = useState<OrderData | null>(null);
     const [loading, setLoading] = useState(true);
     const [polling, setPolling] = useState(false);
@@ -61,31 +61,24 @@ export default function PaymentSuccessPage({
 
     // Начальная загрузка
     useEffect(() => {
-        const init = async () => {
-            const params = await searchParams;
-            const id = params.order_id;
-
-            if (!id) {
-                redirect("/");
-                return;
-            }
-
-            setOrderId(id);
-            await checkStatus(id);
+        if (!orderId) {
+            // Нет order_id — показываем ошибку вместо редиректа
+            setError("order_id отсутствует в URL");
             setLoading(false);
+            return;
+        }
 
-            // Если статус pending — начинаем polling
-            if (order?.status === "pending") {
-                setPolling(true);
-            }
+        const init = async () => {
+            await checkStatus(orderId);
+            setLoading(false);
         };
 
         init();
-    }, [searchParams, checkStatus]);
+    }, [orderId, checkStatus]);
 
     // Polling для pending заказов
     useEffect(() => {
-        if (!polling || !orderId || pollCount >= MAX_POLL_ATTEMPTS) return;
+        if (!orderId || !polling || pollCount >= MAX_POLL_ATTEMPTS) return;
 
         const interval = setInterval(async () => {
             setPollCount((prev) => prev + 1);
@@ -93,7 +86,7 @@ export default function PaymentSuccessPage({
         }, POLL_INTERVAL);
 
         return () => clearInterval(interval);
-    }, [polling, orderId, pollCount, checkStatus]);
+    }, [orderId, polling, pollCount, checkStatus]);
 
     // Остановить polling по таймауту
     useEffect(() => {

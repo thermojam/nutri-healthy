@@ -5,363 +5,608 @@
    Версия: 3.0 (по spec.md)
    =========================================== */
 
+/* Глобальные стили для предотвращения дефектов на мобильных */
+html {
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100%;
+}
+
+/* ===========================================
+   GLOBAL CURSOR POINTER FOR INTERACTIVE ELEMENTS
+   =========================================== */
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+label[for],
+select,
+details,
+summary,
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
 /* Цветовая палитра - Light Theme (default) */
 :root {
-  /* Primary - фиолетовый (основной бренд) */
-  --primary-h: 271;
-  --primary-s: 68%;
-  --primary-l: 46%;
-  --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
-  --primary-foreground: hsl(0, 0%, 100%);
+    /* Primary - фиолетовый (основной бренд) */
+    --primary-h: 271;
+    --primary-s: 68%;
+    --primary-l: 46%;
+    --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    --primary-foreground: hsl(0, 0%, 100%);
 
-  /* Accent - оранжевый (акценты, CTA) */
-  --accent-h: 29;
-  --accent-s: 100%;
-  --accent-l: 66%;
-  --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-  --accent-foreground: hsl(0, 0%, 100%);
+    /* Accent - оранжевый (акценты, CTA) */
+    --accent-h: 29;
+    --accent-s: 100%;
+    --accent-l: 66%;
+    --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+    --accent-foreground: hsl(0, 0%, 100%);
 
-  /* Background & Surface */
-  --background: hsl(0, 0%, 100%);
-  --card: hsl(0, 0%, 100%);
-  --card-hover: hsl(240, 10%, 98%);
+    /* Logo - градиенты для светлой темы (оригинальные цвета из SVG) */
+    --logo-gradient-start-light: #ffbc42;
+    --logo-gradient-middle-light: #a355ff;
+    --logo-gradient-end-light: #a218ff;
+    --logo-stroke-light: #bf76fb;
 
-  /* Text */
-  --text: hsl(240, 21%, 15%);
-  --text-muted: hsl(240, 10%, 45%);
-  --text-inverse: hsl(0, 0%, 100%);
+    /* Background & Surface */
+    --background: hsl(0, 0%, 100%);
+    --card: hsl(0, 0%, 100%);
+    --card-hover: hsl(240, 10%, 98%);
 
-  /* Borders & Rings */
-  --border: hsl(240, 10%, 90%);
-  --ring: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    /* Text */
+    --text: hsl(240, 21%, 15%);
+    --text-muted: hsl(240, 10%, 45%);
+    --text-inverse: hsl(0, 0%, 100%);
 
-  /* Status colors */
-  --success: hsl(142, 76%, 36%);
-  --warning: hsl(38, 92%, 50%);
-  --error: hsl(0, 84%, 60%);
-  --info: hsl(217, 91%, 60%);
+    /* Borders & Rings */
+    --border: hsl(240, 10%, 90%);
+    --ring: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
 
-  /* Gradient - по референсу template.png */
-  --gradient-start: hsl(45, 100%, 85%);
-  --gradient-middle: hsl(271, 68%, 70%);
-  --gradient-end: hsl(240, 60%, 20%);
+    /* Status colors */
+    --success: hsl(142, 76%, 36%);
+    --warning: hsl(38, 92%, 50%);
+    --error: hsl(0, 84%, 60%);
+    --info: hsl(217, 91%, 60%);
+
+    /* Gradient - по референсу template.png (ВАРИАНТ 0 - ТЕКУЩИЙ) */
+    --gradient-start: hsl(41, 87%, 72%);
+    --gradient-middle: hsl(271, 68%, 70%);
+    --gradient-end: hsl(240, 60%, 20%);
+
+    /* ВАРИАНТ 1: Нежный рассвет */
+    --gradient-1-start: hsl(35, 100%, 90%);
+    --gradient-1-middle: hsl(280, 60%, 85%);
+    --gradient-1-end: hsl(260, 50%, 75%);
+
+    /* ВАРИАНТ 2: Энергия жизни */
+    --gradient-2-start: hsl(29, 100%, 66%);
+    --gradient-2-middle: hsl(271, 68%, 60%);
+    --gradient-2-end: hsl(265, 80%, 35%);
+
+    /* ВАРИАНТ 3: Природная гармония */
+    --gradient-3-start: hsl(142, 60%, 85%);
+    --gradient-3-middle: hsl(271, 50%, 80%);
+    --gradient-3-end: hsl(200, 40%, 70%);
+
+    /* ВАРИАНТ 4: Глубокий космос */
+    --gradient-4-start: hsl(280, 70%, 75%);
+    --gradient-4-middle: hsl(271, 68%, 50%);
+    --gradient-4-end: hsl(260, 80%, 25%);
+
+    /* ВАРИАНТ 5: Тёплый закат */
+    --gradient-5-start: hsl(35, 90%, 75%);
+    --gradient-5-middle: hsl(320, 70%, 65%);
+    --gradient-5-end: hsl(271, 68%, 55%);
 }
 
 /* Dark Theme */
 .dark {
-  /* Primary - более светлый фиолетовый для темной темы */
-  --primary-h: 271;
-  --primary-s: 76%;
-  --primary-l: 63%;
-  --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
-  --primary-foreground: hsl(0, 0%, 100%);
+    /* Primary - более светлый фиолетовый для темной темы */
+    --primary-h: 271;
+    --primary-s: 76%;
+    --primary-l: 63%;
+    --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    --primary-foreground: hsl(0, 0%, 100%);
 
-  /* Accent - оранжевый (ярче для темной темы) */
-  --accent-h: 29;
-  --accent-s: 100%;
-  --accent-l: 66%;
-  --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-  --accent-foreground: hsl(0, 0%, 100%);
+    /* Accent - оранжевый (ярче для темной темы) */
+    --accent-h: 29;
+    --accent-s: 100%;
+    --accent-l: 66%;
+    --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+    --accent-foreground: hsl(0, 0%, 100%);
 
-  /* Background & Surface */
-  --background: hsl(240, 10%, 6%);
-  --card: hsl(240, 10%, 10%);
-  --card-hover: hsl(240, 10%, 14%);
+    /* Logo - градиенты для темной темы (более яркие и насыщенные) */
+    --logo-gradient-start-dark: rgba(255, 174, 144, 0.82);
+    --logo-gradient-middle-dark: #cb56f4;
+    --logo-gradient-end-dark: #c778ff;
+    --logo-stroke-dark: #f2d2ff;
 
-  /* Text */
-  --text: hsl(0, 0%, 96%);
-  --text-muted: hsl(240, 10%, 65%);
-  --text-inverse: hsl(0, 0%, 100%);
+    /* Background & Surface - светлее для лучшей читаемости */
+    --background: hsl(240, 10%, 10%);
+    --card: hsl(240, 10%, 14%);
+    --card-hover: hsl(240, 10%, 18%);
 
-  /* Borders & Rings */
-  --border: hsl(240, 10%, 20%);
-  --ring: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    /* Text - контрастнее */
+    --text: hsl(0, 0%, 96%);
+    --text-muted: hsl(240, 10%, 70%);
+    --text-inverse: hsl(0, 0%, 100%);
 
-  /* Status colors (адаптированы для темной темы) */
-  --success: hsl(142, 76%, 46%);
-  --warning: hsl(38, 92%, 60%);
-  --error: hsl(0, 84%, 70%);
-  --info: hsl(217, 91%, 70%);
+    /* Borders & Rings - светлее */
+    --border: hsl(240, 10%, 25%);
+    --ring: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
 
-  /* Gradient - темная версия */
-  --gradient-start: hsl(240, 60%, 15%);
-  --gradient-middle: hsl(271, 76%, 40%);
-  --gradient-end: hsl(45, 100%, 70%);
+    /* Status colors (адаптированы для темной темы) */
+    --success: hsl(142, 76%, 46%);
+    --warning: hsl(38, 92%, 60%);
+    --error: hsl(0, 84%, 70%);
+    --info: hsl(217, 91%, 70%);
+
+    /* Gradient - темная версия (светлее) */
+    --gradient-start: hsl(240, 60%, 20%);
+    --gradient-middle: hsl(271, 76%, 50%);
+    --gradient-end: hsl(45, 100%, 75%);
 }
 
 /* ===========================================
    TAILWIND THEME CONFIG
    =========================================== */
 @theme inline {
-  /* Colors */
-  --color-background: var(--background);
-  --color-foreground: var(--text);
-  --color-card: var(--card);
-  --color-card-hover: var(--card-hover);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted: var(--text-muted);
-  --color-border: var(--border);
-  --color-ring: var(--ring);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-error: var(--error);
-  --color-info: var(--info);
+    /* Colors */
+    --color-background: var(--background);
+    --color-foreground: var(--text);
+    --color-card: var(--card);
+    --color-card-hover: var(--card-hover);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-muted: var(--text-muted);
+    --color-border: var(--border);
+    --color-ring: var(--ring);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-error: var(--error);
+    --color-info: var(--info);
 
-  /* Fonts */
-  --font-sans: var(--font-nunito), system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+    /* Fonts */
+    --font-sans: var(--font-nunito), system-ui, -apple-system, sans-serif;
+    --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  /* Border Radius */
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-full: 9999px;
+    /* Border Radius */
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+    --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 /* ===========================================
    BASE STYLES
    =========================================== */
 * {
-  border-color: var(--border);
-}
-
-html {
-  scroll-behavior: smooth;
+    border-color: var(--border);
 }
 
 body {
-  background: var(--background);
-  color: var(--text);
-  font-family: var(--font-nunito), system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    background: var(--background);
+    color: var(--text);
+    font-family: var(--font-nunito), system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ===========================================
    TYPOGRAPHY
    =========================================== */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--text);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text);
 }
 
 h1 {
-  font-size: clamp(2rem, 5vw, 3rem); /* 32px - 48px */
-  font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3rem); /* 32px - 48px */
+    font-weight: 700;
 }
 
 h2 {
-  font-size: clamp(1.5rem, 4vw, 2.25rem); /* 24px - 36px */
-  font-weight: 600;
+    font-size: clamp(1.5rem, 4vw, 2.25rem); /* 24px - 36px */
+    font-weight: 600;
 }
 
 h3 {
-  font-size: clamp(1.25rem, 3vw, 1.5rem); /* 20px - 24px */
-  font-weight: 600;
+    font-size: clamp(1.25rem, 3vw, 1.5rem); /* 20px - 24px */
+    font-weight: 600;
 }
 
 p {
-  font-size: 1rem; /* 16px */
-  line-height: 1.6;
-  color: var(--text-muted);
+    font-size: 1rem; /* 16px */
+    line-height: 1.6;
+    color: var(--text-muted);
 }
 
 /* ===========================================
    UTILITY CLASSES
    =========================================== */
 .container {
-  width: 100%;
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+    .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
 }
 
 @media (min-width: 768px) {
-  .container {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
 }
 
 /* Gradient background по template.png */
 .gradient-bg {
-  background: linear-gradient(
-    135deg,
-    var(--gradient-start) 0%,
-    var(--gradient-middle) 50%,
-    var(--gradient-end) 100%
-  );
+    background: linear-gradient(
+        155deg,
+        var(--gradient-start) 0%,
+        var(--gradient-middle) 50%,
+        var(--gradient-end) 100%
+    );
+}
+
+/* ВАРИАНТ 1: Нежный рассвет */
+.gradient-bg-1 {
+    background: linear-gradient(
+        135deg,
+        var(--gradient-1-start) 0%,
+        var(--gradient-1-middle) 50%,
+        var(--gradient-1-end) 100%
+    );
+}
+
+/* ВАРИАНТ 2: Энергия жизни */
+.gradient-bg-2 {
+    background: linear-gradient(
+        135deg,
+        var(--gradient-2-start) 0%,
+        var(--gradient-2-middle) 50%,
+        var(--gradient-2-end) 100%
+    );
+}
+
+/* ВАРИАНТ 3: Природная гармония */
+.gradient-bg-3 {
+    background: linear-gradient(
+        180deg,
+        var(--gradient-3-start) 0%,
+        var(--gradient-3-middle) 50%,
+        var(--gradient-3-end) 100%
+    );
+}
+
+/* ВАРИАНТ 4: Глубокий космос */
+.gradient-bg-4 {
+    background: linear-gradient(
+        135deg,
+        var(--gradient-4-start) 0%,
+        var(--gradient-4-middle) 50%,
+        var(--gradient-4-end) 100%
+    );
+}
+
+/* ВАРИАНТ 5: Тёплый закат */
+.gradient-bg-5 {
+    background: linear-gradient(
+        135deg,
+        var(--gradient-5-start) 0%,
+        var(--gradient-5-middle) 50%,
+        var(--gradient-5-end) 100%
+    );
 }
 
 /* Card styles */
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-2xl);
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
 }
 
 .card:hover {
-  background: var(--card-hover);
-  box-shadow: var(--shadow-md);
+    background: var(--card-hover);
+    box-shadow: var(--shadow-md);
 }
 
 /* Button base styles */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: var(--radius-full);
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: var(--radius-full);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: var(--primary-foreground);
+    background: var(--primary);
+    color: var(--primary-foreground);
 }
 
 .btn-primary:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+    filter: brightness(1.1);
+    transform: translateY(-1px);
 }
 
 .btn-accent {
-  background: var(--accent);
-  color: var(--accent-foreground);
+    background: var(--accent);
+    color: var(--accent-foreground);
 }
 
 .btn-accent:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+    filter: brightness(1.1);
+    transform: translateY(-1px);
 }
 
 .btn-outline {
-  background: transparent;
-  border: 2px solid var(--primary);
-  color: var(--primary);
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
 }
 
 .btn-outline:hover {
-  background: var(--primary);
-  color: var(--primary-foreground);
+    background: var(--primary);
+    color: var(--primary-foreground);
 }
 
 .btn-ghost {
-  background: transparent;
-  color: var(--text);
+    background: transparent;
+    color: var(--text);
 }
 
 .btn-ghost:hover {
-  background: var(--card-hover);
+    background: var(--card-hover);
 }
 
 /* Input styles */
 .input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  border: 2px solid var(--border);
-  border-radius: var(--radius-xl);
-  background: var(--card);
-  color: var(--text);
-  transition: all 0.2s ease;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-xl);
+    background: var(--card);
+    color: var(--text);
+    transition: all 0.2s ease;
 }
 
 .input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px hsl(var(--primary-h), var(--primary-s), var(--primary-l), 0.1);
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px hsl(var(--primary-h), var(--primary-s), var(--primary-l), 0.1);
 }
 
 .input::placeholder {
-  color: var(--text-muted);
+    color: var(--text-muted);
 }
 
 /* ===========================================
    ANIMATIONS
    =========================================== */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+    animation: fadeIn 0.6s ease-out forwards;
 }
 
 .animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(
+        90deg,
+        var(--background) 0%,
+        var(--card-hover) 50%,
+        var(--background) 100%
+    );
+    background-size: 1000px 100%;
+}
+
+/* Скрытие скроллбара для carousel */
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
 }
 
 /* ===========================================
    ACCESSIBILITY
    =========================================== */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 /* Focus visible styles */
 :focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 /* Selection */
 ::selection {
-  background: var(--primary);
-  color: var(--primary-foreground);
+    background: var(--primary);
+    color: var(--primary-foreground);
+}
+
+/* ===========================================
+   LOGO THEME SWITCHING
+   =========================================== */
+/* По умолчанию показываем светлую тему, скрываем темную */
+.logo-petal-dark,
+.logo-stroke-dark {
+    display: none;
+}
+
+.logo-petal-light,
+.logo-stroke-light {
+    display: block;
+}
+
+/* В темной теме показываем темную версию, скрываем светлую */
+.dark .logo-petal-dark,
+.dark .logo-stroke-dark {
+    display: block;
+}
+
+.dark .logo-petal-light,
+.dark .logo-stroke-light {
+    display: none;
+}
+
+/* ===========================================
+   SPINNER STYLES
+   =========================================== */
+.spinner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Трек (фон) */
+.spinner-track {
+    fill: none;
+    stroke: var(--spinner-track);
+}
+
+/* Индикатор (вращающийся сегмент) */
+.spinner-indicator {
+    fill: none;
+    stroke: var(--spinner-indicator);
+    stroke-linecap: round;
+    transform-origin: center;
+    animation: spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Primary вариант (градиент бренда) */
+.spinner-primary .spinner-track {
+    stroke: hsl(var(--primary-h), var(--primary-s), var(--primary-l), 0.2);
+}
+
+.spinner-primary .spinner-indicator {
+    stroke: var(--primary);
+}
+
+/* Accent вариант (оранжевый) */
+.spinner-accent .spinner-track {
+    stroke: var(--accent);
+    stroke-opacity: 0.2;
+}
+
+.spinner-accent .spinner-indicator {
+    stroke: var(--accent);
+}
+
+/* White вариант (для темных фонов) */
+.spinner-white .spinner-track {
+    stroke: rgba(255, 255, 255, 0.2);
+}
+
+.spinner-white .spinner-indicator {
+    stroke: #ffffff;
 }

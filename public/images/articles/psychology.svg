@@ -1,0 +1,27 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон с градиентом -->
+  <rect width="800" height="600" fill="url(#psychology-gradient)"/>
+  
+  <!-- Декоративные элементы -->
+  <circle cx="400" cy="300" r="150" fill="white" fill-opacity="0.1"/>
+  <circle cx="400" cy="300" r="100" fill="white" fill-opacity="0.15"/>
+  
+  <!-- Иконка мозга -->
+  <path d="M400 240C370 240 345 265 345 295C345 310 350 323 360 333C350 343 345 356 345 371C345 401 370 426 400 426C430 426 455 401 455 371C455 356 450 343 440 333C450 323 455 310 455 295C455 265 430 240 400 240Z" fill="white" fill-opacity="0.9"/>
+  <path d="M400 270L400 396" stroke="#7C3AED" stroke-width="3" stroke-linecap="round"/>
+  <path d="M370 300L430 300" stroke="#7C3AED" stroke-width="3" stroke-linecap="round"/>
+  <path d="M370 340L430 340" stroke="#7C3AED" stroke-width="3" stroke-linecap="round"/>
+  <path d="M370 380L430 380" stroke="#7C3AED" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Текст -->
+  <text x="400" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">ПСИХОЛОГИЯ</text>
+  
+  <!-- Градиенты -->
+  <defs>
+    <linearGradient id="psychology-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED"/>
+      <stop offset="50%" style="stop-color:#6D28D9"/>
+      <stop offset="100%" style="stop-color:#5B21B6"/>
+    </linearGradient>
+  </defs>
+</svg>

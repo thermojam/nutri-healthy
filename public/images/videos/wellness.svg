@@ -1,0 +1,28 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон с градиентом -->
+  <rect width="800" height="600" fill="url(#wellness-gradient)"/>
+  
+  <!-- Декоративные элементы -->
+  <circle cx="400" cy="300" r="150" fill="white" fill-opacity="0.1"/>
+  <circle cx="400" cy="300" r="100" fill="white" fill-opacity="0.15"/>
+  
+  <!-- Play кнопка -->
+  <circle cx="400" cy="300" r="80" fill="white" fill-opacity="0.2"/>
+  <polygon points="380,260 380,340 450,300" fill="white" fill-opacity="0.9"/>
+  
+  <!-- Иконка лотоса -->
+  <circle cx="400" cy="180" r="40" fill="white" fill-opacity="0.9"/>
+  <ellipse cx="400" cy="180" rx="15" ry="25" fill="#3B82F6"/>
+  
+  <!-- Текст -->
+  <text x="400" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">WELLNESS</text>
+  
+  <!-- Градиенты -->
+  <defs>
+    <linearGradient id="wellness-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6"/>
+      <stop offset="50%" style="stop-color:#2563EB"/>
+      <stop offset="100%" style="stop-color:#1D4ED8"/>
+    </linearGradient>
+  </defs>
+</svg>

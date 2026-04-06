@@ -1,0 +1,26 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон с градиентом -->
+  <rect width="800" height="600" fill="url(#nutrition-gradient)"/>
+  
+  <!-- Декоративные элементы -->
+  <circle cx="400" cy="300" r="150" fill="white" fill-opacity="0.1"/>
+  <circle cx="400" cy="300" r="100" fill="white" fill-opacity="0.15"/>
+  
+  <!-- Иконка яблока -->
+  <path d="M400 250C380 250 365 270 365 295C365 330 400 380 400 380C400 380 435 330 435 295C435 270 420 250 400 250Z" fill="white" fill-opacity="0.9"/>
+  <path d="M400 250C400 250 410 230 430 225" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <path d="M400 250C400 250 390 230 370 225" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="400" cy="220" rx="20" ry="10" fill="#4ADE80" fill-opacity="0.8"/>
+  
+  <!-- Текст -->
+  <text x="400" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">НУТРИЦИОЛОГИЯ</text>
+  
+  <!-- Градиенты -->
+  <defs>
+    <linearGradient id="nutrition-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="50%" style="stop-color:#059669"/>
+      <stop offset="100%" style="stop-color:#047857"/>
+    </linearGradient>
+  </defs>
+</svg>

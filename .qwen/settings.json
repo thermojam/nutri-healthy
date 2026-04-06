@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "mcp__hyperbrowser__scrape_webpage",
+      "Bash(sleep *)",
+      "Bash(curl *)",
+      "mcp__hyperbrowser__search_with_bing",
+      "mcp__hyperbrowser__browser_use_agent"
+    ]
+  },
+  "$version": 3
+}

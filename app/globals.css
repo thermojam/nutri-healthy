@@ -40,6 +40,9 @@ summary,
 
 /* Цветовая палитра - Light Theme (default) */
 :root {
+    --logo-stroke: #1C1C1E;
+    --logo-dot: #FF7A00;
+
     /* Primary - фиолетовый (основной бренд) */
     --primary-h: 271;
     --primary-s: 68%;
@@ -113,6 +116,9 @@ summary,
 
 /* Dark Theme */
 .dark {
+    --logo-stroke: #FFFFFF;
+    --logo-dot: #FF7A00;
+
     /* Primary - более светлый фиолетовый для темной темы */
     --primary-h: 271;
     --primary-s: 76%;

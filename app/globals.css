@@ -40,8 +40,12 @@ summary,
 
 /* Цветовая палитра - Light Theme (default) */
 :root {
-    --logo-stroke: #1C1C1E;
-    --logo-dot: #FF7A00;
+    --logo-bg: #ffffff;
+    --logo-ring: #e9d5ff;
+    --logo-stroke: #7c3aed;
+    --logo-dot: #f97316;
+    --logo-text-primary: #18181b;
+    --logo-text-secondary: #52525b;
 
     /* Primary - фиолетовый (основной бренд) */
     --primary-h: 271;
@@ -87,37 +91,16 @@ summary,
     --gradient-start: hsl(41, 87%, 72%);
     --gradient-middle: hsl(271, 68%, 70%);
     --gradient-end: hsl(240, 60%, 20%);
-
-    /* ВАРИАНТ 1: Нежный рассвет */
-    --gradient-1-start: hsl(35, 100%, 90%);
-    --gradient-1-middle: hsl(280, 60%, 85%);
-    --gradient-1-end: hsl(260, 50%, 75%);
-
-    /* ВАРИАНТ 2: Энергия жизни */
-    --gradient-2-start: hsl(29, 100%, 66%);
-    --gradient-2-middle: hsl(271, 68%, 60%);
-    --gradient-2-end: hsl(265, 80%, 35%);
-
-    /* ВАРИАНТ 3: Природная гармония */
-    --gradient-3-start: hsl(142, 60%, 85%);
-    --gradient-3-middle: hsl(271, 50%, 80%);
-    --gradient-3-end: hsl(200, 40%, 70%);
-
-    /* ВАРИАНТ 4: Глубокий космос */
-    --gradient-4-start: hsl(280, 70%, 75%);
-    --gradient-4-middle: hsl(271, 68%, 50%);
-    --gradient-4-end: hsl(260, 80%, 25%);
-
-    /* ВАРИАНТ 5: Тёплый закат */
-    --gradient-5-start: hsl(35, 90%, 75%);
-    --gradient-5-middle: hsl(320, 70%, 65%);
-    --gradient-5-end: hsl(271, 68%, 55%);
 }
 
 /* Dark Theme */
 .dark {
-    --logo-stroke: #FFFFFF;
-    --logo-dot: #FF7A00;
+    --logo-bg: #18181b;
+    --logo-ring: #3f3f46;
+    --logo-stroke: #c084fc;
+    --logo-dot: #fb923c;
+    --logo-text-primary: #fafafa;
+    --logo-text-secondary: #a1a1aa;
 
     /* Primary - более светлый фиолетовый для темной темы */
     --primary-h: 271;
@@ -281,56 +264,6 @@ p {
         var(--gradient-start) 0%,
         var(--gradient-middle) 50%,
         var(--gradient-end) 100%
-    );
-}
-
-/* ВАРИАНТ 1: Нежный рассвет */
-.gradient-bg-1 {
-    background: linear-gradient(
-        135deg,
-        var(--gradient-1-start) 0%,
-        var(--gradient-1-middle) 50%,
-        var(--gradient-1-end) 100%
-    );
-}
-
-/* ВАРИАНТ 2: Энергия жизни */
-.gradient-bg-2 {
-    background: linear-gradient(
-        135deg,
-        var(--gradient-2-start) 0%,
-        var(--gradient-2-middle) 50%,
-        var(--gradient-2-end) 100%
-    );
-}
-
-/* ВАРИАНТ 3: Природная гармония */
-.gradient-bg-3 {
-    background: linear-gradient(
-        180deg,
-        var(--gradient-3-start) 0%,
-        var(--gradient-3-middle) 50%,
-        var(--gradient-3-end) 100%
-    );
-}
-
-/* ВАРИАНТ 4: Глубокий космос */
-.gradient-bg-4 {
-    background: linear-gradient(
-        135deg,
-        var(--gradient-4-start) 0%,
-        var(--gradient-4-middle) 50%,
-        var(--gradient-4-end) 100%
-    );
-}
-
-/* ВАРИАНТ 5: Тёплый закат */
-.gradient-bg-5 {
-    background: linear-gradient(
-        135deg,
-        var(--gradient-5-start) 0%,
-        var(--gradient-5-middle) 50%,
-        var(--gradient-5-end) 100%
     );
 }
 

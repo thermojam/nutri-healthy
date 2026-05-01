@@ -61,9 +61,6 @@ export default function Footer() {
                     <div className="space-y-4">
                         <Link href="/" className="flex items-center gap-2">
                             <Logo size="md"/>
-                            <div>
-                                <p className="font-semibold text-lg">Ксения Каменская</p>
-                            </div>
                         </Link>
                         <p className="text-sm text-muted">
                             Индивидуальные консультации по нутрициологии и health-коучингу.

@@ -1,5 +1,5 @@
-import React, { useId } from "react";
-import { cn } from "@/lib/utils";
+import React, {useId} from "react";
+import {cn} from "@/lib/utils";
 
 interface LogoProps {
     className?: string;
@@ -24,8 +24,8 @@ interface LogoProps {
 export function Logo({
                          className,
                          size = "md",
-                         expertName = "Kate Kovalska",
-                         expertTitle = "Holistic Nutrition Expert",
+                         expertName = "Ksenia Kamenskaya",
+                         expertTitle = "Holistic Expert",
                      }: LogoProps) {
     const id = useId();
 
@@ -106,15 +106,23 @@ export function Logo({
                     strokeLinejoin="round"
                 >
                     {/* Left K */}
-                    <path d="M32 24 V72" />
-                    <path d="M32 48 L48 24" />
-                    <path d="M32 48 L48 72" />
+                    <path d="M28 24 V72" />
+                    <path d="M28 48 L42 26" />
+                    <path d="M28 48 L42 70" />
 
                     {/* Right mirrored K */}
-                    <path d="M64 24 V72" />
-                    <path d="M64 48 L48 24" />
-                    <path d="M64 48 L48 72" />
+                    <path d="M68 24 V72" />
+                    <path d="M68 48 L54 26" />
+                    <path d="M68 48 L54 70" />
                 </g>
+
+                {/* Center dot */}
+                <circle
+                    cx="48"
+                    cy="48"
+                    r="4.5"
+                    fill="var(--logo-dot)"
+                />
 
                 {/* Center dot */}
                 <circle
@@ -126,31 +134,36 @@ export function Logo({
             </svg>
 
             {/* Expert Info */}
-            <div className="flex flex-col leading-tight">
-                <span
-                    className={cn(
-                        "font-semibold tracking-tight",
-                        current.name
-                    )}
-                    style={{
-                        color: "var(--logo-text-primary)",
-                    }}
-                >
-                    {expertName}
-                </span>
+            <div className="hidden sm:flex flex-col leading-[1.05]">
+    <span
+        className={cn(
+            "font-semibold tracking-[-0.03em]",
+            size === "sm" && "text-xs",
+            size === "md" && "text-sm",
+            size === "lg" && "text-base"
+        )}
+        style={{
+            color: "var(--logo-text-primary)",
+        }}
+    >
+        {expertName}
+    </span>
 
                 <span
                     className={cn(
-                        "font-medium opacity-80",
-                        current.title
+                        "font-medium opacity-70 tracking-[-0.01em]",
+                        size === "sm" && "text-[10px]",
+                        size === "md" && "text-xs",
+                        size === "lg" && "text-sm"
                     )}
                     style={{
                         color: "var(--logo-text-secondary)",
                     }}
                 >
-                    {expertTitle}
-                </span>
+        {expertTitle}
+    </span>
             </div>
+
         </div>
     );
 }

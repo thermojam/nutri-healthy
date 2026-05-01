@@ -13,15 +13,8 @@ export interface IVideo extends Document {
     category: "nutrition" | "psychology" | "wellness" | "gymnastics";
     tags: string[];
     published: boolean;
-    publishedAt?: Date;
-    views: number;
     featured: boolean;
     order: number;
-    transcript?: string;
-    seo: {
-        metaTitle: string;
-        metaDescription: string;
-    };
     createdAt: Date;
     updatedAt: Date;
 }
@@ -41,17 +34,13 @@ const VideoSchema = new Schema<IVideo>(
         },
         tags: [String],
         published: {type: Boolean, default: false},
-        publishedAt: Date,
-        views: {type: Number, default: 0},
         featured: {type: Boolean, default: false},
         order: {type: Number, default: 0},
-        transcript: String,
-        seo: {metaTitle: String, metaDescription: String},
     },
     {timestamps: true}
 );
 
-VideoSchema.index({published: 1, publishedAt: -1});
+VideoSchema.index({published: 1, createdAt: -1});
 VideoSchema.index({category: 1});
 VideoSchema.index({featured: 1});
 

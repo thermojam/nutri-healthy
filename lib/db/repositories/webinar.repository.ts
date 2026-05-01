@@ -15,7 +15,7 @@ export class WebinarRepository {
   async findPublished(limit: number = 10): Promise<IWebinar[]> {
     await connectDB();
     return Webinar.find({ published: true })
-      .sort({ publishedAt: -1, order: 1 })
+      .sort({ order: 1, createdAt: -1 })
       .limit(limit)
       .exec();
   }
@@ -23,15 +23,8 @@ export class WebinarRepository {
   async findFeatured(limit: number = 1): Promise<IWebinar[]> {
     await connectDB();
     return Webinar.find({ published: true, featured: true })
-      .sort({ order: 1, publishedAt: -1 })
+      .sort({ order: 1, createdAt: -1 })
       .limit(limit)
-      .exec();
-  }
-
-  async findFreeWebinars(): Promise<IWebinar[]> {
-    await connectDB();
-    return Webinar.find({ published: true, accessType: "free" })
-      .sort({ publishedAt: -1 })
       .exec();
   }
 
@@ -48,11 +41,6 @@ export class WebinarRepository {
   async delete(slug: string): Promise<void> {
     await connectDB();
     await Webinar.deleteOne({ slug });
-  }
-
-  async updateViews(slug: string): Promise<void> {
-    await connectDB();
-    await Webinar.updateOne({ slug }, { $inc: { views: 1 } });
   }
 }
 

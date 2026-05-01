@@ -34,9 +34,6 @@ export async function GET(
             );
         }
 
-        // Увеличиваем счетчик просмотров
-        await videoRepository.updateViews(slug);
-
         return NextResponse.json({
             success: true,
             data: video,

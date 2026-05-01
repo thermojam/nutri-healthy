@@ -45,7 +45,7 @@ export default function VideosPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/videos")
+    fetch("/api/videos?limit=100")
       .then((res) => res.json())
       .then((data) => {
         setVideos(data.data || []);

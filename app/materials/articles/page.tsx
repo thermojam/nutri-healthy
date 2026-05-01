@@ -41,7 +41,7 @@ export default function ArticlesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/articles")
+    fetch("/api/articles?limit=100")
       .then((res) => res.json())
       .then((data) => {
         setArticles(data.data || []);

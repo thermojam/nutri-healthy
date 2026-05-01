@@ -20,9 +20,6 @@ export async function GET(
             );
         }
 
-        // Увеличиваем счетчик просмотров
-        await articleRepository.updateViews(slug);
-
         return NextResponse.json({
             success: true,
             data: article,

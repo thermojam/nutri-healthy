@@ -15,7 +15,7 @@ export class ArticleRepository {
     async findPublished(limit: number = 10): Promise<IArticle[]> {
         await connectDB();
         return Article.find({published: true})
-            .sort({publishedAt: -1, order: 1})
+            .sort({order: 1, createdAt: -1})
             .limit(limit)
             .exec();
     }
@@ -23,7 +23,7 @@ export class ArticleRepository {
     async findFeatured(limit: number = 3): Promise<IArticle[]> {
         await connectDB();
         return Article.find({published: true, featured: true})
-            .sort({order: 1, publishedAt: -1})
+            .sort({order: 1, createdAt: -1})
             .limit(limit)
             .exec();
     }
@@ -34,7 +34,7 @@ export class ArticleRepository {
     ): Promise<IArticle[]> {
         await connectDB();
         return Article.find({published: true, category})
-            .sort({publishedAt: -1})
+            .sort({createdAt: -1})
             .limit(limit)
             .exec();
     }
@@ -54,15 +54,6 @@ export class ArticleRepository {
         await Article.deleteOne({slug});
     }
 
-    async updateViews(slug: string): Promise<void> {
-        await connectDB();
-        await Article.updateOne({slug}, {$inc: {views: 1}});
-    }
-
-    async getArticlesCount(): Promise<number> {
-        await connectDB();
-        return Article.countDocuments({published: true});
-    }
 }
 
 export const articleRepository = new ArticleRepository();

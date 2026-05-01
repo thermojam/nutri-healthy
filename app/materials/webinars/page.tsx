@@ -38,7 +38,7 @@ export default function WebinarsPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("/api/webinars")
+        fetch("/api/webinars?limit=100")
             .then((res) => res.json())
             .then((data) => {
                 setWebinars(data.data || []);

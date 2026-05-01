@@ -10,11 +10,7 @@ export interface IArticle extends Document {
     category: "nutrition" | "psychology" | "wellness" | "lifestyle";
     tags: string[];
     published: boolean;
-    publishedAt?: Date;
-    seo: { metaTitle: string; metaDescription: string; keywords: string[] };
     readingTime: number;
-    views: number;
-    relatedArticles: mongoose.Types.ObjectId[];
     featured: boolean;
     order: number;
     createdAt: Date;
@@ -36,18 +32,14 @@ const ArticleSchema = new Schema<IArticle>(
         },
         tags: [String],
         published: {type: Boolean, default: false},
-        publishedAt: Date,
-        seo: {metaTitle: String, metaDescription: String, keywords: [String]},
         readingTime: {type: Number, default: 5},
-        views: {type: Number, default: 0},
-        relatedArticles: [{type: Schema.Types.ObjectId, ref: "Article"}],
         featured: {type: Boolean, default: false},
         order: {type: Number, default: 0},
     },
     {timestamps: true}
 );
 
-ArticleSchema.index({published: 1, publishedAt: -1});
+ArticleSchema.index({published: 1, createdAt: -1});
 ArticleSchema.index({category: 1});
 ArticleSchema.index({featured: 1});
 

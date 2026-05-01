@@ -82,9 +82,9 @@ export function MaterialsSection() {
 
     useEffect(() => {
         Promise.all([
-            fetch("/api/articles").then((res) => res.json()),
-            fetch("/api/videos").then((res) => res.json()),
-            fetch("/api/webinars").then((res) => res.json()),
+            fetch("/api/articles?featured=true&limit=3").then((res) => res.json()),
+            fetch("/api/videos?featured=true&limit=3").then((res) => res.json()),
+            fetch("/api/webinars?featured=true&limit=1").then((res) => res.json()),
         ])
             .then(([articlesData, videosData, webinarsData]) => {
                 setArticles(articlesData.data || []);

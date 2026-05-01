@@ -13,7 +13,6 @@ import {InfoBlockWithBadges} from "@/components/ui/info-block";
 import {Spinner} from "@/components/ui/spinner";
 import OrderModal from "@/components/features/order-modal";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
-import {CreditCard, Percent, Wallet} from "lucide-react";
 import {cn} from "@/lib/utils";
 import type {ObjectId} from "mongoose";
 

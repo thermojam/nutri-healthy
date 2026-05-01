@@ -52,7 +52,7 @@ export default function HeroSection({data}: HeroSectionProps) {
             />
 
 
-            <div className="relative z-10 container px-4 py-10 md:py-16">
+            <div className="relative z-10 container px-4 py-18 md:py-16">
                 <div className="max-w-5xl mx-auto text-center">
 
                     {/* Heading */}
@@ -64,14 +64,14 @@ export default function HeroSection({data}: HeroSectionProps) {
 
                     {/* Description */}
                     <FadeIn direction="up" delay={0.3}>
-                        <p className="mt-3 max-w-4xl mx-auto hero-description-emphasis">
+                        <p className="mt-3 sm:mt-4 md:mt-6 px-2 sm:px-4 max-w-4xl mx-auto text-xs sm:text-sm md:text-base lg:text-lg hero-description-emphasis">
                             {heroData.description}
                         </p>
                     </FadeIn>
 
                     {/* Image */}
                     <FadeIn direction="up" delay={0.4}>
-                        <div className="relative mt-6 flex justify-center">
+                        <div className="relative mt-2 flex justify-center">
 
                             {/* Floating elements */}
                             <div className="hidden md:block absolute left-10 top-1/3 w-24 h-24 bg-white/10 rounded-full backdrop-blur-md"/>

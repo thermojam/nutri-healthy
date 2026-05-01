@@ -41,7 +41,7 @@ summary,
 /* Цветовая палитра - Light Theme (default) */
 :root {
     --logo-bg: #ffffff;
-    --logo-ring: #e9d5ff;
+    --logo-ring: #c084fc;
     --logo-stroke: #7c3aed;
     --logo-dot: #f97316;
     --logo-text-primary: #18181b;
@@ -96,7 +96,7 @@ summary,
 /* Dark Theme */
 .dark {
     --logo-bg: #18181b;
-    --logo-ring: #3f3f46;
+    --logo-ring: #c084fc;
     --logo-stroke: #c084fc;
     --logo-dot: #fb923c;
     --logo-text-primary: #fafafa;

@@ -176,9 +176,8 @@ export function ProductsSection({services}: ProductsSectionProps) {
                     <FadeIn delay={0.3}>
                         <div
                             className={cn(
-                                "grid gap-5 sm:gap-6",
-                                GRID_COLS[activeTab as keyof typeof GRID_COLS],
-                                activeTab === "health_coaching" && "max-w-2xl mx-auto"
+                                "grid gap-5 sm:gap-6 w-full",
+                                GRID_COLS[activeTab as keyof typeof GRID_COLS]
                             )}
                         >
                             {filteredServices.map((service) => (

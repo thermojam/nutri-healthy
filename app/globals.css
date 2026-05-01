@@ -172,6 +172,7 @@ summary,
     /* Fonts */
     --font-sans: var(--font-nunito), system-ui, -apple-system, sans-serif;
     --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+    --font-elegant: var(--font-elegant, 'Playfair Display', serif);
 
     /* Border Radius */
     --radius-lg: 0.75rem;
@@ -357,6 +358,20 @@ p {
 
 .input::placeholder {
     color: var(--text-muted);
+}
+
+/* Hero section styles */
+.hero-description-emphasis {
+    font-family: var(--font-elegant);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--primary);
+    line-height: 1.6;
+}
+
+/* Dark theme - оранжевый цвет на темной теме */
+.dark .hero-description-emphasis {
+    color: var(--accent);
 }
 
 /* ===========================================

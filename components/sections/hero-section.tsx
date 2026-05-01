@@ -45,14 +45,14 @@ export default function HeroSection({data}: HeroSectionProps) {
     };
 
     return (
-        <div className="relative min-h-screen overflow-hidden flex items-center justify-center pt-20 rounded-b-[4rem] md:rounded-b-[6rem]">
+        <div className="relative min-h-screen overflow-hidden flex items-center justify-center pt-12 rounded-b-[4rem] md:rounded-b-[6rem]">
             <AnimatedBackground
                 className="absolute inset-0"
                 gradientVariant={gradientVariant}
             />
 
 
-            <div className="relative z-10 container px-4 py-20 md:py-28">
+            <div className="relative z-10 container px-4 py-10 md:py-16">
                 <div className="max-w-5xl mx-auto text-center">
 
                     {/* Heading */}
@@ -64,14 +64,14 @@ export default function HeroSection({data}: HeroSectionProps) {
 
                     {/* Description */}
                     <FadeIn direction="up" delay={0.3}>
-                        <p className="mt-6 text-lg md:text-xl text-secondary max-w-2xl mx-auto leading-relaxed hero-description">
+                        <p className="mt-3 max-w-4xl mx-auto hero-description-emphasis">
                             {heroData.description}
                         </p>
                     </FadeIn>
 
                     {/* Image */}
                     <FadeIn direction="up" delay={0.4}>
-                        <div className="relative mt-10 flex justify-center">
+                        <div className="relative mt-6 flex justify-center">
 
                             {/* Floating elements */}
                             <div className="hidden md:block absolute left-10 top-1/3 w-24 h-24 bg-white/10 rounded-full backdrop-blur-md"/>
@@ -90,14 +90,26 @@ export default function HeroSection({data}: HeroSectionProps) {
 
                     {/* CTA */}
                     <FadeIn direction="up" delay={0.5}>
-                        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center hero-description">
-                            <Button size="lg" className="gap-2 shadow-lg">
-                                {heroData.ctaPrimary}
-                                <ArrowRight className="h-4 w-4"/>
+                        <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center hero-description">
+                            <Button asChild size="lg" className="gap-2 shadow-lg">
+                                <a href="#services" onClick={(e) => {
+                                    e.preventDefault();
+                                    const el = document.getElementById("services");
+                                    el?.scrollIntoView({behavior: "smooth"});
+                                }}>
+                                    {heroData.ctaPrimary}
+                                    <ArrowRight className="h-4 w-4"/>
+                                </a>
                             </Button>
 
-                            <Button variant="secondary" size="lg" className="shadow-lg">
-                                {heroData.ctaSecondary}
+                            <Button variant="secondary" asChild size="lg" className="shadow-lg">
+                                <a href="#about" onClick={(e) => {
+                                    e.preventDefault();
+                                    const el = document.getElementById("about");
+                                    el?.scrollIntoView({behavior: "smooth"});
+                                }}>
+                                    {heroData.ctaSecondary}
+                                </a>
                             </Button>
                         </div>
                     </FadeIn>

@@ -1,5 +1,5 @@
 import type {Metadata} from "next";
-import {Nunito} from "next/font/google";
+import {Nunito, Playfair_Display} from "next/font/google";
 import {ThemeProvider} from "next-themes";
 import {AnalyticsProvider} from "@/components/analytics";
 import {ErrorBoundary} from "@/components/ui/error-boundary";
@@ -11,6 +11,13 @@ const nunito = Nunito({
     subsets: ["cyrillic", "latin"],
     display: "swap",
     weight: ["400", "500", "600", "700", "800"],
+});
+
+const playfair = Playfair_Display({
+    variable: "--font-elegant",
+    subsets: ["cyrillic", "latin"],
+    display: "swap",
+    weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -91,7 +98,7 @@ export default function RootLayout({
     return (
         <html
             lang="ru"
-            className={`${nunito.variable} h-full antialiased`}
+            className={`${nunito.variable} ${playfair.variable} h-full antialiased`}
             suppressHydrationWarning
         >
         <body className="min-h-screen flex flex-col overflow-x-hidden">

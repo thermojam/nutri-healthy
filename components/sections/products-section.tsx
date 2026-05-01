@@ -5,6 +5,7 @@ import Link from "next/link";
 import {useRouter, useSearchParams} from "next/navigation";
 import {FadeIn} from "@/components/motion/fade-in";
 import {Button} from "@/components/ui/button";
+import {ServiceCardButton} from "@/components/ui/service-card-button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {InfoBlockWithBadges} from "@/components/ui/info-block";
@@ -224,9 +225,8 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                         </div>
 
                                         {/* Кнопка "Выбрать" */}
-                                        <Button
-                                            className="w-full"
-                                            variant={service.popular ? "default" : "outline"}
+                                        <ServiceCardButton
+                                            isPopular={service.popular}
                                             onClick={() => {
                                                 setSelectedService({
                                                     serviceId: service._id.toString(),
@@ -238,7 +238,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                             }}
                                         >
                                             Выбрать
-                                        </Button>
+                                        </ServiceCardButton>
 
                                         {/* Рассрочка */}
                                         {service.pricing.base >= 3000 && (

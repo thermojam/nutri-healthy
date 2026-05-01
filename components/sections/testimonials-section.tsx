@@ -1,4 +1,4 @@
-import {Quote, Star} from "lucide-react";
+import {Star} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
@@ -6,18 +6,7 @@ import {FadeIn} from "@/components/motion/fade-in";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {SECTION_BADGES} from "@/lib/constants/section-badges";
 import {cn} from "@/lib/utils";
-import Image from "next/image";
 import type {ObjectId} from "mongoose";
-
-// Fallback изображения для отзывов с Unsplash (реальные люди)
-const testimonialImageFallbacks = [
-    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=400&fit=crop&crop=face",  // Екатерина
-    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=400&fit=crop&crop=face",  // Анна
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&crop=face",  // Михаил (мужчина)
-    "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=600&h=400&fit=crop&crop=face",  // Ольга
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=400&fit=crop&crop=face",  // Ирина
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=400&fit=crop&crop=face",  // Дмитрий (мужчина)
-];
 
 interface Testimonial {
     _id: string | ObjectId;
@@ -52,85 +41,46 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
                     <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
                         {SECTION_BADGES.testimonials}
                     </Badge>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-                        Отзывы тех, кто уже с нами
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
+                        500+ довольных клиентов
                     </h2>
-                    <p className="text-base sm:text-lg text-muted max-w-3xl mx-auto leading-relaxed">
-                        Более 500 женщин уже восстановили здоровье и обрели энергию.
-                        <strong className="text-foreground"> 98% клиентов</strong> рекомендуют меня
-                        подругам — это лучшая оценка моей работы. Читайте честные отзывы.
-                    </p>
                 </FadeIn>
 
                 <Carousel showDots={true} showArrows={false}>
-                    {testimonials.map((testimonial, index) => (
+                    {testimonials.map((testimonial) => (
                         <CarouselItem key={testimonial._id.toString()}>
-                            <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
-                                <CardContent className="p-0 flex-1 flex flex-col">
-                                    {/* Изображение отзыва */}
-                                    {(testimonial.image?.url || testimonialImageFallbacks[index % testimonialImageFallbacks.length]) && (
-                                        <div className="relative h-40 sm:h-48 w-full overflow-hidden">
-                                            <Image
-                                                src={testimonial.image?.url || testimonialImageFallbacks[index % testimonialImageFallbacks.length]}
-                                                alt={testimonial.image?.alt || testimonial.title}
-                                                fill
-                                                className="object-cover"
+                            <Card className="h-full hover:shadow-sm transition-shadow overflow-hidden flex flex-col bg-gradient-to-br from-background to-muted/20">
+                                <CardContent className="p-5 sm:p-6 flex-1 flex flex-col space-y-3">
+                                    {/* Рейтинг звёзд */}
+                                    <div className="flex items-center gap-1">
+                                        {[...Array(5)].map((_, i) => (
+                                            <Star
+                                                key={i}
+                                                className={cn(
+                                                    "h-4 w-4 sm:h-5 sm:w-5",
+                                                    i < testimonial.rating
+                                                        ? "fill-accent text-accent"
+                                                        : "text-border"
+                                                )}
                                             />
-                                        </div>
-                                    )}
-
-                                    <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 flex-1 flex flex-col">
-                                    {/* Автор и рейтинг */}
-                                    <div className="flex items-start justify-between gap-2 sm:gap-4">
-                                        <div className="min-w-0 flex-1">
-                                            <h4 className="font-semibold text-sm sm:text-base truncate">
-                                                {testimonial.author.anonymized
-                                                    ? "Анонимно"
-                                                    : testimonial.author.name}
-                                            </h4>
-                                            <div className="flex items-center gap-0.5 sm:gap-1">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star
-                                                        key={i}
-                                                        className={cn(
-                                                            "h-3 w-3 sm:h-4 sm:w-4",
-                                                            i < testimonial.rating
-                                                                ? "fill-accent text-accent"
-                                                                : "text-border"
-                                                        )}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                        {testimonial.verified && (
-                                            <Badge variant="success" className="text-xs flex-shrink-0">
-                                                ✓ Проверен
-                                            </Badge>
-                                        )}
+                                        ))}
                                     </div>
 
-                                    {/* Заголовок */}
-                                    <h3 className="text-base sm:text-lg font-semibold leading-tight">
-                                        "{testimonial.title}"
-                                    </h3>
+                                    {/* Текст отзыва */}
+                                    <p className="text-sm sm:text-base leading-relaxed flex-1">
+                                        {testimonial.content}
+                                    </p>
 
-                                    {/* Текст отзыва - растягивается */}
-                                    <blockquote className="relative flex-1">
-                                        <Quote className="absolute -top-2 -left-2 h-5 w-5 sm:h-6 sm:w-6 text-primary/20"/>
-                                        <p className="text-muted text-sm leading-relaxed pl-4">
-                                            {testimonial.content}
-                                        </p>
-                                    </blockquote>
-
-                                    {/* Услуга - всегда внизу */}
-                                    <div className="pt-3 sm:pt-4 border-t border-border mt-auto">
+                                    {/* Автор и услуга */}
+                                    <div className="pt-2 border-t border-border/50">
+                                        <h4 className="font-semibold text-sm">
+                                            {testimonial.author.anonymized
+                                                ? "Анонимно"
+                                                : testimonial.author.name}
+                                        </h4>
                                         <p className="text-xs text-muted">
-                                            Услуга:{" "}
-                                            <span className="font-medium text-foreground">
-                                                {testimonial.serviceName}
-                                            </span>
+                                            {testimonial.serviceName}
                                         </p>
-                                    </div>
                                     </div>
                                 </CardContent>
                             </Card>

@@ -1,4 +1,3 @@
-import {Quote} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
@@ -6,15 +5,25 @@ import {FadeIn} from "@/components/motion/fade-in";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {SECTION_BADGES} from "@/lib/constants/section-badges";
 import {cn} from "@/lib/utils";
-import Image from "next/image";
 import type {ObjectId} from "mongoose";
 
-// Fallback изображения для кейсов с Unsplash (реальные люди)
-const caseImageFallbacks = [
-    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=400&fit=crop&crop=face",  // Екатерина
-    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=400&fit=crop&crop=face",  // Анна
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&crop=face",  // Михаил (мужчина)
-];
+function getInitials(name: string): string {
+    return name
+        .split(" ")
+        .map(n => n[0])
+        .join("")
+        .toUpperCase();
+}
+
+function getAvatarColor(name: string): string {
+    const colors = [
+        "bg-amber-100 text-amber-700",
+        "bg-rose-100 text-rose-700",
+        "bg-purple-100 text-purple-700",
+        "bg-blue-100 text-blue-700",
+    ];
+    return colors[name.length % colors.length];
+}
 
 interface Case {
     _id: string | ObjectId;
@@ -69,74 +78,58 @@ export function CasesSection({cases}: CasesSectionProps) {
                 </FadeIn>
 
                 <Carousel showDots={true} showArrows={false}>
-                    {cases.map((caseItem, index) => (
+                    {cases.map((caseItem) => (
                         <CarouselItem key={caseItem._id.toString()}>
-                            <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden flex flex-col">
-                                <CardContent className="p-0 flex-1 flex flex-col">
-                                    {/* Изображение кейса */}
-                                    {(caseItem.image?.url || caseImageFallbacks[index % caseImageFallbacks.length]) && (
-                                        <div className="relative h-40 sm:h-48 w-full overflow-hidden">
-                                            <Image
-                                                src={caseItem.image?.url || caseImageFallbacks[index % caseImageFallbacks.length]}
-                                                alt={caseItem.image?.alt || caseItem.title}
-                                                fill
-                                                className="object-cover"
-                                            />
+                            <Card className="h-full hover:shadow-sm transition-shadow overflow-hidden flex flex-col bg-gradient-to-br from-background to-muted/20">
+                                <CardContent className="p-5 sm:p-6 flex-1 flex flex-col space-y-4">
+                                    {/* Шапка с аватаром и информацией */}
+                                    <div className="flex items-center gap-4">
+                                        <div className={cn(
+                                            "w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm sm:text-base",
+                                            getAvatarColor(caseItem.client.name)
+                                        )}>
+                                            {getInitials(caseItem.client.name)}
                                         </div>
-                                    )}
-
-                                    <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 flex-1 flex flex-col">
-                                    {/* Заголовок и клиент */}
-                                    <div className="flex items-start justify-between gap-2 sm:gap-4">
                                         <div className="min-w-0 flex-1">
-                                            <h3 className="font-semibold text-sm sm:text-base truncate">
-                                                {caseItem.client.anonymized
-                                                    ? "Анонимно"
-                                                    : caseItem.client.name}
+                                            <h3 className="font-semibold text-base sm:text-lg">
+                                                {caseItem.client.anonymized ? "Анонимно" : caseItem.client.name}
                                             </h3>
-                                            <p className="text-xs sm:text-sm text-muted truncate">
-                                                {caseItem.client.age && `${caseItem.client.age} лет`} •{" "}
-                                                {caseItem.serviceName}
+                                            <p className="text-xs sm:text-sm text-muted">
+                                                {caseItem.client.age && `${caseItem.client.age} лет`} • {caseItem.duration}
                                             </p>
                                         </div>
-                                        <Badge variant="outline" className="text-xs flex-shrink-0 whitespace-nowrap">{caseItem.duration}</Badge>
                                     </div>
 
-                                    {/* Название кейса */}
-                                    <h3 className="text-base sm:text-lg font-bold leading-tight">{caseItem.title}</h3>
+                                    {/* Результат - яркий заголовок */}
+                                    <h3 className="text-base sm:text-lg font-bold text-primary leading-snug">
+                                        {caseItem.title}
+                                    </h3>
 
-                                    {/* Проблема */}
-                                    <div>
-                                        <p className="text-xs sm:text-sm text-muted mb-1">Запрос:</p>
-                                        <p className="text-sm">{caseItem.problem}</p>
+                                    {/* Два столбца БЫЛО / СТАЛО */}
+                                    <div className="grid grid-cols-2 gap-4 flex-1 py-2">
+                                        <div>
+                                            <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">Было</p>
+                                            <p className="text-xs sm:text-sm leading-relaxed">{caseItem.problem}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-semibold text-primary uppercase tracking-wide mb-2">Стало</p>
+                                            <ul className="text-xs sm:text-sm space-y-1">
+                                                {caseItem.results.map((result, i) => (
+                                                    <li key={i} className="leading-relaxed">
+                                                        <span className="font-bold text-primary">{result.value}</span>
+                                                        {result.metric && <span className="text-muted text-xs"> {result.metric}</span>}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     </div>
 
-                                    {/* Результаты - растягивается */}
-                                    <div className="space-y-1.5 sm:space-y-2 flex-1">
-                                        <p className="text-xs sm:text-sm text-muted font-medium">Результаты:</p>
-                                        {caseItem.results.map((result, i) => (
-                                            <div key={i} className="flex items-start gap-1.5 sm:gap-2 text-sm">
-                                                <span className="text-primary font-bold flex-shrink-0">✓</span>
-                                                <span className="break-words">
-                                                    <strong className="text-primary">{result.value}</strong>
-                                                    {result.metric && (
-                                                        <span className="text-muted"> {result.metric}</span>
-                                                    )}
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {/* Отзыв - всегда внизу */}
+                                    {/* Отзыв в конце */}
                                     {caseItem.testimonial && (
-                                        <blockquote
-                                            className="border-l-2 sm:border-l-4 border-primary pl-3 sm:pl-4 italic text-muted text-sm mt-auto"
-                                        >
-                                            <Quote className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1 sm:mr-2 -mt-1 opacity-50"/>
-                                            <span className="break-words">{caseItem.testimonial}</span>
+                                        <blockquote className="border-l-2 border-primary pl-3 py-2 text-xs sm:text-sm italic text-primary/80 leading-snug">
+                                            &ldquo;{caseItem.testimonial}&rdquo;
                                         </blockquote>
                                     )}
-                                    </div>
                                 </CardContent>
                             </Card>
                         </CarouselItem>

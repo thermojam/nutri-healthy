@@ -9,7 +9,6 @@ import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {InfoBlock} from "@/components/ui/info-block";
 import {FileCheck} from "lucide-react";
 import {Spinner} from "@/components/ui/spinner";
-import {SECTION_BADGES} from "@/lib/constants/section-badges";
 
 interface Education {
     _id: string;
@@ -74,9 +73,6 @@ export default function EducationSection() {
         <section id="education" className="py-24 bg-card">
             <div className="container">
                 <FadeIn className="text-center mb-12">
-                    <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
-                        {SECTION_BADGES.education}
-                    </Badge>
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
                         Образование и дипломы
                     </h2>

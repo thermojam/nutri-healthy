@@ -4,9 +4,11 @@ import {useState} from "react";
 import Image from "next/image";
 import {ArrowRight} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {AnimatedBackground} from "@/components/motion/animated-background";
 import {GradientPreview} from "@/components/features/gradient-preview";
+import {SECTION_BADGES} from "@/lib/constants/section-badges";
 
 interface HeroSectionProps {
     data?: {
@@ -54,6 +56,13 @@ export default function HeroSection({data}: HeroSectionProps) {
 
             <div className="relative z-10 container px-4 py-18 md:py-16">
                 <div className="max-w-5xl mx-auto text-center">
+
+                    {/* Badge */}
+                    <FadeIn direction="up" delay={0.1}>
+                        <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
+                            {SECTION_BADGES.hero}
+                        </Badge>
+                    </FadeIn>
 
                     {/* Heading */}
                     <FadeIn direction="up" delay={0.2}>

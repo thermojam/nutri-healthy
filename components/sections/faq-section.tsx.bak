@@ -1,7 +1,6 @@
 "use client";
 
 import {Button} from "@/components/ui/button";
-import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {
     Accordion,
@@ -9,7 +8,6 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import {SECTION_BADGES} from "@/lib/constants/section-badges";
 
 interface FAQSectionProps {
     data?: {
@@ -106,9 +104,6 @@ export default function FAQSection({data}: FAQSectionProps) {
         <section id="faq" className="py-16 sm:py-24 bg-card">
             <div className="container px-3 sm:px-4 md:px-6">
                 <FadeIn className="text-center mb-8 sm:mb-12">
-                    <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
-                        {SECTION_BADGES.faq}
-                    </Badge>
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                         Ответы на ваши вопросы
                     </h2>

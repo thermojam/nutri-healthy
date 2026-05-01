@@ -4,6 +4,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {Carousel, CarouselItem} from "@/components/ui/carousel";
+import {SECTION_BADGES} from "@/lib/constants/section-badges";
 import {cn} from "@/lib/utils";
 import Image from "next/image";
 import type {ObjectId} from "mongoose";
@@ -48,6 +49,9 @@ export function TestimonialsSection({testimonials}: TestimonialsSectionProps) {
         <section id="reviews" className="py-16 sm:py-24 bg-background">
             <div className="container px-3 sm:px-4 md:px-6">
                 <FadeIn className="text-center mb-8 sm:mb-12">
+                    <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
+                        {SECTION_BADGES.testimonials}
+                    </Badge>
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                         Отзывы тех, кто уже с нами
                     </h2>

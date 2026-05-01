@@ -7,13 +7,11 @@ import {z} from "zod";
 import {Send, CheckCircle, AlertCircle} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-import {Badge} from "@/components/ui/badge";
 import {PhoneInput} from "@/components/ui/phone-input";
 import {Card, CardContent} from "@/components/ui/card";
 import {FadeIn} from "@/components/motion/fade-in";
 import {LegalConsentCheckboxes} from "@/components/features/legal-consent-checkboxes";
 import {contactFormSchema} from "@/lib/validations";
-import {SECTION_BADGES} from "@/lib/constants/section-badges";
 
 type FormData = z.infer<typeof contactFormSchema> & {
     marketingChannels?: ("email" | "sms" | "telegram" | "whatsapp")[];
@@ -146,9 +144,6 @@ export default function ContactSection({data}: ContactSectionProps) {
                     <FadeIn direction="right">
                         <div className="space-y-6">
                             <div>
-                                <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
-                                    {SECTION_BADGES.contact}
-                                </Badge>
                                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                                     {contactData.title}
                                 </h2>

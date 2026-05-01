@@ -11,6 +11,7 @@ import {Badge} from "@/components/ui/badge";
 import {InfoBlockWithBadges} from "@/components/ui/info-block";
 import {Spinner} from "@/components/ui/spinner";
 import OrderModal from "@/components/features/order-modal";
+import {SECTION_BADGES} from "@/lib/constants/section-badges";
 import {cn} from "@/lib/utils";
 import type {ObjectId} from "mongoose";
 
@@ -140,7 +141,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                 <div className="container">
                     <FadeIn className="text-center mb-8 sm:mb-12">
                         <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
-                            Программы
+                            {SECTION_BADGES.products}
                         </Badge>
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                             Услуги и программы

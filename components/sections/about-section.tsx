@@ -3,9 +3,11 @@
 import {useEffect, useState} from "react";
 import Image from "next/image";
 import {motion} from "framer-motion";
+import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
 import {Spinner} from "@/components/ui/spinner";
+import {SECTION_BADGES} from "@/lib/constants/section-badges";
 
 interface EducationItem {
     _id: string;
@@ -53,6 +55,9 @@ export default function AboutSection() {
         <section id="about" className="py-16 sm:py-24 bg-background">
             <div className="container">
                 <FadeIn className="text-center mb-8 sm:mb-12">
+                    <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
+                        {SECTION_BADGES.about}
+                    </Badge>
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Обо мне</h2>
                     <p className="text-base sm:text-lg text-muted max-w-2xl mx-auto">
                         Я специалист по интегративному подходу к здоровью и психике

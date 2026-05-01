@@ -201,19 +201,19 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                         </Badge>
                                     )}
 
-                                    <CardContent className="p-4 sm:p-6 space-y-4">
-                                        {/* Заголовок */}
-                                        <div className="space-y-1">
+                                    <CardContent className="p-4 sm:p-6 flex flex-col h-full">
+                                        {/* Заголовок и описание */}
+                                        <div className="space-y-1 mb-4 flex-grow">
                                             <h3 className="text-lg sm:text-xl font-bold text-foreground">
                                                 {service.title}
                                             </h3>
-                                            <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                                            <p className="text-xs sm:text-sm text-muted leading-relaxed line-clamp-2">
                                                 {service.description}
                                             </p>
                                         </div>
 
                                         {/* Информация и цена */}
-                                        <div className="flex items-center justify-between text-sm border-t border-b border-border py-3">
+                                        <div className="flex items-center justify-between text-sm border-t border-b border-border py-3 mb-4">
                                             <span className="text-muted text-xs">
                                                 {service.duration?.base
                                                     ? formatDuration(service.duration.base)
@@ -242,7 +242,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
 
                                         {/* Рассрочка */}
                                         {service.pricing.base >= 3000 && (
-                                            <p className="text-xs text-muted text-center">
+                                            <p className="text-xs text-muted text-center mt-2">
                                                 или от{" "}
                                                 <span className="font-semibold text-primary">
                                                     {formatPrice(Math.round(service.pricing.base / 4))}
@@ -254,7 +254,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                         {/* Ссылка на подробнее */}
                                         <Link
                                             href={`/services/${service.slug}`}
-                                            className="text-xs sm:text-sm text-primary hover:underline flex items-center justify-center"
+                                            className="text-xs sm:text-sm text-primary hover:underline flex items-center justify-center mt-3"
                                         >
                                             Подробнее об услуге →
                                         </Link>

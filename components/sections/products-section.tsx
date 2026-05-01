@@ -3,31 +3,36 @@
 import {useState, useEffect} from "react";
 import Link from "next/link";
 import {useRouter, useSearchParams} from "next/navigation";
-import Image from "next/image";
 import {FadeIn} from "@/components/motion/fade-in";
-import {Check, Star} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {InfoBlockWithBadges} from "@/components/ui/info-block";
 import {Spinner} from "@/components/ui/spinner";
 import OrderModal from "@/components/features/order-modal";
-import {Carousel, CarouselItem} from "@/components/ui/carousel";
 import {cn} from "@/lib/utils";
 import type {ObjectId} from "mongoose";
 
-// Fallback изображения для услуг с Unsplash
-const serviceImageFallbacks = [
-    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=400&fit=crop",  // Нутрициология
-    "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop",  // Health-коучинг
-    "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=400&fit=crop",  // Гимнастика
-];
+const TABS = [
+    {key: "nutrition", label: "Короткие"},
+    {key: "health_coaching", label: "Длительные"},
+    {key: "slavic_gymnastics", label: "Гимнастика"},
+] as const;
+
+const GRID_COLS = {
+    nutrition: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+    health_coaching: "grid-cols-1",
+    slavic_gymnastics: "grid-cols-1 sm:grid-cols-2",
+} as const;
+
+type Category = "nutrition" | "health_coaching" | "slavic_gymnastics" | "other";
 
 interface Service {
     _id: string | ObjectId;
     slug: string;
     title: string;
     description: string;
+    category?: Category;
     icon?: string;
     image?: {
         url: string;
@@ -37,6 +42,11 @@ interface Service {
         base: number;
         premium: number;
         vip: number;
+    };
+    duration?: {
+        base?: number;
+        premium?: number;
+        vip?: number;
     };
     features: {
         base: string[];
@@ -55,6 +65,12 @@ function formatPrice(price: number): string {
     }).format(price);
 }
 
+function formatDuration(minutes: number): string {
+    if (minutes < 60) return `${minutes} мин`;
+    const hours = Math.round((minutes / 60) * 10) / 10;
+    return hours === Math.floor(hours) ? `${Math.floor(hours)} ч` : `${hours} ч`;
+}
+
 interface ProductsSectionProps {
     services: Service[];
 }
@@ -67,7 +83,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
         price: number;
     } | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [activeTariffs, setActiveTariffs] = useState<Record<string, "base" | "premium" | "vip">>({});
+    const [activeTab, setActiveTab] = useState<Category>("nutrition");
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -83,52 +99,21 @@ export function ProductsSection({services}: ProductsSectionProps) {
         }
     }, [searchParams, router]);
 
-    const handleTariffSelect = (service: Service, tariff: "base" | "premium" | "vip") => {
-        setSelectedService({
-            serviceId: service._id.toString(),
-            serviceName: service.title,
-            tariff,
-            price: service.pricing[tariff],
-        });
-        setIsModalOpen(true);
-    };
-
     const handleOrderSuccess = (orderId: string) => {
         console.log("Order created:", orderId);
-        // Модалка закроется автоматически после редиректа на платежную систему
-        // Не показываем успех здесь - пользователь будет перенаправлен на платежную страницу
     };
 
     const handleOrderError = (error: string) => {
         console.error("Order error:", error);
-        // Показываем ошибку пользователю через toast или alert
         if (typeof window !== "undefined") {
             alert(`Ошибка при создании заказа: ${error}`);
         }
     };
 
-    const getTariffData = (service: Service, tariff: "base" | "premium" | "vip") => {
-        const prices = {
-            base: service.pricing.base,
-            premium: service.pricing.premium,
-            vip: service.pricing.vip,
-        };
-        const features = {
-            base: service.features.base,
-            premium: service.features.premium,
-            vip: service.features.vip,
-        };
-        const labels = {
-            base: "Базовый",
-            premium: "Оптимальный",
-            vip: "VIP",
-        };
-        return {
-            price: prices[tariff],
-            features: features[tariff],
-            label: labels[tariff],
-        };
-    };
+    // Фильтруем услуги по активной вкладке
+    const filteredServices = services.filter(
+        (service) => (service.category || "nutrition") === activeTab
+    );
 
     // Если нет данных из БД
     if (services.length === 0) {
@@ -137,7 +122,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                 <div className="container">
                     <FadeIn className="text-center mb-8 sm:mb-12">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-                            Услуги и тарифы
+                            Услуги и программы
                         </h2>
                         <div className="flex justify-center items-center">
                             <Spinner size="lg" />
@@ -153,6 +138,9 @@ export function ProductsSection({services}: ProductsSectionProps) {
             <section id="services" className="py-16 sm:py-24 bg-background">
                 <div className="container">
                     <FadeIn className="text-center mb-8 sm:mb-12">
+                        <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
+                            Программы
+                        </Badge>
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                             Услуги и программы
                         </h2>
@@ -164,138 +152,118 @@ export function ProductsSection({services}: ProductsSectionProps) {
                         </p>
                     </FadeIn>
 
-                    <Carousel showDots={true} showArrows={false}>
-                        {services.map((service, index) => {
-                            const activeTariff = activeTariffs[service._id.toString()] || "premium";
-                            const tariffData = getTariffData(service, activeTariff);
+                    {/* Таб-навигация */}
+                    <FadeIn delay={0.2} className="mb-8 sm:mb-12">
+                        <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
+                            {TABS.map((tab) => (
+                                <button
+                                    key={tab.key}
+                                    onClick={() => setActiveTab(tab.key as Category)}
+                                    className={cn(
+                                        "px-5 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                                        activeTab === tab.key
+                                            ? "bg-primary text-primary-foreground"
+                                            : "border border-border text-foreground hover:bg-muted/50"
+                                    )}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
+                    </FadeIn>
 
-                            return (
-                                <CarouselItem key={service._id.toString()}>
-                                    <Card
-                                        className={cn(
-                                            "relative h-full overflow-hidden transition-all duration-300",
-                                            service.popular ? "border-primary border-2 shadow-lg" : "hover:shadow-lg"
+                    {/* Сетка карточек */}
+                    <FadeIn delay={0.3}>
+                        <div
+                            className={cn(
+                                "grid gap-5 sm:gap-6",
+                                GRID_COLS[activeTab as keyof typeof GRID_COLS],
+                                activeTab === "health_coaching" && "max-w-2xl mx-auto"
+                            )}
+                        >
+                            {filteredServices.map((service) => (
+                                <Card
+                                    key={service._id.toString()}
+                                    className={cn(
+                                        "relative overflow-hidden transition-all duration-300",
+                                        service.popular
+                                            ? "border-warning border-2 shadow-md hover:shadow-lg"
+                                            : "border-border hover:shadow-md"
+                                    )}
+                                >
+                                    {/* Badge "ПОПУЛЯРНОЕ" */}
+                                    {service.popular && (
+                                        <Badge
+                                            variant="default"
+                                            className="absolute top-3 right-3 z-10 uppercase text-xs tracking-wide bg-orange-400 text-white hover:bg-orange-500"
+                                        >
+                                            Популярное
+                                        </Badge>
+                                    )}
+
+                                    <CardContent className="p-4 sm:p-6 space-y-4">
+                                        {/* Заголовок */}
+                                        <div className="space-y-1">
+                                            <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                                                {service.title}
+                                            </h3>
+                                            <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                                                {service.description}
+                                            </p>
+                                        </div>
+
+                                        {/* Информация и цена */}
+                                        <div className="flex items-center justify-between text-sm border-t border-b border-border py-3">
+                                            <span className="text-muted text-xs">
+                                                {service.duration?.base
+                                                    ? formatDuration(service.duration.base)
+                                                    : "по запросу"}
+                                            </span>
+                                            <span className="text-lg sm:text-xl font-bold text-primary">
+                                                от {formatPrice(service.pricing.base)}
+                                            </span>
+                                        </div>
+
+                                        {/* Кнопка "Выбрать" */}
+                                        <Button
+                                            className="w-full"
+                                            variant={service.popular ? "default" : "outline"}
+                                            onClick={() => {
+                                                setSelectedService({
+                                                    serviceId: service._id.toString(),
+                                                    serviceName: service.title,
+                                                    tariff: "premium",
+                                                    price: service.pricing.premium,
+                                                });
+                                                setIsModalOpen(true);
+                                            }}
+                                        >
+                                            Выбрать
+                                        </Button>
+
+                                        {/* Рассрочка */}
+                                        {service.pricing.base >= 3000 && (
+                                            <p className="text-xs text-muted text-center">
+                                                или от{" "}
+                                                <span className="font-semibold text-primary">
+                                                    {formatPrice(Math.round(service.pricing.base / 4))}
+                                                </span>{" "}
+                                                / мес
+                                            </p>
                                         )}
-                                    >
-                                        {service.popular && (
-                                            <div className="absolute top-0 right-0 z-10">
-                                                <Badge className="rounded-bl-xl rounded-tr-none bg-primary">
-                                                    <Star className="h-3 w-3 mr-1"/>
-                                                    Популярный
-                                                </Badge>
-                                            </div>
-                                        )}
 
-                                        <CardContent className="p-0">
-                                            {/* Изображение услуги */}
-                                            {(service.image?.url || serviceImageFallbacks[index]) && (
-                                                <div className="relative h-40 sm:h-48 w-full overflow-hidden">
-                                                    <Image
-                                                        src={service.image?.url || serviceImageFallbacks[index]}
-                                                        alt={service.image?.alt || service.title}
-                                                        fill
-                                                        className="object-cover"
-                                                    />
-                                                </div>
-                                            )}
-
-                                            <div className="p-4 sm:p-6 space-y-4">
-                                                {/* Заголовок */}
-                                                <div className="text-center space-y-2">
-                                                    <h3 className="text-lg sm:text-xl font-bold">{service.title}</h3>
-                                                    <p className="text-xs sm:text-sm text-muted">{service.description}</p>
-                                                </div>
-
-                                                {/* Вкладки тарифов */}
-                                                <div className="flex p-1 bg-muted/50 rounded-xl">
-                                                    {(["base", "premium", "vip"] as const).map((tariff) => {
-                                                        const isActive = activeTariff === tariff;
-                                                        const data = getTariffData(service, tariff);
-                                                        return (
-                                                            <button
-                                                                key={tariff}
-                                                                onClick={() => setActiveTariffs(prev => ({
-                                                                    ...prev,
-                                                                    [service._id.toString()]: tariff
-                                                                }))}
-                                                                className={cn(
-                                                                    "flex-1 px-2 py-3 rounded-lg text-xs font-medium transition-all duration-200",
-                                                                    isActive
-                                                                        ? "bg-white dark:bg-card text-foreground shadow-sm"
-                                                                        : "text-muted hover:text-foreground hover:bg-muted/50"
-                                                                )}
-                                                            >
-                                                                <div
-                                                                    className="font-semibold whitespace-nowrap">{data.label}</div>
-                                                                <div className={cn(
-                                                                    "text-xs mt-1 font-semibold",
-                                                                    isActive ? "text-primary" : "text-muted"
-                                                                )}>
-                                                                    {formatPrice(data.price)}
-                                                                </div>
-                                                            </button>
-                                                        );
-                                                    })}
-                                                </div>
-
-                                                {/* Контент активного тарифа */}
-                                                <div className="space-y-3 min-h-[280px]">
-                                                    <div className="flex justify-between items-center">
-                                                        <span className="font-medium">{tariffData.label}</span>
-                                                        <span className="text-xl sm:text-2xl font-bold text-primary">
-                                                        {formatPrice(tariffData.price)}
-                                                    </span>
-                                                    </div>
-
-                                                    <ul className="space-y-2">
-                                                        {tariffData.features.slice(0, 5).map((feature, i) => (
-                                                            <li key={i} className="flex items-start gap-2 text-sm">
-                                                                <Check className={cn(
-                                                                    "h-4 w-4 shrink-0 mt-0.5",
-                                                                    activeTariff === "premium" ? "text-primary" : "text-success"
-                                                                )}/>
-                                                                <span className="text-muted">{feature}</span>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-
-                                                    <Button
-                                                        className="w-full text-sm"
-                                                        variant={activeTariff === "premium" ? "default" : "outline"}
-                                                        onClick={() => handleTariffSelect(service, activeTariff as "base" | "premium" | "vip")}
-                                                    >
-                                                        {activeTariff === "premium" ? "Выбрать" : `Выбрать (${tariffData.label})`}
-                                                    </Button>
-
-                                                    {/* Рассрочка */}
-                                                    {tariffData.price >= 3000 && (
-                                                        <div className="text-center pt-2 border-t border-border">
-                                                            <p className="text-xs text-muted">
-                                                                Или в рассрочку от{" "}
-                                                                <span className="font-semibold text-primary">
-                                                                {formatPrice(Math.round(tariffData.price / 4))}
-                                                            </span>{" "}
-                                                                / мес
-                                                            </p>
-                                                        </div>
-                                                    )}
-
-                                                    <div className="pt-3 border-t border-border">
-                                                        <Link
-                                                            href={`/services/${service.slug}`}
-                                                            className="text-xs sm:text-sm text-primary hover:underline flex items-center justify-center gap-1"
-                                                        >
-                                                            Подробнее об услуге →
-                                                        </Link>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </CarouselItem>
-                            );
-                        })}
-                    </Carousel>
+                                        {/* Ссылка на подробнее */}
+                                        <Link
+                                            href={`/services/${service.slug}`}
+                                            className="text-xs sm:text-sm text-primary hover:underline flex items-center justify-center"
+                                        >
+                                            Подробнее об услуге →
+                                        </Link>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    </FadeIn>
 
                     {/* Рассрочки и оплата */}
                     <FadeIn delay={0.6}>
@@ -316,7 +284,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                     {/* CTA блок */}
                     <FadeIn delay={0.7} className="mt-12">
                         <div
-                            className="bg-gradient-to-br from-primary/10 via-background to-accent/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-primary/20">
+                            className="bg-linear-to-br from-primary/10 via-background to-accent/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-primary/20">
                             <div className="text-center space-y-3 sm:space-y-4">
                                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold px-2">
                                     💫 Не знаете, с чего начать?

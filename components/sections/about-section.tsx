@@ -13,7 +13,17 @@ interface EducationItem {
     institution: string;
     specialty: string;
     year: string;
+    startDate: string;
 }
+
+const WORK_AREAS = [
+    "Усталость, апатия, ПМС и нерегулярный цикл",
+    "Лишний вес и проблемы с метаболизмом",
+    "Эмоциональное нестабильность и стресс",
+    "Проблемы с самооценкой и личными границами",
+    "Пищевые расстройства и переедание",
+    "Жизненные сценарии и родовые программы",
+];
 
 export default function AboutSection() {
     const [education, setEducation] = useState<EducationItem[]>([]);
@@ -23,10 +33,13 @@ export default function AboutSection() {
         fetch("/api/education")
             .then((res) => res.json())
             .then((data) => {
-                const formatted = (data.data || []).slice(0, 5).map((item: any) => ({
-                    ...item,
-                    year: new Date(item.startDate).getFullYear().toString(),
-                }));
+                const formatted = (data.data || [])
+                    .map((item: Record<string, unknown>) => ({
+                        ...item,
+                        year: new Date(item.startDate as string).getFullYear().toString(),
+                    }))
+                    .sort((a: EducationItem, b: EducationItem) => parseInt(b.year) - parseInt(a.year))
+                    .slice(0, 5);
                 setEducation(formatted);
                 setLoading(false);
             })
@@ -96,8 +109,27 @@ export default function AboutSection() {
                             </div>
                         </FadeIn>
 
-                        {/* Timeline пути */}
+                        {/* С чем я работаю */}
                         <FadeIn direction="left" delay={0.6}>
+                            <div>
+                                <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">С чем я работаю</h3>
+                                <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                    {WORK_AREAS.map((area, idx) => (
+                                        <StaggerItem key={idx}>
+                                            <div className="flex items-start gap-3 p-3 sm:p-4 rounded-lg border border-border/50 bg-primary/5 hover:bg-primary/10 transition-colors">
+                                                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"/>
+                                                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                                                    {area}
+                                                </p>
+                                            </div>
+                                        </StaggerItem>
+                                    ))}
+                                </StaggerChildren>
+                            </div>
+                        </FadeIn>
+
+                        {/* Мои квалификации */}
+                        <FadeIn direction="left" delay={0.8}>
                             <div>
                                 <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Мои квалификации</h3>
                                 {loading ? (
@@ -106,11 +138,15 @@ export default function AboutSection() {
                                     </div>
                                 ) : (
                                     <StaggerChildren className="space-y-3 sm:space-y-4">
-                                        {education.map((item, index) => (
+                                        {education.map((item) => (
                                             <StaggerItem key={item._id}>
-                                                <div className="flex gap-3 sm:gap-4 items-start">
+                                                <motion.div
+                                                initial={{opacity: 0, x: -10}}
+                                                whileInView={{opacity: 1, x: 0}}
+                                                viewport={{once: true}}
+                                                className="flex gap-3 sm:gap-4 items-start">
                                                     <div
-                                                        className="flex-shrink-0 w-12 sm:w-16 text-primary font-bold text-sm sm:text-lg">
+                                                        className="shrink-0 w-12 sm:w-16 text-primary font-bold text-sm sm:text-lg">
                                                         {item.year}
                                                     </div>
                                                     <div
@@ -120,7 +156,7 @@ export default function AboutSection() {
                                                             {item.institution} • {item.specialty}
                                                         </p>
                                                     </div>
-                                                </div>
+                                                </motion.div>
                                             </StaggerItem>
                                         ))}
                                     </StaggerChildren>

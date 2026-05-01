@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FileText, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,7 +10,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-children";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { Spinner } from "@/components/ui/spinner";
+import { MaterialsGridSkeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 
 interface Article {
@@ -74,11 +74,9 @@ export default function ArticlesPage() {
 
         {/* Список статей */}
         <section className="py-24 bg-background">
-          <div className="container">
+          <div className="container px-3 sm:px-4 md:px-6">
             {loading ? (
-              <div className="flex justify-center py-12">
-                <Spinner size="lg" />
-              </div>
+              <MaterialsGridSkeleton count={6} />
             ) : articles.length === 0 ? (
               <div className="text-center py-12 space-y-4">
                 <p className="text-muted">Статьи в процессе наполнения</p>

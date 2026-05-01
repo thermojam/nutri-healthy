@@ -4,12 +4,12 @@ import {useEffect, useState} from "react";
 import {Calendar, Clock, Play} from "lucide-react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
-import {Card, CardContent} from "@/components/ui/card";
+import {Card} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import {Spinner} from "@/components/ui/spinner";
+import {WebinarCardSkeleton} from "@/components/ui/skeleton";
 
 interface Webinar {
     _id: string;
@@ -73,8 +73,10 @@ export default function WebinarsPage() {
                 <section className="py-24 bg-background">
                     <div className="container">
                         {loading ? (
-                            <div className="flex justify-center py-12">
-                                <Spinner size="lg"/>
+                            <div className="space-y-4">
+                                {Array.from({length: 2}).map((_, i) => (
+                                    <WebinarCardSkeleton key={i} />
+                                ))}
                             </div>
                         ) : webinars.length === 0 ? (
                             <div className="text-center py-12 space-y-4">

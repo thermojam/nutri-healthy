@@ -10,7 +10,7 @@ import ContactSection from "@/components/sections/contact-section";
 import {serviceRepository} from "@/lib/db/repositories/service.repository";
 import {caseRepository} from "@/lib/db/repositories/case.repository";
 import {testimonialRepository} from "@/lib/db/repositories/testimonial.repository";
-import {Skeleton} from "@/components/ui/skeleton";
+import {Skeleton, CasesCarouselSkeleton, TestimonialCarouselSkeleton} from "@/components/ui/skeleton";
 import {ProductsSection} from "@/components/sections/products-section";
 import {MaterialsSection} from "@/components/sections/materials-section";
 import {TestimonialsSection} from "@/components/sections/testimonials-section";
@@ -67,16 +67,30 @@ async function TestimonialsSectionWrapper() {
 // Skeletons
 function ProductsSectionSkeleton() {
     return (
-        <section className="py-16 md:py-24" id="services">
-            <div className="container">
-                <Skeleton className="h-12 w-64 mx-auto mb-12"/>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section className="py-16 sm:py-24" id="services">
+            <div className="container px-3 sm:px-4 md:px-6">
+                <div className="text-center mb-8 sm:mb-12">
+                    <Skeleton className="h-8 w-20 mx-auto mb-3 rounded-full" />
+                    <Skeleton className="h-10 sm:h-12 w-72 mx-auto mb-4 rounded-lg" />
+                    <Skeleton className="h-5 w-full max-w-3xl mx-auto rounded-lg" />
+                </div>
+                <div className="flex flex-wrap gap-2 sm:gap-3 justify-center mb-8 sm:mb-12">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="space-y-4">
-                            <Skeleton className="h-48 w-full rounded-2xl"/>
-                            <Skeleton className="h-6 w-3/4"/>
-                            <Skeleton className="h-4 w-full"/>
-                            <Skeleton className="h-10 w-32"/>
+                        <div key={i} className="px-5 py-2 rounded-full border border-border bg-muted h-10 w-24 animate-pulse" />
+                    ))}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                    {[1, 2, 3].map((i) => (
+                        <div key={i} className="space-y-4 p-4 sm:p-6 border border-border rounded-lg bg-gradient-to-br from-background to-muted/20">
+                            <Skeleton className="h-6 w-3/4 rounded-lg" />
+                            <Skeleton className="h-4 w-full rounded-lg" />
+                            <Skeleton className="h-4 w-full rounded-lg" />
+                            <div className="space-y-2 pt-2">
+                                <Skeleton className="h-8 w-full rounded-lg" />
+                                <Skeleton className="h-8 w-full rounded-lg" />
+                                <Skeleton className="h-8 w-full rounded-lg" />
+                            </div>
+                            <Skeleton className="h-10 w-full rounded-lg" />
                         </div>
                     ))}
                 </div>
@@ -87,15 +101,14 @@ function ProductsSectionSkeleton() {
 
 function CasesSectionSkeleton() {
     return (
-        <section id="cases" className="py-24 bg-card">
-            <div className="container">
-                <Skeleton className="h-10 w-64 mx-auto mb-4"/>
-                <Skeleton className="h-5 w-96 mx-auto mb-12"/>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {[1, 2, 3].map((i) => (
-                        <Skeleton key={i} className="h-64 w-full rounded-2xl"/>
-                    ))}
+        <section id="cases" className="py-16 sm:py-24 bg-card">
+            <div className="container px-3 sm:px-4 md:px-6">
+                <div className="text-center mb-8 sm:mb-12">
+                    <Skeleton className="h-8 w-20 mx-auto mb-3 rounded-full" />
+                    <Skeleton className="h-10 sm:h-12 w-64 mx-auto mb-4 rounded-lg" />
+                    <Skeleton className="h-5 w-96 mx-auto rounded-lg" />
                 </div>
+                <CasesCarouselSkeleton count={1} />
             </div>
         </section>
     );
@@ -103,15 +116,13 @@ function CasesSectionSkeleton() {
 
 function TestimonialsSectionSkeleton() {
     return (
-        <section id="reviews" className="py-24">
-            <div className="container">
-                <Skeleton className="h-10 w-64 mx-auto mb-4"/>
-                <Skeleton className="h-5 w-96 mx-auto mb-12"/>
-                <div className="grid md:grid-cols-2 gap-6">
-                    {[1, 2].map((i) => (
-                        <Skeleton key={i} className="h-48 w-full rounded-2xl"/>
-                    ))}
+        <section id="reviews" className="py-16 sm:py-24 bg-background">
+            <div className="container px-3 sm:px-4 md:px-6">
+                <div className="text-center mb-8 sm:mb-12">
+                    <Skeleton className="h-8 w-20 mx-auto mb-3 rounded-full" />
+                    <Skeleton className="h-10 sm:h-12 w-80 mx-auto mb-4 rounded-lg" />
                 </div>
+                <TestimonialCarouselSkeleton count={1} />
             </div>
         </section>
     );

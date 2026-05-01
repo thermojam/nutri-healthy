@@ -7,8 +7,8 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
-import {Spinner} from "@/components/ui/spinner";
 import {SECTION_BADGES} from "@/lib/constants/section-badges";
+import {MaterialsGridSkeleton, WebinarCardSkeleton} from "@/components/ui/skeleton";
 import {cn} from "@/lib/utils";
 
 interface Article {
@@ -100,15 +100,29 @@ export function MaterialsSection() {
 
     if (loading) {
         return (
-            <section id="materials" className="py-24 bg-background">
-                <div className="container">
-                    <FadeIn className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <section id="materials" className="py-16 sm:py-24 bg-background">
+                <div className="container px-3 sm:px-4 md:px-6">
+                    <FadeIn className="text-center mb-8 sm:mb-12">
+                        <Badge variant="secondary" className="mb-3 uppercase tracking-wide text-xs">
+                            {SECTION_BADGES.materials}
+                        </Badge>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
                             База знаний о здоровье
                         </h2>
-                        <div className="flex justify-center">
-                            <Spinner size="lg" />
+                    </FadeIn>
+
+                    {/* Скелетон табов */}
+                    <FadeIn delay={0.2} className="mb-8 sm:mb-12">
+                        <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
+                            {[1, 2, 3].map((i) => (
+                                <div key={i} className="px-5 py-2 rounded-full border border-border bg-muted h-10 w-24 animate-pulse" />
+                            ))}
                         </div>
+                    </FadeIn>
+
+                    {/* Скелетон карточек материалов */}
+                    <FadeIn delay={0.3}>
+                        <MaterialsGridSkeleton count={3} />
                     </FadeIn>
                 </div>
             </section>

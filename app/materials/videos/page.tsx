@@ -10,7 +10,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-children";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { Spinner } from "@/components/ui/spinner";
+import { MaterialsGridSkeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 
 interface Video {
@@ -81,7 +81,7 @@ export default function VideosPage() {
           <div className="container">
             {loading ? (
               <div className="flex justify-center py-12">
-                <Spinner size="lg" />
+                <MaterialsGridSkeleton count={6} />
               </div>
             ) : videos.length === 0 ? (
               <div className="text-center py-12 space-y-4">

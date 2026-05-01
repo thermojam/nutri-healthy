@@ -102,3 +102,159 @@ export function TableSkeleton({rows = 5}: {rows?: number}) {
         </div>
     );
 }
+
+/**
+ * Skeleton для карточки материала (статья/видео)
+ */
+export function MaterialCardSkeleton() {
+    return (
+        <div className="overflow-hidden bg-gradient-to-br from-background to-muted/20 rounded-lg p-4 sm:p-5 space-y-3">
+            {/* Иконка или превью */}
+            <Skeleton variant="rounded" height={128} />
+
+            {/* Заголовок */}
+            <div className="space-y-2">
+                <Skeleton variant="text" width="90%" />
+                <Skeleton variant="text" width="75%" />
+            </div>
+
+            {/* Категория и время */}
+            <div className="space-y-2 pt-2">
+                <Skeleton variant="rounded" width={80} height={20} />
+                <Skeleton variant="text" width="50%" />
+            </div>
+        </div>
+    );
+}
+
+/**
+ * Skeleton сетка для материалов (3 колонки)
+ */
+export function MaterialsGridSkeleton({count = 3}: {count?: number}) {
+    return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {Array.from({length: count}).map((_, i) => (
+                <MaterialCardSkeleton key={i} />
+            ))}
+        </div>
+    );
+}
+
+/**
+ * Skeleton для вебинара (горизонтальная карточка)
+ */
+export function WebinarCardSkeleton() {
+    return (
+        <div className="overflow-hidden bg-gradient-to-br from-background to-muted/20 rounded-lg p-4 sm:p-5 flex flex-col sm:flex-row gap-4 sm:gap-6">
+            {/* Плей-превью */}
+            <Skeleton variant="rounded" width="100%" height={160} className="sm:h-32 sm:w-48 sm:flex-shrink-0" />
+
+            {/* Информация */}
+            <div className="flex-1 space-y-3">
+                <div className="space-y-2">
+                    <Skeleton variant="text" width="85%" />
+                    <Skeleton variant="text" width="70%" />
+                </div>
+                <div className="flex gap-3">
+                    <Skeleton variant="text" width="40%" />
+                    <Skeleton variant="text" width="40%" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+/**
+ * Skeleton для кейса (карточка с аватаром)
+ */
+export function CaseCardSkeleton() {
+    return (
+        <div className="overflow-hidden bg-gradient-to-br from-background to-muted/20 rounded-lg p-5 sm:p-6 space-y-4">
+            {/* Аватар и информация */}
+            <div className="flex items-center gap-4">
+                <Skeleton variant="circular" width={56} height={56} />
+                <div className="flex-1 space-y-2">
+                    <Skeleton variant="text" width="40%" />
+                    <Skeleton variant="text" width="30%" />
+                </div>
+            </div>
+
+            {/* Заголовок результата */}
+            <Skeleton variant="text" width="80%" height={20} />
+
+            {/* Два столбца БЫЛО/СТАЛО */}
+            <div className="grid grid-cols-2 gap-4 py-2">
+                <div className="space-y-2">
+                    <Skeleton variant="text" width="40%" />
+                    <Skeleton variant="text" width="100%" height={16} />
+                </div>
+                <div className="space-y-2">
+                    <Skeleton variant="text" width="40%" />
+                    <Skeleton variant="text" width="100%" height={16} />
+                    <Skeleton variant="text" width="80%" height={16} />
+                </div>
+            </div>
+
+            {/* Цитата */}
+            <div className="pt-2 border-t border-border/30">
+                <Skeleton variant="text" width="100%" />
+                <Skeleton variant="text" width="90%" />
+            </div>
+        </div>
+    );
+}
+
+/**
+ * Skeleton для отзыва
+ */
+export function TestimonialCardSkeleton() {
+    return (
+        <div className="overflow-hidden bg-gradient-to-br from-background to-muted/20 rounded-lg p-5 sm:p-6 space-y-3">
+            {/* Звёзды */}
+            <div className="flex gap-1">
+                {Array.from({length: 5}).map((_, i) => (
+                    <Skeleton key={i} variant="rounded" width={20} height={20} />
+                ))}
+            </div>
+
+            {/* Текст отзыва */}
+            <div className="space-y-2">
+                <Skeleton variant="text" width="100%" />
+                <Skeleton variant="text" width="95%" />
+                <Skeleton variant="text" width="70%" />
+            </div>
+
+            {/* Автор и услуга */}
+            <div className="pt-3 border-t border-border/30 space-y-2">
+                <Skeleton variant="text" width="50%" />
+                <Skeleton variant="text" width="40%" />
+            </div>
+        </div>
+    );
+}
+
+/**
+ * Skeleton для сетки кейсов (карусель)
+ */
+export function CasesCarouselSkeleton({count = 1}: {count?: number}) {
+    return (
+        <div className="space-y-4">
+            {Array.from({length: count}).map((_, i) => (
+                <CaseCardSkeleton key={i} />
+            ))}
+        </div>
+    );
+}
+
+/**
+ * Skeleton для сетки отзывов (карусель)
+ */
+export function TestimonialCarouselSkeleton({count = 1}: {count?: number}) {
+    return (
+        <div className="space-y-4">
+            {Array.from({length: count}).map((_, i) => (
+                <TestimonialCardSkeleton key={i} />
+            ))}
+        </div>
+    );
+}

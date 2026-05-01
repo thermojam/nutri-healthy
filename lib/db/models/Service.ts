@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema, HydratedDocument } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface IService extends Document {
     slug: string;

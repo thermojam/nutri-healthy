@@ -1,11 +1,11 @@
 import {connectDB} from "../connect";
 import {User, IUser} from "../models/User";
-import {Consent} from "../models/Consent";
+import {Consent} from "@/lib/db/models";
 import {Order} from "../models/Order";
 
 /**
  * User Repository
- * 
+ *
  * Лучшие практики:
  * - Ранние возвраты (js-early-exit)
  * - Кэширование результатов (server-cache-lru)
@@ -66,7 +66,7 @@ export class UserRepository {
         }
 
         const user = await User.create(data);
-        
+
         // Очистка кэша
         userCache.clear();
 

@@ -1,5 +1,5 @@
 import {connectDB} from "../connect";
-import {Testimonial, ITestimonial} from "../models/Testimonial";
+import {Testimonial, ITestimonial} from "@/lib/db/models";
 
 export class TestimonialRepository {
     async findById(id: string): Promise<ITestimonial | null> {

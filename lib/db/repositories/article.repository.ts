@@ -1,5 +1,5 @@
 import {connectDB} from "../connect";
-import {Article, IArticle} from "../models/Article";
+import {Article, IArticle} from "@/lib/db/models";
 
 export class ArticleRepository {
     async findById(id: string): Promise<IArticle | null> {

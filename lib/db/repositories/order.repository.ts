@@ -1,11 +1,11 @@
 import {connectDB} from "../connect";
 import {Order, IOrder} from "../models/Order";
 import {User} from "../models/User";
-import {Service} from "../models/Service";
+import {Service} from "@/lib/db/models";
 
 /**
  * Order Repository
- * 
+ *
  * Лучшие практики:
  * - async-parallel: Параллельные запросы для независимых операций
  * - js-early-exit: Ранние возвраты

@@ -1,5 +1,5 @@
 import { connectDB } from "../connect";
-import { Webinar, IWebinar } from "../models/Webinar";
+import { Webinar, IWebinar } from "@/lib/db/models";
 
 export class WebinarRepository {
   async findById(id: string): Promise<IWebinar | null> {

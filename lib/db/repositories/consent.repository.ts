@@ -1,11 +1,10 @@
 import {connectDB} from "../connect";
-import {Consent, IConsent} from "../models/Consent";
-import {AuditLog} from "../models/AuditLog";
-import {User} from "../models/User";
+import {Consent, IConsent} from "@/lib/db/models";
+import {AuditLog} from "@/lib/db/models";
 
 /**
  * Consent Repository
- * 
+ *
  * Лучшие практики:
  * - 152-ФЗ compliance: Логирование всех действий
  * - js-early-exit: Ранние возвраты
@@ -66,7 +65,7 @@ export class ConsentRepository {
             data.user.toString(),
             data.type
         );
-        
+
         if (existing) {
             throw new Error("Активное согласие уже существует");
         }

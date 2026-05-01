@@ -1,9 +1,9 @@
 import {connectDB} from "../connect";
-import {Receipt, IReceipt} from "../models/Receipt";
+import {Receipt, IReceipt} from "@/lib/db/models";
 
 /**
  * Receipt Repository
- * 
+ *
  * Лучшие практики:
  * - js-early-exit: Ранние возвраты
  * - Индексы для 54-ФЗ compliance

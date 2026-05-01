@@ -1,5 +1,5 @@
 import {connectDB} from "../connect";
-import {Service, IService} from "../models/Service";
+import {Service, IService} from "@/lib/db/models";
 
 export class ServiceRepository {
     async findById(id: string): Promise<IService | null> {

@@ -1,5 +1,5 @@
 import {connectDB} from "../connect";
-import {Education, IEducation} from "../models/Education";
+import {Education, IEducation} from "@/lib/db/models";
 
 export class EducationRepository {
     async findById(id: string): Promise<IEducation | null> {

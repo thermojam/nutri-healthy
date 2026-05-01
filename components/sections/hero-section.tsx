@@ -1,9 +1,8 @@
 "use client";
 
 import {useState} from "react";
-import {motion} from "framer-motion";
 import Image from "next/image";
-import {ArrowRight, Play} from "lucide-react";
+import {ArrowRight} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {FadeIn} from "@/components/motion/fade-in";
 import {AnimatedBackground} from "@/components/motion/animated-background";
@@ -33,10 +32,10 @@ export default function HeroSection({data}: HeroSectionProps) {
 
     // Данные по умолчанию, если не переданы
     const heroData = data || {
-        title: "Нутрициолог / Health-коуч / Психосоматика",
-        subtitle: "Экстракт женственности с Ксенией Каменской",
+        title: "Психология и здоровье женской гормональной системы",
+        subtitle: "",
         description:
-            "Психосоматика × биохимия тела. Научный подход к здоровью: от работы с эмоциями до восполнения дефицитов. Стань Берегиней здоровья себе и семье.",
+            "Помогаю женщинам понять, почему тело и эмоции «бунтуют», и вернуть баланс — без диет, без насилия, через понимание себя.",
         ctaPrimary: "Выбрать программу",
         ctaSecondary: "Узнать больше",
         stats: [

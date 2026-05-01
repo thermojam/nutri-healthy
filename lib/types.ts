@@ -15,7 +15,7 @@ import type {
     ICase,
     IEducation,
     ITestimonial,
-} from "@/lib/db/models/index";
+} from "@/lib/db/models";
 
 // ============================================
 // ЭКСПОРТ ТИПОВ ИЗ МОДЕЛЕЙ

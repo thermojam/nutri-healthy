@@ -294,15 +294,15 @@ async function seed() {
             },
             {
                 slug: "slavic-gymnastics",
-                title: "Славянская гимнастика",
-                description: "Телесные практики для гармонии души и тела",
+                title: "Видео-комплекс",
+                description: "Мягкие движения, расслабление тазового дна, работа с осанкой",
                 fullDescription:
                     "Древние славянские практики для восстановления энергии, гибкости и внутреннего равновесия. Подходит для любого уровня подготовки.",
                 category: "slavic_gymnastics",
                 icon: "🧘",
                 image: {
                     url: IMAGES.services.slavicGymnastics,
-                    alt: "Славянская гимнастика",
+                    alt: "Видео-комплекс",
                 },
                 pricing: {
                     base: 3000,
@@ -340,6 +340,55 @@ async function seed() {
                 installmentsAvailable: true,
                 minInstallmentAmount: 1000,
                 order: 3,
+                featured: true,
+            },
+            {
+                slug: "gymnastics-with-consultation",
+                title: "Комплекс + разбор",
+                description: "Видео + встреча с индивидуальной адаптацией под вас",
+                fullDescription:
+                    "Полный комплекс славянских практик с персональной консультацией специалиста. Видео-материалы плюс индивидуальная работа с вашим телом и особенностями.",
+                category: "slavic_gymnastics",
+                icon: "🎯",
+                image: {
+                    url: IMAGES.services.slavicGymnastics,
+                    alt: "Комплекс + разбор",
+                },
+                pricing: {
+                    base: 8000,
+                    premium: 15000,
+                    vip: 25000,
+                    currency: "RUB",
+                },
+                features: {
+                    base: [
+                        "Полный видео-комплекс",
+                        "Одна индивидуальная встреча 60 мин",
+                        "Персональная адаптация",
+                        "Рекомендации по практике",
+                    ],
+                    premium: [
+                        "Всё из базового тарифа",
+                        "Две встречи по 60 минут",
+                        "Расширенный гайд",
+                        "Чат поддержки 14 дней",
+                        "Видео-примеры упражнений",
+                    ],
+                    vip: [
+                        "Всё из премиум тарифа",
+                        "Четыре встречи по 60 минут",
+                        "VIP поддержка в чате",
+                        "Приглашение на мастер-класс",
+                        "Персональная программа на месяц",
+                    ],
+                },
+                duration: {base: 60, premium: 120, vip: 180},
+                format: ["online", "offline", "both"],
+                available: true,
+                popular: false,
+                installmentsAvailable: true,
+                minInstallmentAmount: 2000,
+                order: 4,
                 featured: true,
             },
         ]);

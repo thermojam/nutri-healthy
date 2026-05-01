@@ -1,7 +1,7 @@
 "use client";
 
 import {motion} from "framer-motion";
-import {ReactNode} from "react";
+import {ReactNode, useEffect, useState} from "react";
 
 interface FadeInProps {
     children: ReactNode;
@@ -18,6 +18,12 @@ export function FadeIn({
                            duration = 0.6,
                            direction = "up",
                        }: FadeInProps) {
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
     const directions = {
         up: {y: 40, x: 0},
         down: {y: -40, x: 0},
@@ -25,6 +31,10 @@ export function FadeIn({
         right: {x: -40, y: 0},
         none: {x: 0, y: 0},
     };
+
+    if (!isClient) {
+        return <div className={className}>{children}</div>;
+    }
 
     return (
         <motion.div
@@ -44,7 +54,6 @@ export function FadeIn({
                 ease: [0.25, 0.4, 0.25, 1],
             }}
             className={className}
-            suppressHydrationWarning
         >
             {children}
         </motion.div>

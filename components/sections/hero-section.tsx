@@ -56,19 +56,6 @@ export default function HeroSection({data}: HeroSectionProps) {
                     {/* Левая часть - Контент */}
                     <div
                         className="space-y-6 sm:space-y-8 text-center lg:text-left mx-auto lg:mx-0 max-w-3xl lg:max-w-none w-full">
-                        <FadeIn direction="up" delay={0.2}>
-                            <div
-                                className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-primary/20 to-accent/20 dark:from-primary/30 dark:to-accent/30 border border-primary/30 dark:border-primary/40 text-[10px] sm:text-xs font-semibold leading-tight cursor-pointer hover:from-primary/30 hover:to-accent/30 transition-all">
-                                <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 flex-shrink-0">
-                                    <span
-                                        className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-accent"></span>
-                                </span>
-                                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent truncate">
-                                    Аккредитованный нутрициолог НАИС
-                                </span>
-                            </div>
-                        </FadeIn>
 
                         <FadeIn direction="up" delay={0.3}>
                             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight bg-gradient-to-r from-white via-primary to-accent bg-clip-text text-transparent">

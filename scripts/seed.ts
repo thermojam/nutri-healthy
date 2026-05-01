@@ -3,17 +3,28 @@
  * Запуск: npm run seed
  */
 
-// Загрузка переменных окружения через dotenv
-import dotenv from "dotenv";
+// Используем createRequire для импорта dotenv
+import {createRequire} from "module";
 import path from "path";
 import {fileURLToPath} from "url";
 
+const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Загружаем .env.local
+// Загрузка переменных окружения - ДОЛЖНО БЫТЬ В НАЧАЛЕ
 const envPath = path.resolve(__dirname, "../.env.local");
-dotenv.config({path: envPath});
+require("dotenv").config({path: envPath});
+
+// Теперь импортируем остальное ПОСЛЕ загрузки переменных окружения
+import {connectDB} from "@/lib/db/connect";
+import {Service} from "@/lib/db/models/Service";
+import {Article} from "@/lib/db/models/Article";
+import {Video} from "@/lib/db/models/Video";
+import {Webinar} from "@/lib/db/models/Webinar";
+import {Case} from "@/lib/db/models/Case";
+import {Education} from "@/lib/db/models/Education";
+import {Testimonial} from "@/lib/db/models/Testimonial";
 
 // ============================================
 // ЕДИНЫЙ ИСТОЧНИК ИСТИНЫ - ИЗОБРАЖЕНИЯ
@@ -61,16 +72,6 @@ const IMAGES = {
         ksenia: "/images/expert.jpeg", // Локальное фото эксперта
     },
 };
-
-// Теперь можно импортировать остальное
-import {connectDB} from "@/lib/db/connect";
-import {Service} from "@/lib/db/models/Service";
-import {Article} from "@/lib/db/models/Article";
-import {Video} from "@/lib/db/models/Video";
-import {Webinar} from "@/lib/db/models/Webinar";
-import {Case} from "@/lib/db/models/Case";
-import {Education} from "@/lib/db/models/Education";
-import {Testimonial} from "@/lib/db/models/Testimonial";
 
 async function seed() {
     try {
@@ -603,91 +604,111 @@ async function seed() {
         console.log("🎓 Создание записей об образовании...");
         const education = await Education.insertMany([
             {
-                title: "Нутрициология и диетология",
-                institution: "Московский Государственный Университет",
+                title: "Магистр нутрициологии",
+                institution: "Политех СПб",
                 degree: "Магистр",
-                specialty: "Диетология",
-                startDate: new Date("2015-09-01"),
-                endDate: new Date("2017-06-30"),
+                specialty: "Нутрициология",
+                startDate: new Date("2020-09-01"),
+                endDate: new Date("2022-06-30"),
                 isCurrent: false,
                 description:
-                    "Фундаментальное образование в области нутрициологии и диетологии",
+                    "Фундаментальное образование в области нутрициологии и диетологии. Подготовила основу для комплексного понимания физиологии питания.",
                 documents: [
                     {
                         type: "diploma",
-                        url: "/documents/diploma-msu.pdf",
-                        name: "Диплом МГУ",
+                        url: "/documents/diploma-politex-spb.pdf",
+                        name: "Диплом Политех СПб",
                     },
                 ],
                 order: 1,
                 featured: true,
             },
             {
-                title: "Международная сертификация INM",
-                institution: "Institute for Nutrition Medicine",
+                title: "Аккредитованный специалист НАИС (2 категория)",
+                institution: "НАИС",
                 specialty: "Нутрициология",
-                startDate: new Date("2018-01-15"),
-                endDate: new Date("2019-06-30"),
+                startDate: new Date("2017-01-15"),
+                endDate: new Date("2018-06-30"),
                 isCurrent: false,
                 description:
-                    "Международная сертификация в области нутрициологии",
+                    "Профессиональная аккредитация в области нутрициологии",
                 documents: [
                     {
                         type: "certificate",
-                        url: "/documents/certificate-inm.pdf",
-                        name: "Сертификат INM",
+                        url: "/documents/certificate-nais.pdf",
+                        name: "Сертификат НАИС",
                     },
                 ],
                 order: 2,
                 featured: true,
             },
             {
-                title: "Health-коучинг",
-                institution: "International Coach Federation",
-                specialty: "Коучинг здоровья",
-                startDate: new Date("2020-01-10"),
-                endDate: new Date("2021-06-30"),
+                title: "Сертифицированный психолог",
+                institution: "Академия репарационной психологии и терапии (3 модуля)",
+                specialty: "Психология пищевого поведения",
+                startDate: new Date("2023-09-01"),
+                endDate: new Date("2024" +
+                    "-12-31"),
                 isCurrent: false,
                 description:
-                    "Сертификация в области health-коучинга",
+                    "Глубокое изучение психологии пищевого поведения и интеграция психологического подхода в нутрициологическую практику",
                 documents: [
                     {
                         type: "certificate",
-                        url: "/documents/certificate-icf.pdf",
-                        name: "Сертификат ICF",
+                        url: "/documents/certificate-psychology.pdf",
+                        name: "Сертификат психолога",
                     },
                 ],
                 order: 3,
                 featured: true,
             },
             {
-                title: "Психология питания",
-                institution: "Школа психологии питания",
-                specialty: "Психология пищевого поведения",
-                startDate: new Date("2019-09-01"),
-                endDate: new Date("2020-06-30"),
+                title: "Эксперт натуропатии (диетология и детоксикация)",
+                institution: "Институт Bircham, США",
+                specialty: "Натуропатия",
+                startDate: new Date("2022-01-01"),
+                endDate: new Date("2023-12-31"),
                 isCurrent: false,
                 description:
-                    "Изучение психологии пищевого поведения и работы с расстройствами",
+                    "Международная сертификация по натуропатии с направлением диетология и детоксикация организма",
                 documents: [
                     {
-                        type: "course",
-                        url: "/documents/course-psychology.pdf",
-                        name: "Сертификат о курсе",
+                        type: "certificate",
+                        url: "/documents/certificate-bircham.pdf",
+                        name: "Сертификат Bircham",
                     },
                 ],
                 order: 4,
-                featured: false,
+                featured: true,
             },
             {
-                title: "Славянская гимнастика",
-                institution: "Центр славянских практик",
-                specialty: "Инструктор славянской гимнастики",
-                startDate: new Date("2021-01-15"),
+                title: "Специалист по фитооздоровлению",
+                institution: "НАМН",
+                specialty: "Фитооздоровление",
+                startDate: new Date("2021-06-01"),
                 endDate: new Date("2022-06-30"),
                 isCurrent: false,
                 description:
-                    "Сертификация инструктора славянской гимнастики",
+                    "Профессиональная подготовка в области использования растительных средств и фитотерапии для оздоровления",
+                documents: [
+                    {
+                        type: "certificate",
+                        url: "/documents/certificate-fitoozdorovlenie.pdf",
+                        name: "Сертификат НАМН",
+                    },
+                ],
+                order: 5,
+                featured: true,
+            },
+            {
+                title: "Инструктор женской славянской гимнастики «Сила Берегини»",
+                institution: "Центр славянских практик",
+                specialty: "Инструктор славянской гимнастики",
+                startDate: new Date("2020-09-01"),
+                endDate: new Date("2022-06-30"),
+                isCurrent: false,
+                description:
+                    "Сертификация инструктора женской славянской гимнастики. Древние практики для восстановления энергии, гибкости и гармонии с собственным телом.",
                 documents: [
                     {
                         type: "certificate",
@@ -695,27 +716,22 @@ async function seed() {
                         name: "Сертификат инструктора",
                     },
                 ],
-                order: 5,
+                order: 6,
                 featured: true,
             },
             {
-                title: "Функциональная медицина",
-                institution: "Институт функциональной медицины",
-                specialty: "Основы функционального подхода",
-                startDate: new Date("2022-09-01"),
-                endDate: new Date("2023-06-30"),
-                isCurrent: false,
+                title: "Психосоматика и телесная терапия (второе высшее)",
+                institution: "Институт психосоматики и клинической психологии, Москва",
+                degree: "Высшее образование",
+                specialty: "Психосоматика",
+                startDate: new Date("2026-09-01"),
+                endDate: new Date("2030-06-30"),
+                isCurrent: true,
                 description:
-                    "Изучение функционального подхода к здоровью",
-                documents: [
-                    {
-                        type: "course",
-                        url: "/documents/certificate-ifm.pdf",
-                        name: "Сертификат IFM",
-                    },
-                ],
-                order: 6,
-                featured: false,
+                    "Программа второго высшего образования по психосоматике и телесной терапии. Интеграция психологического и соматического подходов к здоровью.",
+                documents: [],
+                order: 7,
+                featured: true,
             },
         ]);
         console.log(`✅ Создано ${education.length} записей об образовании`);

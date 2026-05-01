@@ -96,28 +96,6 @@ export default function AboutSection() {
                             </div>
                         </FadeIn>
 
-                        {/* Философия - градиентный блок */}
-                        <FadeIn direction="left" delay={0.4}>
-                            <div
-                                className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-primary/10 via-background to-accent/10 border border-primary/20 p-4 sm:p-6 backdrop-blur-sm">
-                                {/* Декоративный элемент */}
-                                <div
-                                    className="absolute top-0 right-0 w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-full opacity-50"/>
-
-                                <div className="relative z-10">
-                                    <h3 className="text-base sm:text-lg font-semibold mb-2 flex items-center gap-2">
-                                        <span className="text-xl">✨</span>
-                                        Моя философия
-                                    </h3>
-                                    <p className="text-sm sm:text-base text-muted italic leading-relaxed">
-                                        Устойчивое здоровье рождается на стыке понимания своей души и мудрой заботы о
-                                        теле.
-                                        Тело будет кричать нам, пока мы не услышим истину.
-                                    </p>
-                                </div>
-                            </div>
-                        </FadeIn>
-
                         {/* Timeline пути */}
                         <FadeIn direction="left" delay={0.6}>
                             <div>

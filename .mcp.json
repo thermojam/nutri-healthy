@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "hyperbrowser": {
+      "command": "npx",
+      "args": ["-y", "@hyperbrowser/mcp"]
+    }
+  }
+}

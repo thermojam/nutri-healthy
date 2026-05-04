@@ -4,16 +4,13 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import HeroSection from "@/components/sections/hero-section";
 import AboutSection from "@/components/sections/about-section";
-import EducationSection from "@/components/sections/education-section";
 import FAQSection from "@/components/sections/faq-section";
 import ContactSection from "@/components/sections/contact-section";
 import {serviceRepository} from "@/lib/db/repositories/service.repository";
 import {caseRepository} from "@/lib/db/repositories/case.repository";
-import {testimonialRepository} from "@/lib/db/repositories/testimonial.repository";
-import {Skeleton, CasesCarouselSkeleton, TestimonialCarouselSkeleton} from "@/components/ui/skeleton";
+import {Skeleton, CasesCarouselSkeleton} from "@/components/ui/skeleton";
 import {ProductsSection} from "@/components/sections/products-section";
 import {MaterialsSection} from "@/components/sections/materials-section";
-import {TestimonialsSection} from "@/components/sections/testimonials-section";
 import {CasesSection} from "@/components/sections/cases-section";
 
 // Кэшируем запросы в рамках одного request
@@ -38,16 +35,6 @@ const getCases = cache(async () => {
     }
 });
 
-const getTestimonials = cache(async () => {
-    try {
-        const testimonials = await testimonialRepository.findAll();
-        return testimonials.map(t => t.toJSON());
-    } catch (error) {
-        console.error("Failed to fetch testimonials:", error);
-        return [];
-    }
-});
-
 // Wrapper компоненты для Suspense
 async function ProductsSectionWrapper() {
     const services = await getServices();
@@ -57,11 +44,6 @@ async function ProductsSectionWrapper() {
 async function CasesSectionWrapper() {
     const cases = await getCases();
     return <CasesSection cases={cases}/>;
-}
-
-async function TestimonialsSectionWrapper() {
-    const testimonials = await getTestimonials();
-    return <TestimonialsSection testimonials={testimonials}/>;
 }
 
 // Skeletons
@@ -114,19 +96,6 @@ function CasesSectionSkeleton() {
     );
 }
 
-function TestimonialsSectionSkeleton() {
-    return (
-        <section id="reviews" className="py-16 sm:py-24 bg-background">
-            <div className="container px-3 sm:px-4 md:px-6">
-                <div className="text-center mb-8 sm:mb-12">
-                    <Skeleton className="h-8 w-20 mx-auto mb-3 rounded-full" />
-                    <Skeleton className="h-10 sm:h-12 w-80 mx-auto mb-4 rounded-lg" />
-                </div>
-                <TestimonialCarouselSkeleton count={1} />
-            </div>
-        </section>
-    );
-}
 
 export default async function Home() {
     return (
@@ -136,23 +105,17 @@ export default async function Home() {
             <main className="flex-1">
                 <HeroSection/>
                 <AboutSection/>
-                <EducationSection/>
-                
+
                 {/* Suspense boundaries для потоковой загрузки */}
                 <Suspense fallback={<ProductsSectionSkeleton/>}>
                     <ProductsSectionWrapper/>
                 </Suspense>
-                
+
                 <Suspense fallback={<CasesSectionSkeleton/>}>
                     <CasesSectionWrapper/>
                 </Suspense>
-                
+
                 <MaterialsSection/>
-                
-                <Suspense fallback={<TestimonialsSectionSkeleton/>}>
-                    <TestimonialsSectionWrapper/>
-                </Suspense>
-                
                 <FAQSection/>
                 <ContactSection/>
             </main>

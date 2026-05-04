@@ -93,7 +93,6 @@ export default function Footer() {
                                 {href: "/#services", label: "Услуги и тарифы"},
                                 {href: "/#cases", label: "Кейсы и результаты"},
                                 {href: "/#materials", label: "Полезные материалы"},
-                                {href: "/#reviews", label: "Отзывы"},
                                 {href: "/#faq", label: "Частые вопросы"},
                             ].map((link) => (
                                 <li key={link.href}>

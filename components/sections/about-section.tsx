@@ -1,22 +1,11 @@
 "use client";
 
-import {useEffect, useState} from "react";
 import Image from "next/image";
 import {motion} from "framer-motion";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {StaggerChildren, StaggerItem} from "@/components/motion/stagger-children";
-import {Spinner} from "@/components/ui/spinner";
 import {SECTION_BADGES} from "@/lib/constants/section-badges";
-
-interface EducationItem {
-    _id: string;
-    title: string;
-    institution: string;
-    specialty: string;
-    year: string;
-    startDate: string;
-}
 
 const WORK_AREAS = [
     "Усталость, апатия, ПМС и нерегулярный цикл",
@@ -28,28 +17,6 @@ const WORK_AREAS = [
 ];
 
 export default function AboutSection() {
-    const [education, setEducation] = useState<EducationItem[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        fetch("/api/education")
-            .then((res) => res.json())
-            .then((data) => {
-                const formatted = (data.data || [])
-                    .map((item: Record<string, unknown>) => ({
-                        ...item,
-                        year: new Date(item.startDate as string).getFullYear().toString(),
-                    }))
-                    .sort((a: EducationItem, b: EducationItem) => parseInt(b.year) - parseInt(a.year))
-                    .slice(0, 5);
-                setEducation(formatted);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error("Failed to fetch education:", err);
-                setLoading(false);
-            });
-    }, []);
 
     return (
         <section id="about" className="py-16 sm:py-24 bg-background">
@@ -133,41 +100,6 @@ export default function AboutSection() {
                             </div>
                         </FadeIn>
 
-                        {/* Мои квалификации */}
-                        <FadeIn direction="left" delay={0.8}>
-                            <div>
-                                <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Мои квалификации</h3>
-                                {loading ? (
-                                    <div className="flex justify-center py-8">
-                                        <Spinner size="md"/>
-                                    </div>
-                                ) : (
-                                    <StaggerChildren className="space-y-3 sm:space-y-4">
-                                        {education.map((item) => (
-                                            <StaggerItem key={item._id}>
-                                                <motion.div
-                                                initial={{opacity: 0, x: -10}}
-                                                whileInView={{opacity: 1, x: 0}}
-                                                viewport={{once: true}}
-                                                className="flex gap-3 sm:gap-4 items-start">
-                                                    <div
-                                                        className="shrink-0 w-12 sm:w-16 text-primary font-bold text-sm sm:text-lg">
-                                                        {item.year}
-                                                    </div>
-                                                    <div
-                                                        className="flex-1 pb-3 sm:pb-4 border-b border-border last:border-b-0">
-                                                        <h4 className="font-semibold text-sm sm:text-base mb-1">{item.title}</h4>
-                                                        <p className="text-xs sm:text-sm text-muted">
-                                                            {item.institution} • {item.specialty}
-                                                        </p>
-                                                    </div>
-                                                </motion.div>
-                                            </StaggerItem>
-                                        ))}
-                                    </StaggerChildren>
-                                )}
-                            </div>
-                        </FadeIn>
                     </div>
                 </div>
             </div>

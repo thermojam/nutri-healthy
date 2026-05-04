@@ -13,7 +13,6 @@ const navLinks = [
     {href: "/#services", label: "Услуги"},
     {href: "/#cases", label: "Кейсы"},
     {href: "/#materials", label: "Материалы"},
-    {href: "/#reviews", label: "Отзывы"},
     {href: "/#faq", label: "FAQ"},
 ];
 

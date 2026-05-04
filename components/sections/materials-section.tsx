@@ -8,7 +8,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {SECTION_BADGES} from "@/lib/constants/section-badges";
-import {MaterialsGridSkeleton, WebinarCardSkeleton} from "@/components/ui/skeleton";
+import {MaterialsGridSkeleton} from "@/components/ui/skeleton";
 import {cn} from "@/lib/utils";
 
 interface Article {

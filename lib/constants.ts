@@ -11,7 +11,6 @@ export const NAVIGATION_LINKS = [
     {href: "/#services", label: "Услуги"},
     {href: "/#cases", label: "Кейсы"},
     {href: "/#materials", label: "Материалы"},
-    {href: "/#reviews", label: "Отзывы"},
     {href: "/#faq", label: "FAQ"},
     {href: "/#contact", label: "Контакты"},
 ] as const;

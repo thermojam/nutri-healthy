@@ -4,7 +4,7 @@ export const SECTION_BADGES = {
   products: "Программы",
   cases: "Результаты",
   education: "Квалификация",
-  materials: "Обучение",
+  materials: "Бесплатные материалы",
   testimonials: "Отзывы",
   faq: "Вопросы",
   contact: "Контакт",

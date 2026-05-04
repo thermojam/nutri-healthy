@@ -78,7 +78,7 @@ export function MaterialsSection() {
     const [videos, setVideos] = useState<VideoItem[]>([]);
     const [webinars, setWebinars] = useState<Webinar[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<MaterialType>("articles");
+    const [activeTab, setActiveTab] = useState<MaterialType>("videos");
 
     useEffect(() => {
         Promise.all([
@@ -159,10 +159,10 @@ export function MaterialsSection() {
                                 key={tab.key}
                                 onClick={() => setActiveTab(tab.key)}
                                 className={cn(
-                                    "px-5 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                                    "px-5 py-2 rounded-full text-sm font-medium transition-all duration-300",
                                     activeTab === tab.key
-                                        ? "bg-primary text-primary-foreground"
-                                        : "border border-border text-foreground hover:bg-muted/50"
+                                        ? "bg-linear-to-r from-primary to-purple-600 text-white shadow-lg shadow-primary/40 scale-105"
+                                        : "border border-border text-foreground hover:border-primary/50 hover:bg-muted/50"
                                 )}
                             >
                                 {tab.label}
@@ -317,7 +317,7 @@ export function MaterialsSection() {
                                 Материалы дают общие знания, но ваше здоровье уникально. На консультации я разработаю индивидуальный план с учётом ваших анализов и целей.
                             </p>
                             <a href="#contact" className="block w-full max-w-xs mx-auto">
-                                <Button size="lg" className="w-full">
+                                <Button size="lg" className="w-full bg-linear-to-r from-primary to-purple-600 hover:shadow-lg hover:shadow-primary/40 hover:scale-105 transition-all duration-300">
                                     Записаться →
                                 </Button>
                             </a>

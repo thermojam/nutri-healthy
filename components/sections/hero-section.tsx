@@ -38,7 +38,7 @@ export default function HeroSection({data}: HeroSectionProps) {
         description:
             "Помогаю женщинам понять, почему тело и эмоции «бунтуют», и вернуть баланс — без диет, без насилия, через понимание себя.",
         ctaPrimary: "Выбрать программу",
-        ctaSecondary: "Узнать больше",
+        ctaSecondary: "Бесплатные материалы",
         stats: [
             {value: "500+", label: "Клиентов"},
             {value: "7 лет", label: "Опыта"},
@@ -105,9 +105,9 @@ export default function HeroSection({data}: HeroSectionProps) {
                             </Button>
 
                             <Button variant="secondary" asChild size="lg" className="shadow-lg">
-                                <a href="#about" onClick={(e) => {
+                                <a href="#materials" onClick={(e) => {
                                     e.preventDefault();
-                                    const el = document.getElementById("about");
+                                    const el = document.getElementById("materials");
                                     el?.scrollIntoView({behavior: "smooth"});
                                 }}>
                                     {heroData.ctaSecondary}

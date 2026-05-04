@@ -23,8 +23,8 @@ const TABS = [
 
 const GRID_COLS = {
     nutrition: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-    health_coaching: "grid-cols-1",
-    slavic_gymnastics: "grid-cols-1 sm:grid-cols-2",
+    health_coaching: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+    slavic_gymnastics: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
 } as const;
 
 type Category = "nutrition" | "health_coaching" | "slavic_gymnastics" | "other";
@@ -85,7 +85,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
         price: number;
     } | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState<Category>("nutrition");
+    const [activeTab, setActiveTab] = useState<Category>("health_coaching");
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -162,10 +162,10 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                     key={tab.key}
                                     onClick={() => setActiveTab(tab.key as Category)}
                                     className={cn(
-                                        "px-5 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                                        "px-5 py-2 rounded-full text-sm font-medium transition-all duration-300",
                                         activeTab === tab.key
-                                            ? "bg-primary text-primary-foreground"
-                                            : "border border-border text-foreground hover:bg-muted/50"
+                                            ? "bg-gradient-to-r from-accent to-orange-500 text-white shadow-lg shadow-accent/40 scale-105"
+                                            : "border border-border text-foreground hover:border-accent/50 hover:bg-muted/50"
                                     )}
                                 >
                                     {tab.label}
@@ -294,7 +294,7 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                     Я помогу определить вашу главную проблему и подберу оптимальную программу.
                                 </p>
                                 <Link href="/#contact" className="block w-full max-w-xs mx-auto">
-                                    <Button size="lg" className="w-full">
+                                    <Button size="lg" className="w-full bg-linear-to-r from-accent to-orange-500 hover:shadow-lg hover:shadow-accent/40 hover:scale-105 transition-all duration-300 active:scale-95">
                                         Бесплатная консультация
                                     </Button>
                                 </Link>

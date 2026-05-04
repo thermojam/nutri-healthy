@@ -3,6 +3,7 @@ import Link from "next/link";
 import {ArrowLeft, Scale, Shield, FileText, Mail} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
+import {BUSINESS} from "@/lib/legal/business";
 
 interface LegalPageProps {
     title: string;
@@ -100,8 +101,8 @@ export default function LegalPage({
                                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/50">
                                     <Mail className="h-4 w-4 text-primary"/>
                                 </div>
-                                <a href="mailto:info@yoursite.ru" className="text-primary hover:underline font-medium">
-                                    info@yoursite.ru
+                                <a href={`mailto:${BUSINESS.email}`} className="text-primary hover:underline font-medium">
+                                    {BUSINESS.email}
                                 </a>
                             </div>
                         </CardContent>
@@ -126,13 +127,20 @@ export default function LegalPage({
                                     <span className="font-semibold">Юридическая информация</span>
                                 </div>
                                 <p className="text-sm text-muted max-w-2xl mx-auto">
-                                    ИП Каменская Ксения | ИНН 123456789012 | ОГРНИП 123456789012345
+                                    {BUSINESS.fullName}
+                                    {BUSINESS.inn ? ` | ИНН ${BUSINESS.inn}` : null}
+                                    {BUSINESS.ogrnip ? ` | ОГРНИП ${BUSINESS.ogrnip}` : null}
                                 </p>
                                 <p className="text-sm text-muted">
-                                    123317, г. Москва, Пресненская наб., д. 10, стр. 2 | 
-                                    <a href="tel:+79991234567" className="text-primary hover:underline ml-1">
-                                        +7 (999) 123-45-67
-                                    </a>
+                                    {BUSINESS.address}
+                                    {BUSINESS.phone ? (
+                                        <>
+                                            {" | "}
+                                            <a href={`tel:${BUSINESS.phoneTel}`} className="text-primary hover:underline ml-1">
+                                                {BUSINESS.phone}
+                                            </a>
+                                        </>
+                                    ) : null}
                                 </p>
                                 <div className="pt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-muted">
                                     <Link href="/legal/privacy-policy" className="hover:text-primary transition-colors">

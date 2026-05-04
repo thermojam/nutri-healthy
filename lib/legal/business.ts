@@ -10,8 +10,18 @@
  * полей вроде RKN_REG_NUMBER) или плейсхолдер с явной маркировкой.
  */
 
+/**
+ * Все реквизиты ИП — публичные (выводятся на legal-страницах, в футере, в чеках),
+ * поэтому используем NEXT_PUBLIC_ префикс — это позволяет читать их и в Client
+ * Component'ах. Подстановка в Markdown (loader.ts) работает с тем же объектом.
+ */
 function readEnv(key: string, fallback = ""): string {
-    return process.env[key]?.trim() || fallback;
+    const publicKey = `NEXT_PUBLIC_${key}`;
+    return (
+        process.env[publicKey]?.trim() ||
+        process.env[key]?.trim() ||
+        fallback
+    );
 }
 
 export interface BusinessInfo {

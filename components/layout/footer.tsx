@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {Instagram, Send, Youtube, Mail, Phone, MapPin} from "lucide-react";
 import {Logo} from "@/components/ui/logo";
+import {BUSINESS} from "@/lib/legal/business";
 
 const socialLinks = [
     {
@@ -33,19 +34,19 @@ const contactInfo = [
     {
         icon: Mail,
         label: "Email",
-        value: "info@yoursite.ru",
-        href: "mailto:info@yoursite.ru",
+        value: BUSINESS.email,
+        href: `mailto:${BUSINESS.email}`,
     },
     {
         icon: Phone,
         label: "Телефон",
-        value: "+7 (999) 123-45-67",
-        href: "tel:+79991234567",
+        value: BUSINESS.phone,
+        href: `tel:${BUSINESS.phoneTel}`,
     },
     {
         icon: MapPin,
         label: "Адрес",
-        value: "г. Москва, Россия",
+        value: BUSINESS.address,
         href: "#",
     },
 ];
@@ -197,10 +198,13 @@ export default function Footer() {
                     {/* Legal Info */}
                     <div className="mt-6 text-center">
                         <p className="text-xs text-muted">
-                            ИП Каменская Ксения | ИНН 123456789012 | ОГРНИП 123456789012345
+                            {BUSINESS.fullName}
+                            {BUSINESS.inn ? ` | ИНН ${BUSINESS.inn}` : null}
+                            {BUSINESS.ogrnip ? ` | ОГРНИП ${BUSINESS.ogrnip}` : null}
                         </p>
                         <p className="text-xs text-muted mt-1">
-                            123317, г. Москва, Пресненская наб., д. 10, стр. 2 | info@yoursite.ru
+                            {BUSINESS.address}
+                            {BUSINESS.email ? ` | ${BUSINESS.email}` : null}
                         </p>
                     </div>
                 </div>

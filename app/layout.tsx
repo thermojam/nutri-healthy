@@ -46,8 +46,13 @@ export const metadata: Metadata = {
         canonical: '/',
     },
     icons: {
-        icon: '/favicon.ico',
-        apple: '/favicon.ico',
+        icon: [
+            { url: '/favicon.ico', sizes: 'any' }, // Стандарт для старых браузеров
+            { url: '/icon.svg', type: 'image/svg+xml' }, // ОСНОВНОЙ: будет четким везде
+        ],
+        apple: [
+            { url: '/apple-touch-icon.png', sizes: '180x180' }, // Для закладок Safari и iOS
+        ],
     },
     openGraph: {
         type: "website",

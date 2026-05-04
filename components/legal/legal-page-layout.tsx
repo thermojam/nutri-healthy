@@ -11,6 +11,15 @@ interface LegalPageProps {
     icon: React.ReactNode;
     children: React.ReactNode;
     lastUpdated?: Date;
+    effectiveDate?: Date;
+}
+
+function formatRuDate(date: Date): string {
+    return date.toLocaleDateString("ru-RU", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
 }
 
 export const metadata: Metadata = {
@@ -24,6 +33,7 @@ export default function LegalPage({
     icon,
     children,
     lastUpdated = new Date(),
+    effectiveDate,
 }: LegalPageProps) {
     return (
         <div className="min-h-screen bg-background">
@@ -75,12 +85,17 @@ export default function LegalPage({
                                     <Shield className="h-4 w-4 text-primary"/>
                                 </div>
                                 <span className="text-muted">Обновлено:</span>
-                                <span className="font-semibold">{lastUpdated.toLocaleDateString("ru-RU", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric"
-                                })}</span>
+                                <span className="font-semibold">{formatRuDate(lastUpdated)}</span>
                             </div>
+                            {effectiveDate ? (
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/50">
+                                        <FileText className="h-4 w-4 text-primary"/>
+                                    </div>
+                                    <span className="text-muted">Действует с:</span>
+                                    <span className="font-semibold">{formatRuDate(effectiveDate)}</span>
+                                </div>
+                            ) : null}
                             <div className="flex items-center gap-2 ml-auto">
                                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/50">
                                     <Mail className="h-4 w-4 text-primary"/>
@@ -93,8 +108,9 @@ export default function LegalPage({
                     </Card>
                 </div>
 
-                {/* Основной контент */}
-                <article className="prose dark:prose-invert max-w-4xl mx-auto prose-headings:font-bold prose-headings:text-foreground prose-h2:text-xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pt-8 prose-h2:border-t prose-h2:border-border prose-p:text-muted prose-p:leading-relaxed prose-li:text-muted prose-li:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-ul:my-6 prose-ol:my-6 prose-section:my-8">
+                {/* Основной контент — стили задаются непосредственно в компонентах
+                    (см. components/legal/markdown-renderer.tsx). */}
+                <article className="max-w-4xl mx-auto">
                     {children}
                 </article>
 

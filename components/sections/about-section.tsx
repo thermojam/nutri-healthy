@@ -140,65 +140,58 @@ export default function AboutSection() {
                             </div>
                         </FadeIn>
 
-                        {/* Квалификации - Путь мастерства */}
+                        {/* Мои квалификации - минималистичный timeline */}
                         <FadeIn direction="left" delay={0.9}>
                             <div>
-                                <h3 className="text-lg sm:text-xl font-semibold mb-6 sm:mb-8">Путь мастерства</h3>
+                                <h3 className="text-lg sm:text-xl font-semibold mb-6 sm:mb-8">Мои квалификации</h3>
                                 {loading ? (
                                     <div className="flex justify-center py-12">
                                         <Spinner size="md"/>
                                     </div>
                                 ) : (
-                                    <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                                        {education.map((item, idx) => {
-                                            const IconComponent = documentIcons.diploma;
-                                            return (
+                                    <div className="relative space-y-6 sm:space-y-8">
+                                        {/* Вертикальная линия */}
+                                        <div className="absolute left-4 sm:left-6 top-2 bottom-2 w-1 bg-gradient-to-b from-primary/60 via-accent/40 to-primary/20 rounded-full"/>
+
+                                        {/* Элементы timeline */}
+                                        <StaggerChildren className="space-y-6 sm:space-y-8">
+                                            {education.map((item, idx) => (
                                                 <StaggerItem key={item._id}>
                                                     <motion.div
-                                                        initial={{opacity: 0, y: 10}}
-                                                        whileInView={{opacity: 1, y: 0}}
+                                                        initial={{opacity: 0, x: -20}}
+                                                        whileInView={{opacity: 1, x: 0}}
                                                         viewport={{once: true}}
-                                                        whileHover={{scale: 1.02, translateY: -4}}
+                                                        whileHover={{x: 8}}
                                                         transition={{duration: 0.3}}
-                                                        className="relative group h-full"
+                                                        className="relative pl-20 sm:pl-28"
                                                     >
-                                                        {/* Бэкграунд с градиентом */}
-                                                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
+                                                        {/* Точка на линии */}
+                                                        <div className="absolute left-0 sm:left-1 top-2 w-8 h-8 sm:w-10 sm:h-10 rounded-full
+                                                                        bg-gradient-to-br from-primary to-accent
+                                                                        border-4 border-background shadow-lg shadow-primary/30
+                                                                        flex items-center justify-center z-10
+                                                                        group hover:scale-110 transition-transform">
+                                                            <Award className="w-4 h-4 sm:w-5 sm:h-5 text-white"/>
+                                                        </div>
 
-                                                        <div className="relative h-full p-4 sm:p-5 rounded-xl border border-border/40 bg-gradient-to-br from-card to-background/50 group-hover:border-primary/50 transition-all duration-300 flex gap-4">
-                                                            {/* Левая часть - Иконка и год */}
-                                                            <div className="flex flex-col items-center gap-3 shrink-0">
-                                                                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-primary/30 group-hover:border-primary/60 transition-all duration-300">
-                                                                    <IconComponent className="w-6 h-6 sm:w-7 sm:h-7 text-primary"/>
-                                                                </div>
-                                                                <div className="px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/30 text-center">
-                                                                    <span className="text-sm sm:text-base font-bold text-primary">
-                                                                        {item.year}
-                                                                    </span>
-                                                                </div>
+                                                        {/* Контент */}
+                                                        <div className="group cursor-default">
+                                                            <div className="text-sm sm:text-base font-bold text-primary mb-1">
+                                                                {item.year}
                                                             </div>
-
-                                                            {/* Правая часть - Текст */}
-                                                            <div className="flex-1 flex flex-col justify-center min-w-0">
-                                                                <h4 className="font-semibold text-sm sm:text-base text-foreground mb-1 leading-tight">
-                                                                    {item.title}
-                                                                </h4>
-                                                                <p className="text-xs sm:text-sm text-primary font-medium mb-1">
-                                                                    {item.institution}
-                                                                </p>
-                                                                <p className="text-xs text-muted">
-                                                                    {item.specialty}
-                                                                </p>
-                                                            </div>
-
-                                                            {/* Декоративный элемент */}
-                                                            <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-primary/5 to-transparent rounded-bl-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
+                                                            <h4 className="font-semibold text-sm sm:text-base text-foreground leading-tight mb-1
+                                                                         group-hover:text-primary transition-colors">
+                                                                {item.title}
+                                                            </h4>
+                                                            <p className="text-xs sm:text-sm text-muted">
+                                                                {item.institution} • {item.specialty}
+                                                            </p>
                                                         </div>
                                                     </motion.div>
                                                 </StaggerItem>
-                                            );
-                                        })}
-                                    </StaggerChildren>
+                                            ))}
+                                        </StaggerChildren>
+                                    </div>
                                 )}
                             </div>
                         </FadeIn>

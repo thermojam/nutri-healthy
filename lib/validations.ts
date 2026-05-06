@@ -4,9 +4,9 @@ import {z} from "zod";
  * Версии юридических документов (из env)
  */
 export const LEGAL_VERSIONS = {
-    privacyPolicy: process.env.PRIVACY_POLICY_VERSION || "1.0",
-    contract: process.env.CONTRACT_VERSION || "1.0",
-    personalDataConsent: process.env.PERSONAL_DATA_CONSENT_VERSION || "1.0",
+    privacyPolicy: process.env.PRIVACY_POLICY_VERSION || "3.0",
+    contract: process.env.CONTRACT_VERSION || "3.0",
+    personalDataConsent: process.env.PERSONAL_DATA_CONSENT_VERSION || "3.0",
     marketingConsent: process.env.MARKETING_CONSENT_VERSION || "1.0",
 };
 

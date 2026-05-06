@@ -50,12 +50,12 @@ export default function NotFound() {
 
                 {/* Кнопки навигации */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Link href="/">
-                        <Button size="lg" className="gap-2">
+                    <Button asChild size="lg" className="gap-2">
+                        <Link href="/">
                             <Home className="h-5 w-5"/>
                             На главную
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
 
                     <Button
                         size="lg"
@@ -74,21 +74,15 @@ export default function NotFound() {
                         Или перейдите в один из разделов:
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-3">
-                        <Link href="/services/nutrition">
-                            <Button variant="ghost" size="sm">
-                                Услуги
-                            </Button>
-                        </Link>
-                        <Link href="/materials/articles">
-                            <Button variant="ghost" size="sm">
-                                Статьи
-                            </Button>
-                        </Link>
-                        <Link href="/materials/videos">
-                            <Button variant="ghost" size="sm">
-                                Видео
-                            </Button>
-                        </Link>
+                        <Button asChild variant="ghost" size="sm">
+                            <Link href="/services/nutrition">Услуги</Link>
+                        </Button>
+                        <Button asChild variant="ghost" size="sm">
+                            <Link href="/materials/articles">Статьи</Link>
+                        </Button>
+                        <Button asChild variant="ghost" size="sm">
+                            <Link href="/materials/videos">Видео</Link>
+                        </Button>
                     </div>
                 </div>
             </div>

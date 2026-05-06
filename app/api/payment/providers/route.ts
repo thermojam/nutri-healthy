@@ -5,6 +5,7 @@
 
 import { NextResponse } from "next/server";
 import { PaymentProviderManager } from "@/lib/payments/payment-provider-factory";
+import type { PaymentProviderType } from "@/lib/payments/providers/abstract-payment-provider";
 
 export async function GET() {
     try {
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
         }
 
         const manager = PaymentProviderManager.getInstance();
-        const success = await manager.setActiveProvider(provider as any);
+        const success = await manager.setActiveProvider(provider as PaymentProviderType);
 
         if (!success) {
             return NextResponse.json(

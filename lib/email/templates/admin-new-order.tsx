@@ -6,7 +6,7 @@
 
 import {EmailTemplate, EmailButton, EmailDivider} from "./base";
 
-interface AdminNewOrderTemplateProps {
+export interface AdminNewOrderTemplateProps {
     orderId: string;
     clientName: string;
     clientEmail: string;

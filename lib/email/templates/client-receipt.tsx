@@ -6,7 +6,7 @@
 
 import {EmailTemplate, EmailDivider} from "./base";
 
-interface ClientReceiptTemplateProps {
+export interface ClientReceiptTemplateProps {
     clientName: string;
     orderId: string;
     serviceName: string;

@@ -1,10 +1,10 @@
 import {NextRequest, NextResponse} from "next/server";
 import {z} from "zod";
 import {sendEmail, sendAdminEmail} from "@/lib/email/resend";
-import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
-import {ClientWelcomeTemplate} from "@/lib/email/templates/client-welcome";
-import {ClientOrderConfirmTemplate} from "@/lib/email/templates/client-order-confirm";
-import {ClientReceiptTemplate} from "@/lib/email/templates/client-receipt";
+import {AdminNewOrderTemplate, AdminNewOrderTemplateProps} from "@/lib/email/templates/admin-new-order";
+import {ClientWelcomeTemplate, ClientWelcomeTemplateProps} from "@/lib/email/templates/client-welcome";
+import {ClientOrderConfirmTemplate, ClientOrderConfirmTemplateProps} from "@/lib/email/templates/client-order-confirm";
+import {ClientReceiptTemplate, ClientReceiptTemplateProps} from "@/lib/email/templates/client-receipt";
 import {TestEmailTemplate} from "@/lib/email/templates/test-email";
 
 /**
@@ -51,25 +51,25 @@ export async function POST(request: NextRequest) {
 
         switch (type) {
             case "admin-new-order":
-                template = AdminNewOrderTemplate(data as any);
+                template = AdminNewOrderTemplate(data as unknown as AdminNewOrderTemplateProps);
                 subject = `🛒 Новый заказ #${(data.orderId as string)?.slice(-6).toUpperCase()}`;
                 recipient = process.env.EMAIL_TO || "admin@localhost";
                 break;
 
             case "client-welcome":
-                template = ClientWelcomeTemplate(data as any);
+                template = ClientWelcomeTemplate(data as unknown as ClientWelcomeTemplateProps);
                 subject = "🎉 Добро пожаловать! Оплата подтверждена";
                 recipient = to || (data.clientEmail as string);
                 break;
 
             case "client-order-confirm":
-                template = ClientOrderConfirmTemplate(data as any);
+                template = ClientOrderConfirmTemplate(data as unknown as ClientOrderConfirmTemplateProps);
                 subject = "📦 Подтверждение заказа";
                 recipient = to || (data.clientEmail as string);
                 break;
 
             case "client-receipt":
-                template = ClientReceiptTemplate(data as any);
+                template = ClientReceiptTemplate(data as unknown as ClientReceiptTemplateProps);
                 subject = "🧾 Чек об оплате";
                 recipient = to || (data.clientEmail as string);
                 break;

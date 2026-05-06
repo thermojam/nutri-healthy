@@ -1,5 +1,6 @@
 "use client";
 
+import {memo} from "react";
 import {motion} from "framer-motion";
 import {cn} from "@/lib/utils";
 
@@ -9,7 +10,7 @@ interface AnimatedBackgroundProps {
     gradientVariant?: number; // 0-5 для выбора варианта
 }
 
-export function AnimatedBackground({
+export const AnimatedBackground = memo(function AnimatedBackground({
     className,
     children,
     gradientVariant = 0,
@@ -76,4 +77,4 @@ export function AnimatedBackground({
             </div>
         </div>
     );
-}
+});

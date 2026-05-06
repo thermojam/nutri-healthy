@@ -127,11 +127,9 @@ export default function PaymentCancelPage() {
                                                     <p className="text-xs text-muted">Оплата частями без процентов</p>
                                                 </div>
                                             </div>
-                                            <Link href="/services">
-                                                <Button variant="outline" size="sm" className="w-full">
-                                                    Узнать подробнее
-                                                </Button>
-                                            </Link>
+                                            <Button asChild variant="outline" size="sm" className="w-full">
+                                                <Link href="/services">Узнать подробнее</Link>
+                                            </Button>
                                         </CardContent>
                                     </Card>
 
@@ -144,11 +142,11 @@ export default function PaymentCancelPage() {
                                                     <p className="text-xs text-muted">Помогу с выбором оплаты</p>
                                                 </div>
                                             </div>
-                                            <a href="https://t.me/username" target="_blank" rel="noopener noreferrer">
-                                                <Button variant="outline" size="sm" className="w-full">
+                                            <Button asChild variant="outline" size="sm" className="w-full">
+                                                <a href="https://t.me/username" target="_blank" rel="noopener noreferrer">
                                                     Написать в Telegram
-                                                </Button>
-                                            </a>
+                                                </a>
+                                            </Button>
                                         </CardContent>
                                     </Card>
                                 </div>

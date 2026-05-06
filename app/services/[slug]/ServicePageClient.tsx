@@ -91,12 +91,12 @@ export default function ServicePageClient({service}: { service: Service }) {
                 {/* Hero секция */}
                 <section className="py-24 bg-gradient-to-br from-primary/10 via-background to-accent/10">
                     <div className="container">
-                        <Link href="/#services">
-                            <Button variant="ghost" size="sm" className="mb-6 gap-2">
+                        <Button asChild variant="ghost" size="sm" className="mb-6 gap-2">
+                            <Link href="/#services">
                                 <ArrowLeft className="h-4 w-4"/>
                                 Назад к услугам
-                            </Button>
-                        </Link>
+                            </Link>
+                        </Button>
 
                         <div className="grid lg:grid-cols-2 gap-12 items-start">
                             {/* Контент */}
@@ -353,11 +353,9 @@ export default function ServicePageClient({service}: { service: Service }) {
                             <p className="text-lg text-muted">
                                 Свяжитесь со мной любым удобным способом — я помогу выбрать оптимальную программу
                             </p>
-                            <Link href="/#contact">
-                                <Button size="lg">
-                                    Написать мне →
-                                </Button>
-                            </Link>
+                            <Button asChild size="lg">
+                                <Link href="/#contact">Написать мне →</Link>
+                            </Button>
                         </div>
                     </div>
                 </section>

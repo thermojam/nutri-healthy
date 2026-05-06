@@ -210,7 +210,7 @@ export class ConsentRepository {
             active,
             withdrawn,
             byType: byType.reduce(
-                (acc, item: any) => {
+                (acc, item: {_id: string; total: number; active: number}) => {
                     acc[item._id] = {
                         total: item.total,
                         active: item.active,

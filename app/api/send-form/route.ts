@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
         try {
             const indexes = await User.collection.indexes();
             const phoneIndex = indexes.find(
-                (idx: any) => idx.key && idx.key.phone && !idx.unique
+                (idx: {key: Record<string, unknown>; unique?: boolean}) => idx.key?.phone !== undefined && !idx.unique
             );
             if (phoneIndex) {
                 await User.collection.dropIndex("phone_1");

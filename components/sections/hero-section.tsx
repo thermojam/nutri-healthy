@@ -1,14 +1,10 @@
 "use client";
 
-import {useState} from "react";
 import Image from "next/image";
 import {ArrowRight} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {Badge} from "@/components/ui/badge";
 import {FadeIn} from "@/components/motion/fade-in";
 import {AnimatedBackground} from "@/components/motion/animated-background";
-import {GradientPreview} from "@/components/features/gradient-preview";
-import {SECTION_BADGES} from "@/lib/constants/section-badges";
 
 interface HeroSectionProps {
     data?: {
@@ -29,9 +25,6 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({data}: HeroSectionProps) {
-    const [gradientVariant, setGradientVariant] = useState(0);
-
-    // Данные по умолчанию, если не переданы
     const heroData = data || {
         title: "Психология и здоровье женской гормональной системы",
         subtitle: "",
@@ -48,10 +41,7 @@ export default function HeroSection({data}: HeroSectionProps) {
 
     return (
         <div className="relative min-h-screen overflow-hidden flex items-center justify-center pt-12 rounded-b-[4rem] md:rounded-b-[6rem]">
-            <AnimatedBackground
-                className="absolute inset-0"
-                gradientVariant={gradientVariant}
-            />
+            <AnimatedBackground className="absolute inset-0" />
 
 
             <div className="relative z-10 container px-4 py-18 md:py-16">

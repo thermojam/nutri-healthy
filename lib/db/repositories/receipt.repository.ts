@@ -40,11 +40,11 @@ export class ReceiptRepository {
     async updateStatus(
         id: string,
         status: IReceipt["status"],
-        fiscalData?: any
+        fiscalData?: IReceipt["fiscalData"]
     ): Promise<IReceipt | null> {
         await connectDB();
 
-        const update: any = {status};
+        const update: {status: IReceipt["status"]; fiscalData?: IReceipt["fiscalData"]; sentAt?: Date} = {status};
 
         if (fiscalData) {
             update.fiscalData = fiscalData;
@@ -60,7 +60,7 @@ export class ReceiptRepository {
     /**
      * Отметить чек как отправленный
      */
-    async markAsSent(id: string, fiscalData: any): Promise<IReceipt | null> {
+    async markAsSent(id: string, fiscalData: IReceipt["fiscalData"]): Promise<IReceipt | null> {
         await connectDB();
 
         return Receipt.findByIdAndUpdate(
@@ -113,7 +113,7 @@ export class ReceiptRepository {
             }
         }
 
-        const matchStage: any = {};
+        const matchStage: Record<string, unknown> = {};
         if (startDate) {
             matchStage.createdAt = {$gte: startDate};
         }

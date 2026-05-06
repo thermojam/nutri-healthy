@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import {connectDB} from "@/lib/db/connect";
-import {Order} from "@/lib/db/models/Order";
+import {Order, IOrder} from "@/lib/db/models/Order";
 import {Receipt} from "@/lib/db/models/Receipt";
 import {User} from "@/lib/db/models/User";
 import {createAuditLog} from "@/lib/db/audit";
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Маппинг статусов
-        const statusMap: Record<string, string> = {
+        const statusMap: Record<string, IOrder["status"]> = {
             // ЮKassa
             pending: "pending",
             waiting_for_capture: "pending",
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 
         // Обновляем статус только если он изменился
         if (order.status !== newStatus) {
-            order.status = newStatus as any;
+            order.status = newStatus;
             order.metadata = {
                 ...order.metadata,
                 lastWebhookReceived: new Date().toISOString(),

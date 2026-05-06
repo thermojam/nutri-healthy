@@ -86,9 +86,9 @@ export default function VideosPage() {
             ) : videos.length === 0 ? (
               <div className="text-center py-12 space-y-4">
                 <p className="text-muted">Видео материалы в процессе наполнения</p>
-                <Link href="/#materials">
-                  <Button variant="outline">Вернуться на главную</Button>
-                </Link>
+                <Button asChild variant="outline">
+                  <Link href="/#materials">Вернуться на главную</Link>
+                </Button>
               </div>
             ) : (
               <StaggerChildren className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -154,11 +154,9 @@ export default function VideosPage() {
                 <p className="text-lg text-muted">
                   Запишитесь на консультацию и получите индивидуальный план действий
                 </p>
-                <Link href="/#contact">
-                  <Button size="lg">
-                    Записаться на консультацию
-                  </Button>
-                </Link>
+                <Button asChild size="lg">
+                  <Link href="/#contact">Записаться на консультацию</Link>
+                </Button>
               </div>
             </FadeIn>
           </div>

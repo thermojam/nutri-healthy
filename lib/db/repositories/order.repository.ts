@@ -12,8 +12,16 @@ import {Service} from "@/lib/db/models";
  * - server-cache-lru: Кэширование статистики
  */
 
-// Кэш для статистики
-const statsCache = new Map<string, {data: any; cachedAt: number}>();
+type OrderStats = {
+    totalOrders: number;
+    totalRevenue: number;
+    statusBreakdown: Record<string, number>;
+    recentOrders: unknown[];
+    period: string;
+    updatedAt: Date;
+};
+
+const statsCache = new Map<string, {data: OrderStats; cachedAt: number}>();
 const STATS_CACHE_TTL = 2 * 60 * 1000; // 2 минуты
 
 export class OrderRepository {
@@ -65,11 +73,11 @@ export class OrderRepository {
     async updateStatus(
         id: string,
         status: IOrder["status"],
-        metadata?: Record<string, any>
+        metadata?: Record<string, unknown>
     ): Promise<IOrder | null> {
         await connectDB();
 
-        const update: any = {status};
+        const update: {status: IOrder["status"]; metadata?: Record<string, unknown>} = {status};
 
         if (metadata) {
             update.metadata = metadata;
@@ -167,7 +175,7 @@ export class OrderRepository {
             }
         }
 
-        const matchStage: any = {};
+        const matchStage: Record<string, unknown> = {};
         if (startDate) {
             matchStage.createdAt = {$gte: startDate};
         }
@@ -239,7 +247,7 @@ export class OrderRepository {
         await connectDB();
 
         const skip = (page - 1) * limit;
-        const query: any = {};
+        const query: Record<string, unknown> = {};
 
         // Фильтры
         if (status) query.status = status;
@@ -262,7 +270,7 @@ export class OrderRepository {
             query.user = {$in: users.map((u) => u._id)};
         }
 
-        const sortOption: any = {[sortBy]: sortOrder === "asc" ? 1 : -1};
+        const sortOption: Record<string, 1 | -1> = {[sortBy]: sortOrder === "asc" ? 1 : -1};
 
         const [orders, total] = await Promise.all([
             Order.find(query)
@@ -325,7 +333,7 @@ export class OrderRepository {
      */
     async updateMetadata(
         id: string,
-        metadata: Record<string, any>
+        metadata: Record<string, unknown>
     ): Promise<IOrder | null> {
         await connectDB();
 

@@ -64,12 +64,12 @@ export default async function ArticlePage({params}: { params: Promise<{ slug: st
                 {/* Hero секция */}
                 <section className="py-24 bg-gradient-to-br from-primary/10 via-background to-accent/10">
                     <div className="container">
-                        <Link href="/#materials">
-                            <Button variant="ghost" size="sm" className="mb-6 gap-2">
+                        <Button asChild variant="ghost" size="sm" className="mb-6 gap-2">
+                            <Link href="/#materials">
                                 <ArrowLeft className="h-4 w-4"/>
                                 Назад к материалам
-                            </Button>
-                        </Link>
+                            </Link>
+                        </Button>
 
                         <div className="max-w-4xl mx-auto space-y-6">
                             <Badge className={categoryColors[article.category] || "bg-primary"}>
@@ -226,11 +226,9 @@ export default async function ArticlePage({params}: { params: Promise<{ slug: st
                             <p className="text-lg text-muted">
                                 Запишитесь на консультацию и получите персональные рекомендации
                             </p>
-                            <Link href="/#contact">
-                                <Button size="lg">
-                                    Записаться на консультацию
-                                </Button>
-                            </Link>
+                            <Button asChild size="lg">
+                                <Link href="/#contact">Записаться на консультацию</Link>
+                            </Button>
                         </div>
                     </div>
                 </section>

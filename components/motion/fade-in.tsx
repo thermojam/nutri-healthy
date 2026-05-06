@@ -1,7 +1,8 @@
 "use client";
 
+import {memo} from "react";
 import {motion} from "framer-motion";
-import {ReactNode, useEffect, useState} from "react";
+import {ReactNode} from "react";
 
 interface FadeInProps {
     children: ReactNode;
@@ -11,31 +12,21 @@ interface FadeInProps {
     direction?: "up" | "down" | "left" | "right" | "none";
 }
 
-export function FadeIn({
-                           children,
-                           className = "",
-                           delay = 0,
-                           duration = 0.6,
-                           direction = "up",
-                       }: FadeInProps) {
-    const [isClient, setIsClient] = useState(false);
+const directions = {
+    up: {y: 40, x: 0},
+    down: {y: -40, x: 0},
+    left: {x: 40, y: 0},
+    right: {x: -40, y: 0},
+    none: {x: 0, y: 0},
+};
 
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    const directions = {
-        up: {y: 40, x: 0},
-        down: {y: -40, x: 0},
-        left: {x: 40, y: 0},
-        right: {x: -40, y: 0},
-        none: {x: 0, y: 0},
-    };
-
-    if (!isClient) {
-        return <div className={className}>{children}</div>;
-    }
-
+export const FadeIn = memo(function FadeIn({
+    children,
+    className = "",
+    delay = 0,
+    duration = 0.6,
+    direction = "up",
+}: FadeInProps) {
     return (
         <motion.div
             initial={{
@@ -58,4 +49,4 @@ export function FadeIn({
             {children}
         </motion.div>
     );
-}
+});

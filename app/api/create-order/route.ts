@@ -1,13 +1,13 @@
 import {NextRequest, NextResponse} from "next/server";
 import {z} from "zod";
 import {connectDB} from "@/lib/db/connect";
-import {Order} from "@/lib/db/models/Order";
+import {Order, IOrder} from "@/lib/db/models/Order";
 import {User} from "@/lib/db/models/User";
 import {Consent} from "@/lib/db/models/Consent";
 import {Service} from "@/lib/db/models/Service";
 import {createAuditLog, getClientIP, getUserAgent} from "@/lib/db/audit";
 import {orderFormSchema, LEGAL_VERSIONS} from "@/lib/validations";
-import {paymentService} from "@/lib/payments/payment-service";
+import {paymentService, CreatePaymentResult} from "@/lib/payments/payment-service";
 import {sendAdminEmail, sendEmail} from "@/lib/email";
 import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
 import {ClientOrderConfirmTemplate} from "@/lib/email/templates/client-order-confirm";
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
         try {
             const indexes = await User.collection.indexes();
             const phoneIndex = indexes.find(
-                (idx: any) => idx.key && idx.key.phone && !idx.unique
+                (idx: {key: Record<string, unknown>; unique?: boolean}) => idx.key?.phone !== undefined && !idx.unique
             );
             if (phoneIndex) {
                 await User.collection.dropIndex("phone_1");
@@ -281,7 +281,7 @@ export async function POST(request: NextRequest) {
 
         // Инициализация платежа через активный платежный сервис
         let paymentUrl: string | undefined;
-        let paymentData: any;
+        let paymentData: CreatePaymentResult;
 
         try {
             // Определяем провайдер на основе выбранного метода оплаты
@@ -301,7 +301,7 @@ export async function POST(request: NextRequest) {
                 
                 // Помечаем заказ как ожидающий оплаты
                 order.status = "pending";
-                order.paymentMethod = paymentMethod as any;
+                order.paymentMethod = paymentMethod as IOrder["paymentMethod"];
                 order.metadata = {
                     paymentProvider: provider,
                     paymentMethod: paymentMethod,
@@ -323,9 +323,9 @@ export async function POST(request: NextRequest) {
             paymentUrl = paymentData.paymentUrl;
 
             // Сохранение информации о платеже в заказ
-            order.paymentMethod = paymentMethod as any;
+            order.paymentMethod = paymentMethod as IOrder["paymentMethod"];
             order.paymentId = paymentData.paymentId;
-            order.paymentProvider = provider as any;
+            order.paymentProvider = provider as IOrder["paymentProvider"];
             order.status = "pending";
             order.metadata = {
                 paymentUrl,
@@ -338,7 +338,7 @@ export async function POST(request: NextRequest) {
             
             // Помечаем заказ как ожидающий оплаты
             order.status = "pending";
-            order.paymentMethod = paymentMethod as any;
+            order.paymentMethod = paymentMethod as IOrder["paymentMethod"];
             order.metadata = {
                 paymentMethod: paymentMethod,
                 paymentError: paymentError instanceof Error ? paymentError.message : "Unknown error",

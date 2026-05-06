@@ -205,7 +205,7 @@ export class YooKassaService {
         };
         
         if (object.status === 'canceled') {
-            const cancellationDetails = (eventWithCancellation.object as any)?.cancellation_details;
+            const cancellationDetails = eventWithCancellation.object?.cancellation_details;
             console.warn('YooKassa: Payment canceled', {
                 paymentId: object.id,
                 reason: cancellationDetails?.reason,

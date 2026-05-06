@@ -6,7 +6,7 @@
 
 import {EmailTemplate, EmailButton, EmailDivider} from "./base";
 
-interface ClientWelcomeTemplateProps {
+export interface ClientWelcomeTemplateProps {
     clientName: string;
     serviceName: string;
     tariff: "base" | "premium" | "vip";

@@ -25,6 +25,8 @@ interface Education {
     }[];
 }
 
+type EducationApiItem = Omit<Education, "year"> & {startDate: string};
+
 const documentIcons = {
     diploma: Award,
     certificate: FileText,
@@ -40,7 +42,7 @@ export default function EducationSection() {
             .then((res) => res.json())
             .then((data) => {
                 // Форматируем данные
-                const formatted = (data.data || []).map((item: any) => ({
+                const formatted = (data.data || []).map((item: EducationApiItem) => ({
                     ...item,
                     year: new Date(item.startDate).getFullYear().toString(),
                 }));

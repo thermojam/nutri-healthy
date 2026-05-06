@@ -147,11 +147,11 @@ export function CasesSection({cases}: CasesSectionProps) {
                                 Через 3 месяца вы сможете сказать: «Это было лучшее решение в моей жизни».
                                 Как Екатерина, которая похудела на 15 кг и восстановила энергию.
                             </p>
-                            <a href="#contact" className="block w-full max-w-xs mx-auto">
-                                <Button size="lg" className="w-full">
-                                    Начать →
+                            <div className="max-w-xs mx-auto">
+                                <Button asChild size="lg" className="w-full">
+                                    <a href="#contact">Начать →</a>
                                 </Button>
-                            </a>
+                            </div>
                             <p className="text-xs text-muted mt-3 sm:mt-4">
                                 🔒 100% конфиденциально • Без осуждения • С заботой
                             </p>

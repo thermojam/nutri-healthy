@@ -1,6 +1,7 @@
 "use client";
 
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback, useMemo} from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import {useRouter, useSearchParams} from "next/navigation";
 import {FadeIn} from "@/components/motion/fade-in";
@@ -10,10 +11,13 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {InfoBlockWithBadges} from "@/components/ui/info-block";
 import {Spinner} from "@/components/ui/spinner";
-import OrderModal from "@/components/features/order-modal";
 import {SECTION_BADGES} from "@/lib/constants/section-badges";
 import {cn} from "@/lib/utils";
 import type {ObjectId} from "mongoose";
+
+const OrderModal = dynamic(() => import("@/components/features/order-modal"), {
+    ssr: false,
+});
 
 const TABS = [
     {key: "nutrition", label: "Короткие"},
@@ -59,12 +63,9 @@ interface Service {
 }
 
 function formatPrice(price: number): string {
-    return new Intl.NumberFormat("ru-RU", {
-        style: "currency",
-        currency: "RUB",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-    }).format(price);
+    return Math.round(price)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
 }
 
 function formatDuration(minutes: number): string {
@@ -101,20 +102,20 @@ export function ProductsSection({services}: ProductsSectionProps) {
         }
     }, [searchParams, router]);
 
-    const handleOrderSuccess = (orderId: string) => {
+    const handleOrderSuccess = useCallback((orderId: string) => {
         console.log("Order created:", orderId);
-    };
+    }, []);
 
-    const handleOrderError = (error: string) => {
+    const handleOrderError = useCallback((error: string) => {
         console.error("Order error:", error);
         if (typeof window !== "undefined") {
             alert(`Ошибка при создании заказа: ${error}`);
         }
-    };
+    }, []);
 
-    // Фильтруем услуги по активной вкладке
-    const filteredServices = services.filter(
-        (service) => (service.category || "nutrition") === activeTab
+    const filteredServices = useMemo(
+        () => services.filter((service) => (service.category || "nutrition") === activeTab),
+        [services, activeTab]
     );
 
     // Если нет данных из БД
@@ -293,11 +294,11 @@ export function ProductsSection({services}: ProductsSectionProps) {
                                     Запишитесь на бесплатную 15-минутную консультацию.
                                     Я помогу определить вашу главную проблему и подберу оптимальную программу.
                                 </p>
-                                <Link href="/#contact" className="block w-full max-w-xs mx-auto">
-                                    <Button size="lg" className="w-full bg-linear-to-r from-accent to-orange-500 hover:shadow-lg hover:shadow-accent/40 hover:scale-105 transition-all duration-300 active:scale-95">
-                                        Бесплатная консультация
+                                <div className="max-w-xs mx-auto">
+                                    <Button asChild size="lg" className="w-full bg-linear-to-r from-accent to-orange-500 hover:shadow-lg hover:shadow-accent/40 hover:scale-105 transition-all duration-300 active:scale-95">
+                                        <Link href="/#contact">Бесплатная консультация</Link>
                                     </Button>
-                                </Link>
+                                </div>
                             </div>
                         </div>
                     </FadeIn>

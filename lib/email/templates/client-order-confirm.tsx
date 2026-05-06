@@ -6,7 +6,7 @@
 
 import {EmailTemplate, EmailButton, EmailDivider} from "./base";
 
-interface ClientOrderConfirmTemplateProps {
+export interface ClientOrderConfirmTemplateProps {
     clientName: string;
     orderId: string;
     serviceName: string;

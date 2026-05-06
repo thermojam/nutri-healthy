@@ -146,9 +146,10 @@ ServiceSchema.virtual("id").get(function() {
 ServiceSchema.set("toJSON", {
     virtuals: true,
     versionKey: false,
-    transform: function(_doc, ret: any) {
-        ret._id = ret.id;
-        delete ret.id;
+    transform: function(_doc, ret) {
+        const r = ret as unknown as Record<string, unknown>;
+        r._id = r.id;
+        delete r.id;
     },
 });
 

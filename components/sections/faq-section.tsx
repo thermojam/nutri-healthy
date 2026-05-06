@@ -150,11 +150,11 @@ export default function FAQSection({data}: FAQSectionProps) {
                                 Задайте вопрос прямо сейчас — я отвечу в течение 24 часов.
                                 Это бесплатно и ни к чему не обязывает.
                             </p>
-                            <a href="#contact" className="block w-full max-w-xs mx-auto">
-                                <Button size="lg" className="w-full">
-                                    Задать вопрос →
+                            <div className="max-w-xs mx-auto">
+                                <Button asChild size="lg" className="w-full">
+                                    <a href="#contact">Задать вопрос →</a>
                                 </Button>
-                            </a>
+                            </div>
                         </div>
                     </div>
                 </FadeIn>

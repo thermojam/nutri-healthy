@@ -2,6 +2,7 @@
 
 import React from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import type {EmblaCarouselType} from "embla-carousel";
 import Autoplay from "embla-carousel-autoplay";
 import {ArrowLeft, ArrowRight} from "lucide-react";
 import {Button} from "@/components/ui/button";
@@ -52,12 +53,12 @@ export function Carousel({
         [emblaApi]
     );
 
-    const onInit = useCallback((emblaApi: any) => {
-        setScrollSnaps(emblaApi.scrollSnapList());
+    const onInit = useCallback((api: EmblaCarouselType) => {
+        setScrollSnaps(api.scrollSnapList());
     }, []);
 
-    const onSelect = useCallback((emblaApi: any) => {
-        setSelectedIndex(emblaApi.selectedScrollSnap());
+    const onSelect = useCallback((api: EmblaCarouselType) => {
+        setSelectedIndex(api.selectedScrollSnap());
     }, []);
 
     useEffect(() => {

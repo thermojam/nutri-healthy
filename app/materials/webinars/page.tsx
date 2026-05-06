@@ -81,9 +81,9 @@ export default function WebinarsPage() {
                         ) : webinars.length === 0 ? (
                             <div className="text-center py-12 space-y-4">
                                 <p className="text-muted">Вебинары в процессе наполнения</p>
-                                <Link href="/#materials">
-                                    <Button variant="outline">Вернуться на главную</Button>
-                                </Link>
+                                <Button asChild variant="outline">
+                                    <Link href="/#materials">Вернуться на главную</Link>
+                                </Button>
                             </div>
                         ) : (
                             <div className="space-y-8">
@@ -135,11 +135,11 @@ export default function WebinarsPage() {
                                                             <span>{formatDuration(webinar.duration)}</span>
                                                         </div>
                                                     </div>
-                                                    <Link href={`/materials/webinars/${webinar.slug}`}>
-                                                        <Button size="lg" className="w-full">
+                                                    <Button asChild size="lg" className="w-full">
+                                                        <Link href={`/materials/webinars/${webinar.slug}`}>
                                                             Смотреть запись
-                                                        </Button>
-                                                    </Link>
+                                                        </Link>
+                                                    </Button>
                                                 </div>
                                             </div>
                                         </Card>
@@ -161,11 +161,9 @@ export default function WebinarsPage() {
                                 <p className="text-lg text-muted">
                                     Запишитесь на индивидуальную консультацию и получите персональные рекомендации
                                 </p>
-                                <Link href="/#contact">
-                                    <Button size="lg">
-                                        Записаться на консультацию
-                                    </Button>
-                                </Link>
+                                <Button asChild size="lg">
+                                    <Link href="/#contact">Записаться на консультацию</Link>
+                                </Button>
                             </div>
                         </FadeIn>
                     </div>

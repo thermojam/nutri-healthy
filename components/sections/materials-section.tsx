@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useEffect, useState, useMemo} from "react";
 import {Play, FileText, Calendar, Clock} from "lucide-react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
@@ -80,6 +80,11 @@ export function MaterialsSection() {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<MaterialType>("videos");
 
+    const hasAnyMaterials = useMemo(
+        () => articles.length > 0 || videos.length > 0 || webinars.length > 0,
+        [articles.length, videos.length, webinars.length]
+    );
+
     useEffect(() => {
         Promise.all([
             fetch("/api/articles?featured=true&limit=3").then((res) => res.json()),
@@ -128,8 +133,6 @@ export function MaterialsSection() {
             </section>
         );
     }
-
-    const hasAnyMaterials = articles.length > 0 || videos.length > 0 || webinars.length > 0;
 
     if (!hasAnyMaterials) {
         return null;
@@ -316,11 +319,11 @@ export function MaterialsSection() {
                             <p className="text-xs sm:text-sm text-muted max-w-2xl mx-auto mb-4 sm:mb-6 px-2">
                                 Материалы дают общие знания, но ваше здоровье уникально. На консультации я разработаю индивидуальный план с учётом ваших анализов и целей.
                             </p>
-                            <a href="#contact" className="block w-full max-w-xs mx-auto">
-                                <Button size="lg" className="w-full bg-linear-to-r from-primary to-purple-600 hover:shadow-lg hover:shadow-primary/40 hover:scale-105 transition-all duration-300">
-                                    Записаться →
+                            <div className="max-w-xs mx-auto">
+                                <Button asChild size="lg" className="w-full bg-linear-to-r from-primary to-purple-600 hover:shadow-lg hover:shadow-primary/40 hover:scale-105 transition-all duration-300">
+                                    <a href="#contact">Записаться →</a>
                                 </Button>
-                            </a>
+                            </div>
                         </div>
                     </div>
                 </FadeIn>

@@ -16,11 +16,6 @@ const navLinks = [
     {href: "/#faq", label: "FAQ"},
 ];
 
-const legalLinks = [
-    {href: "/legal/privacy-policy", label: "Конфиденциальность"},
-    {href: "/legal/personal-data-consent", label: "ПДн"},
-    {href: "/legal/contract", label: "Оферта"},
-];
 
 export default function Header() {
     const {theme, setTheme} = useTheme();
@@ -140,17 +135,13 @@ export default function Header() {
                             ))}
 
                             <div className="pt-4 border-t border-border">
-                                <p className="text-sm text-muted mb-2">Юридическая информация:</p>
-                                {legalLinks.map((link) => (
-                                    <Link
-                                        key={link.href}
-                                        href={link.href}
-                                        className="block text-sm text-muted hover:text-primary py-1"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                    >
-                                        {link.label}
-                                    </Link>
-                                ))}
+                                <Link
+                                    href="/legal"
+                                    className="block text-sm text-muted hover:text-primary py-1"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    Юридическая информация
+                                </Link>
                             </div>
 
                             <Link

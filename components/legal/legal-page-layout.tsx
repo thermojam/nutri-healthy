@@ -42,10 +42,12 @@ export default function LegalPage({
                                 <span className="sm:hidden">Назад</span>
                             </Link>
                         </Button>
-                        <div className="flex items-center gap-2 text-sm text-muted">
-                            <Shield className="h-4 w-4"/>
-                            <span className="hidden sm:inline">Юридическая информация</span>
-                        </div>
+                        <Button asChild variant="ghost" size="sm" className="gap-2 hover:bg-primary/10 hover:text-primary transition-colors">
+                            <Link href="/legal">
+                                <Shield className="h-4 w-4"/>
+                                <span className="hidden sm:inline">Юридическая информация</span>
+                            </Link>
+                        </Button>
                     </div>
                 </div>
             </header>
@@ -97,17 +99,6 @@ export default function LegalPage({
                             </>
                         ) : null}
                     </p>
-                    <div className="flex flex-wrap items-center justify-center gap-4 pt-3 text-xs">
-                        <Link href="/legal/privacy-policy" className="hover:text-primary transition-colors">
-                            Политика конфиденциальности
-                        </Link>
-                        <Link href="/legal/contract" className="hover:text-primary transition-colors">
-                            Договор оферты
-                        </Link>
-                        <Link href="/legal/return-policy" className="hover:text-primary transition-colors">
-                            Возврат
-                        </Link>
-                    </div>
                 </footer>
             </main>
         </div>

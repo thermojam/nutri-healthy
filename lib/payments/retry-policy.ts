@@ -22,6 +22,11 @@ const DEFAULT_RETRY_CONFIG: RetryConfig = {
  * Определение, можно ли повторить операцию
  */
 export function isRetryableError(error: unknown, statusCode?: number): boolean {
+  // HTTP ошибки
+  if (statusCode) {
+    return DEFAULT_RETRY_CONFIG.retryableStatusCodes.includes(statusCode);
+  }
+
   if (!error) return false;
 
   // Сетевые ошибки
@@ -32,11 +37,6 @@ export function isRetryableError(error: unknown, statusCode?: number): boolean {
       message.includes("network") ||
       message.includes("timeout")
     );
-  }
-
-  // HTTP ошибки
-  if (statusCode) {
-    return DEFAULT_RETRY_CONFIG.retryableStatusCodes.includes(statusCode);
   }
 
   return false;

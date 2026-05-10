@@ -11,6 +11,7 @@ import {paymentService, CreatePaymentResult} from "@/lib/payments/payment-servic
 import {sendAdminEmail, sendEmail} from "@/lib/email";
 import {AdminNewOrderTemplate} from "@/lib/email/templates/admin-new-order";
 import {ClientOrderConfirmTemplate} from "@/lib/email/templates/client-order-confirm";
+import {metricsCollector} from "@/lib/metrics";
 
 /**
  * Нормализация номера телефона — приведение к единому формату
@@ -43,6 +44,7 @@ function normalizePhone(phone?: string): string | undefined {
  * - Сохранение версии документов
  */
 export async function POST(request: NextRequest) {
+    const startTime = Date.now();
     try {
         const body = await request.json();
 
@@ -360,6 +362,9 @@ export async function POST(request: NextRequest) {
         // Сейчас только возвращаем данные для оплаты
 
         // Возврат ответа
+        const duration = Date.now() - startTime;
+        metricsCollector.recordRequest('/api/create-order', 'POST', 200, duration);
+
         if (paymentUrl) {
             return NextResponse.json({
                 success: true,
@@ -383,7 +388,9 @@ export async function POST(request: NextRequest) {
             });
         }
     } catch (error) {
+        const duration = Date.now() - startTime;
         console.error("❌ Order creation error:", error);
+        metricsCollector.recordRequest('/api/create-order', 'POST', 500, duration, 'Order creation error');
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
         return NextResponse.json(

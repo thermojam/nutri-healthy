@@ -5,6 +5,7 @@ import {Consent} from "@/lib/db/models/Consent";
 import {User} from "@/lib/db/models/User";
 import {createAuditLog, getClientIP, getUserAgent} from "@/lib/db/audit";
 import {withdrawConsentSchema} from "@/lib/validations";
+import {metricsCollector} from "@/lib/metrics";
 
 /**
  * POST /api/withdraw-consent
@@ -16,6 +17,7 @@ import {withdrawConsentSchema} from "@/lib/validations";
  * - Аудит действия
  */
 export async function POST(request: NextRequest) {
+    const startTime = Date.now();
     try {
         const body = await request.json();
 
@@ -104,6 +106,9 @@ export async function POST(request: NextRequest) {
         //   body: `Пользователь ${email} отозвал согласие на ${consentType}`,
         // });
 
+        const duration = Date.now() - startTime;
+        metricsCollector.recordRequest('/api/withdraw-consent', 'POST', 200, duration);
+
         return NextResponse.json({
             success: true,
             message: "Согласие успешно отозвано",
@@ -111,7 +116,9 @@ export async function POST(request: NextRequest) {
             withdrawnAt: timestamp,
         });
     } catch (error) {
+        const duration = Date.now() - startTime;
         console.error("❌ Consent withdrawal error:", error);
+        metricsCollector.recordRequest('/api/withdraw-consent', 'POST', 500, duration, 'Consent withdrawal error');
 
         return NextResponse.json(
             {

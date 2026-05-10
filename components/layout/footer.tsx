@@ -21,14 +21,6 @@ const socialLinks = [
     },
 ];
 
-const legalLinks = [
-    {href: "/legal/privacy-policy", label: "Политика конфиденциальности"},
-    {href: "/legal/personal-data-consent", label: "Согласие на ПДн"},
-    {href: "/legal/marketing-consent", label: "Согласие на рассылку"},
-    {href: "/legal/contract", label: "Договор оферты"},
-    {href: "/legal/return-policy", label: "Возврат"},
-    {href: "/legal/delivery-terms", label: "Порядок оказания услуг"},
-];
 
 const contactInfo = [
     {
@@ -159,18 +151,13 @@ export default function Footer() {
                             © {currentYear} Ксения Каменская. Все права защищены.
                         </p>
 
-                        {/* Legal Links */}
-                        <div className="flex flex-wrap gap-4">
-                            {legalLinks.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className="text-sm text-muted hover:text-primary transition-colors"
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </div>
+                        {/* Legal Documents */}
+                        <Link
+                            href="/legal"
+                            className="text-sm text-muted hover:text-primary transition-colors"
+                        >
+                            Юридические документы
+                        </Link>
                     </div>
 
                     {/* Disclaimer */}

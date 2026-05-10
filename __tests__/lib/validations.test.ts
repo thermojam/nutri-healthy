@@ -1,4 +1,4 @@
-import { contactFormSchema, orderFormSchema, withdrawConsentSchema, subscribeSchema, feedbackSchema } from './validations';
+import { contactFormSchema, orderFormSchema, withdrawConsentSchema, subscribeSchema, feedbackSchema } from '@/lib/validations';
 
 describe('Validations', () => {
   describe('contactFormSchema', () => {

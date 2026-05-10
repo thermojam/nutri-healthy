@@ -6,7 +6,7 @@ import {
   RateLimitError,
   logError,
   withRetry,
-} from './error-handler';
+} from '@/lib/error-handler';
 
 describe('Error Handling', () => {
   describe('Custom Errors', () => {

@@ -1,4 +1,4 @@
-import { metricsCollector } from './metrics';
+import { metricsCollector } from '@/lib/metrics';
 
 describe('Metrics Collector', () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import { Cache, memoize, memoizeAsync } from './cache';
+import { Cache, memoize, memoizeAsync } from '@/lib/cache';
 
 describe('Cache', () => {
   let cache: Cache<string>;

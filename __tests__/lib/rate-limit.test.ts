@@ -1,4 +1,4 @@
-import { createRateLimiter, apiRateLimiter, authRateLimiter, formSubmitRateLimiter } from './rate-limit';
+import { createRateLimiter, apiRateLimiter, authRateLimiter, formSubmitRateLimiter } from '@/lib/rate-limit';
 
 describe('Rate Limiting', () => {
   describe('createRateLimiter', () => {

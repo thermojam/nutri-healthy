@@ -41,7 +41,7 @@ export default async function LegalDocumentPage({params}: PageParams) {
         notFound();
     }
 
-    const Icon = getLegalIcon(doc.frontmatter.icon);
+    const Icon = getLegalIcon(doc.frontmatter.icon, doc.frontmatter.slug);
 
     return (
         <LegalPageLayout

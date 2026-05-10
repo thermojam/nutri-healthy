@@ -7,7 +7,7 @@
 
 import {z} from "zod";
 
-export const LEGAL_CATEGORIES = ["contract", "privacy", "consent", "policy", "info"] as const;
+export const LEGAL_CATEGORIES = ["contract", "privacy", "consent", "policy", "info", "legal"] as const;
 export type LegalCategory = (typeof LEGAL_CATEGORIES)[number];
 
 export const CONSENT_REQUIREMENTS = [
@@ -36,7 +36,7 @@ export const legalFrontmatterSchema = z.object({
     effectiveDate: dateLike,
     lastUpdated: dateLike,
 
-    icon: z.string().min(1).default("file-text"),
+    icon: z.string().min(1).optional(),
     category: z.enum(LEGAL_CATEGORIES),
 
     order: z.number().int().nonnegative().default(100),

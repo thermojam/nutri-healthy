@@ -31,7 +31,20 @@ const ICON_MAP: Record<string, LucideIcon> = {
     scale: Scale,
 };
 
-export function getLegalIcon(name: string | undefined): LucideIcon {
-    if (!name) return FileText;
-    return ICON_MAP[name] ?? FileText;
+/**
+ * Дефолт иконка по slug документа если icon не задан
+ */
+const SLUG_ICON_MAP: Record<string, LucideIcon> = {
+    contract: Briefcase,
+    "privacy-policy": Shield,
+    "personal-data-consent": UserCheck,
+    "marketing-consent": Mail,
+    "delivery-terms": Clock,
+    "return-policy": Percent,
+};
+
+export function getLegalIcon(name: string | undefined, slug?: string): LucideIcon {
+    if (name) return ICON_MAP[name] ?? FileText;
+    if (slug) return SLUG_ICON_MAP[slug] ?? Scale;
+    return FileText;
 }

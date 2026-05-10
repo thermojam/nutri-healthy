@@ -20,9 +20,10 @@ const CATEGORY_LABELS: Record<LegalCategory, string> = {
     consent: "Согласия",
     policy: "Политики и регламенты",
     info: "Информация",
+    legal: "Юридическая информация",
 };
 
-const CATEGORY_ORDER: LegalCategory[] = ["contract", "privacy", "consent", "policy", "info"];
+const CATEGORY_ORDER: LegalCategory[] = ["contract", "privacy", "consent", "policy", "info", "legal"];
 
 export default async function LegalIndexPage() {
     const docs = await getIndexLegalDocuments();
@@ -83,7 +84,7 @@ export default async function LegalIndexPage() {
                                 </h2>
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     {items.map((doc) => {
-                                        const Icon = getLegalIcon(doc.frontmatter.icon);
+                                        const Icon = getLegalIcon(doc.frontmatter.icon, doc.frontmatter.slug);
                                         return (
                                             <Link
                                                 key={doc.frontmatter.slug}

@@ -1,3 +1,7 @@
-iteration	legal_compliance_score	documents_created	ui_changes	status	description
-1	8.0	1	0	keep	Content audit: Privacy Policy missing, RKN notification needed
-2	30.0	2	0	keep	Privacy Policy (152-FZ): data retention, user rights, cookies
+iteration	document	legal_score	status	description
+1	contract.md	85.0	keep	Договор оферты: дисклеймер усилен, медицинские требования четкие
+2	privacy-policy.md	82.0	keep	Политика ПД: 152-ФЗ compliance, Яндекс Метрика, права пользователя
+3	personal-data-consent.md	83.0	keep	Согласие ПД: Роскомнадзор, ясные процедуры отзыва
+4	marketing-consent.md	84.0	keep	Согласие маркетинг: ФАС compliance, 38-ФЗ требования
+5	return-policy.md	80.0	keep	Политика возврата: 2300-1 compliance, судебный порядок, Роспотребнадзор
+6	delivery-terms.md	81.0	keep	Условия услуг: 2300-1 compliance, права потребителей, Роспотребнадзор

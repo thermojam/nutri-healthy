@@ -26,7 +26,14 @@ const nextConfig: NextConfig = {
 
     // Power Up Next.js with SWC transformations
     experimental: {
-        optimizePackageImports: ["@radix-ui/react-*", "lucide-react"],
+        optimizePackageImports: [
+            "@radix-ui/react-*",
+            "lucide-react",
+            "framer-motion",
+            "class-variance-authority",
+            "clsx",
+            "tailwind-merge",
+        ],
     },
 
     // Security headers will be set by middleware

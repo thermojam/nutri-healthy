@@ -15,6 +15,7 @@ import type {
 import { Order } from "@/lib/db/models/Order";
 import { validatePaymentData, validateRefundData, sanitizePaymentData } from "./validation";
 import { withRetry } from "./retry-policy";
+import { recordPaymentOperation } from "./metrics";
 
 export interface CreatePaymentResult {
     success: boolean;
@@ -55,9 +56,14 @@ export class PaymentService {
             const sanitizedData = sanitizePaymentData(data);
 
             const provider = getPaymentProvider();
-            const confirmation = await withRetry(
-                () => provider.createPayment(sanitizedData),
-                "createPayment"
+            const confirmation = await recordPaymentOperation(
+                () => withRetry(
+                    () => provider.createPayment(sanitizedData),
+                    "createPayment"
+                ),
+                "createPayment",
+                provider.code,
+                sanitizedData.amount
             );
 
             // Обновляем заказ с информацией о платеже
@@ -92,9 +98,13 @@ export class PaymentService {
         providerCode?: string
     ): Promise<PaymentStatus> {
         const provider = getPaymentProvider();
-        return await withRetry(
-            () => provider.getPaymentStatus(paymentId),
-            "getPaymentStatus"
+        return await recordPaymentOperation(
+            () => withRetry(
+                () => provider.getPaymentStatus(paymentId),
+                "getPaymentStatus"
+            ),
+            "getPaymentStatus",
+            provider.code
         );
     }
 
@@ -111,9 +121,14 @@ export class PaymentService {
             }
 
             const provider = getPaymentProvider();
-            return await withRetry(
-                () => provider.refund(data),
-                "refund"
+            return await recordPaymentOperation(
+                () => withRetry(
+                    () => provider.refund(data),
+                    "refund"
+                ),
+                "refund",
+                provider.code,
+                data.amount
             );
         } catch (error) {
             console.error("PaymentService: Refund failed", error);

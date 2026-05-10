@@ -18,6 +18,7 @@ import { withRetry } from "./retry-policy";
 import { recordPaymentOperation } from "./metrics";
 import { paymentLogger } from "./secure-logger";
 import { checkRateLimit, RateLimitError } from "./rate-limiter";
+import { validateWebhookRequest } from "./webhook-validator";
 
 export interface CreatePaymentResult {
     success: boolean;
@@ -186,10 +187,37 @@ export class PaymentService {
     async handleWebhook(
         payload: unknown,
         signature?: string,
-        providerCode?: string
+        providerCode?: string,
+        secret?: string
     ): Promise<PaymentWebhookResult> {
         try {
             const provider = getPaymentProvider();
+
+            // Валидируем вебхук перед обработкой
+            if (signature && secret && providerCode) {
+                const validation = await validateWebhookRequest(
+                    payload,
+                    signature,
+                    providerCode as "yookassa" | "paykeeper",
+                    secret
+                );
+
+                if (!validation.valid) {
+                    paymentLogger.logWarning("handleWebhook", "Webhook validation failed", {
+                        provider: providerCode,
+                        error: validation.error,
+                        isReplayed: validation.isReplayed,
+                    });
+                    return {
+                        orderId: "",
+                        status: "error",
+                        paymentId: "",
+                        success: false,
+                        error: validation.error || "Webhook validation failed",
+                    };
+                }
+            }
+
             const webhookData = await provider.handleWebhook(payload, signature);
 
             // Обновляем статус заказа
@@ -202,12 +230,18 @@ export class PaymentService {
                 });
             }
 
+            paymentLogger.logSuccess("handleWebhook", "Webhook processed successfully", {
+                orderId: webhookData.orderId,
+                paymentId: webhookData.paymentId,
+                status: webhookData.status,
+            });
+
             return {
                 ...webhookData,
                 success: true,
             };
         } catch (error) {
-            console.error("PaymentService: Webhook handling failed", error);
+            paymentLogger.logError("handleWebhook", "Webhook handling failed", error);
             return {
                 orderId: "",
                 status: "error",

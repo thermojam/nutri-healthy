@@ -17,6 +17,7 @@ import { validatePaymentData, validateRefundData, sanitizePaymentData } from "./
 import { withRetry } from "./retry-policy";
 import { recordPaymentOperation } from "./metrics";
 import { paymentLogger } from "./secure-logger";
+import { checkRateLimit, RateLimitError } from "./rate-limiter";
 
 export interface CreatePaymentResult {
     success: boolean;
@@ -43,6 +44,15 @@ export class PaymentService {
      */
     async createPayment(data: PaymentData): Promise<CreatePaymentResult> {
         try {
+            // Проверка rate limit по orderId
+            const rateLimit = await checkRateLimit("createPayment", data.orderId);
+            if (!rateLimit.allowed) {
+                return {
+                    success: false,
+                    error: `Rate limit exceeded. Please try again in ${Math.ceil(rateLimit.resetIn / 1000)} seconds`,
+                };
+            }
+
             // Валидация входящих данных
             const validationErrors = validatePaymentData(data);
             if (validationErrors.length > 0) {
@@ -108,6 +118,12 @@ export class PaymentService {
         paymentId: string,
         providerCode?: string
     ): Promise<PaymentStatus> {
+        // Проверка rate limit по paymentId
+        const rateLimit = await checkRateLimit("getPaymentStatus", paymentId);
+        if (!rateLimit.allowed) {
+            throw new RateLimitError("getPaymentStatus", rateLimit.resetIn);
+        }
+
         const provider = getPaymentProvider();
         return await recordPaymentOperation(
             () => withRetry(
@@ -124,6 +140,12 @@ export class PaymentService {
      */
     async refund(data: RefundData): Promise<RefundResult> {
         try {
+            // Проверка rate limit по paymentId
+            const rateLimit = await checkRateLimit("refund", data.paymentId);
+            if (!rateLimit.allowed) {
+                throw new RateLimitError("refund", rateLimit.resetIn);
+            }
+
             // Валидация данных возврата
             const validationErrors = validateRefundData(data);
             if (validationErrors.length > 0) {

@@ -16,6 +16,7 @@ import { Order } from "@/lib/db/models/Order";
 import { validatePaymentData, validateRefundData, sanitizePaymentData } from "./validation";
 import { withRetry } from "./retry-policy";
 import { recordPaymentOperation } from "./metrics";
+import { paymentLogger } from "./secure-logger";
 
 export interface CreatePaymentResult {
     success: boolean;
@@ -74,13 +75,22 @@ export class PaymentService {
                 status: "pending",
             });
 
+            paymentLogger.logSuccess("createPayment", "Payment created successfully", {
+                paymentId: confirmation.paymentId,
+                orderId: data.orderId,
+                amount: sanitizedData.amount,
+            });
+
             return {
                 success: true,
                 paymentUrl: confirmation.confirmationUrl,
                 paymentId: confirmation.paymentId,
             };
         } catch (error) {
-            console.error("PaymentService: Create payment failed", error);
+            paymentLogger.logError("createPayment", "Failed to create payment", error, {
+                orderId: data.orderId,
+                amount: sanitizedData.amount,
+            });
             return {
                 success: false,
                 error:
@@ -117,12 +127,12 @@ export class PaymentService {
             // Валидация данных возврата
             const validationErrors = validateRefundData(data);
             if (validationErrors.length > 0) {
-                console.warn("PaymentService: Refund validation failed", validationErrors);
+                paymentLogger.logWarning("refund", "Refund validation failed", { errors: validationErrors });
                 throw new Error(`Validation failed: ${validationErrors.map(e => e.message).join(", ")}`);
             }
 
             const provider = getPaymentProvider();
-            return await recordPaymentOperation(
+            const result = await recordPaymentOperation(
                 () => withRetry(
                     () => provider.refund(data),
                     "refund"
@@ -131,8 +141,19 @@ export class PaymentService {
                 provider.code,
                 data.amount
             );
+
+            paymentLogger.logSuccess("refund", "Refund processed successfully", {
+                refundId: result.refundId,
+                paymentId: data.paymentId,
+                amount: data.amount,
+            });
+
+            return result;
         } catch (error) {
-            console.error("PaymentService: Refund failed", error);
+            paymentLogger.logError("refund", "Refund failed", error, {
+                paymentId: data.paymentId,
+                amount: data.amount,
+            });
             throw error;
         }
     }

@@ -1,7 +1,7 @@
 /**
  * Payment Provider Factory
  * Фабрика для создания и управления платежными провайдерами
- * Реализует паттерн Factory Method
+ * Реализует паттерн Factory Method с поддержкой fallback
  */
 
 import {
@@ -11,6 +11,7 @@ import {
 } from "./providers/abstract-payment-provider";
 import { YooKassaPaymentProvider } from "./providers/yookassa-provider";
 import { PayKeeperPaymentProvider } from "./providers/paykeeper-provider";
+import { getFallbackManager } from "./fallback-strategy";
 
 /**
  * Менеджер платежных провайдеров
@@ -69,14 +70,23 @@ export class PaymentProviderManager {
     }
 
     /**
-     * Получение активного провайдера
+     * Получение активного провайдера с fallback поддержкой
      */
-    getActiveProvider(): PaymentProvider {
-        const provider = this.providers.get(this.activeProviderType);
-        if (!provider) {
+    async getActiveProvider(): Promise<PaymentProvider> {
+        const fallbackManager = getFallbackManager();
+        try {
+            return await fallbackManager.getAvailableProvider((type) => this.getProvider(type));
+        } catch (error) {
+            // Fallback: вернуть основной провайдер даже если он недоступен
+            const provider = this.providers.get(this.activeProviderType);
+            if (provider) {
+                console.warn(
+                    `Fallback failed, using primary provider anyway: ${this.activeProviderType}`
+                );
+                return provider;
+            }
             throw new Error(`Provider ${this.activeProviderType} not found`);
         }
-        return provider;
     }
 
     /**
@@ -156,21 +166,43 @@ export class PaymentProviderManager {
 }
 
 /**
- * Утилита для получения активного провайдера
+ * Утилита для получения активного провайдера (синхронная, без fallback)
  */
 export function getPaymentProvider(): PaymentProvider {
     const manager = PaymentProviderManager.getInstance();
     // Автоматическая инициализация при первом вызове
     if (!manager["initialized"]) {
         manager["initialized"] = true;
-        
+
         const yookassa = new YooKassaPaymentProvider();
         const paykeeper = new PayKeeperPaymentProvider();
-        
+
         manager.registerProvider("yookassa", yookassa);
         manager.registerProvider("paykeeper", paykeeper);
     }
-    return manager.getActiveProvider();
+    const provider = manager.providers.get(manager.activeProviderType);
+    if (!provider) {
+        throw new Error(`Provider ${manager.activeProviderType} not found`);
+    }
+    return provider;
+}
+
+/**
+ * Утилита для получения активного провайдера (асинхронная, с fallback)
+ */
+export async function getPaymentProviderWithFallback(): Promise<PaymentProvider> {
+    const manager = PaymentProviderManager.getInstance();
+    // Автоматическая инициализация при первом вызове
+    if (!manager["initialized"]) {
+        manager["initialized"] = true;
+
+        const yookassa = new YooKassaPaymentProvider();
+        const paykeeper = new PayKeeperPaymentProvider();
+
+        manager.registerProvider("yookassa", yookassa);
+        manager.registerProvider("paykeeper", paykeeper);
+    }
+    return await manager.getActiveProvider();
 }
 
 /**

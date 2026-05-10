@@ -4,7 +4,7 @@
  * Предоставляет единый интерфейс для работы с разными платежными провайдерами
  */
 
-import { getPaymentProvider } from "./payment-provider-factory";
+import { getPaymentProvider, getPaymentProviderWithFallback } from "./payment-provider-factory";
 import type {
     PaymentData,
     PaymentConfirmation,
@@ -55,7 +55,8 @@ export class PaymentService {
             // Санитизация данных
             const sanitizedData = sanitizePaymentData(data);
 
-            const provider = getPaymentProvider();
+            // Используем fallback стратегию для основной операции
+            const provider = await getPaymentProviderWithFallback();
             const confirmation = await recordPaymentOperation(
                 () => withRetry(
                     () => provider.createPayment(sanitizedData),

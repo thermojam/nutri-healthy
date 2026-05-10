@@ -24,7 +24,6 @@ import {Video} from "@/lib/db/models/Video";
 import {Webinar} from "@/lib/db/models/Webinar";
 import {Case} from "@/lib/db/models/Case";
 import {Education} from "@/lib/db/models/Education";
-import {Testimonial} from "@/lib/db/models/Testimonial";
 
 // ============================================
 // ЕДИНЫЙ ИСТОЧНИК ИСТИНЫ - ИЗОБРАЖЕНИЯ
@@ -58,15 +57,6 @@ const IMAGES = {
         habits: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=600&fit=crop&crop=face",  // Анна
         energy: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&crop=face",  // Михаил (мужчина)
     },
-    // Отзывы
-    testimonials: {
-        weightLoss: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop&crop=face",  // Екатерина
-        habits: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=600&fit=crop&crop=face",  // Анна
-        energy: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&crop=face",  // Михаил (мужчина)
-        gymnastics: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=800&h=600&fit=crop&crop=face",  // Ольга
-        nutrition: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&h=600&fit=crop&crop=face",  // Ирина
-        healthCoaching: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=600&fit=crop&crop=face",  // Дмитрий (мужчина)
-    },
     // Авторы
     authors: {
         ksenia: "/images/expert.jpeg", // Локальное фото эксперта
@@ -85,7 +75,6 @@ async function seed() {
             Webinar.deleteMany({}),
             Case.deleteMany({}),
             Education.deleteMany({}),
-            Testimonial.deleteMany({}),
         ]);
 
         console.log("✅ Очистка завершена");
@@ -879,134 +868,6 @@ async function seed() {
         ]);
         console.log(`✅ Создано ${education.length} записей об образовании`);
 
-        // ============================================
-        // Отзывы (Testimonials)
-        // ============================================
-        console.log("💬 Создание отзывов...");
-        const testimonials = await Testimonial.insertMany([
-            {
-                author: {
-                    name: "Екатерина М.",
-                    anonymized: false,
-                },
-                rating: 5,
-                title: "Лучшее решение в моей жизни!",
-                content:
-                    "Обратилась с проблемой лишнего веса после родов. За 4 месяца не только похудела на 15 кг, но и полностью изменила отношение к питанию. Энергия зашкаливает, кожа сияет, волосы блестят! Спасибо за индивидуальный подход и постоянную поддержку!",
-                image: {
-                    url: IMAGES.cases.weightLoss,
-                    alt: "Снижение веса",
-                },
-                serviceName: "Health-коучинг",
-                verified: true,
-                published: true,
-                featured: true,
-                consentGiven: true,
-                order: 1,
-            },
-            {
-                author: {
-                    name: "Анна К.",
-                    anonymized: false,
-                },
-                rating: 5,
-                title: "Наконец-то гармония с едой",
-                content:
-                    "Долгие годы страдала от компульсивного переедания. Перепробовала всё: диеты, психологи, кодирование... Ничего не работало надолго. Только здесь я поняла корень проблемы и научилась слышать свой организм. 3 месяца без срывов!",
-                image: {
-                    url: IMAGES.testimonials.habits,
-                    alt: "Анна К.",
-                },
-                serviceName: "Нутрициология + Психология",
-                verified: true,
-                published: true,
-                featured: true,
-                consentGiven: true,
-                order: 2,
-            },
-            {
-                author: {
-                    name: "Михаил Д.",
-                    anonymized: false,
-                },
-                rating: 5,
-                title: "Здоровье ЖКТ восстановлено",
-                content:
-                    "После многих лет безуспешного лечения у гастроэнтерологов обратился за помощью. Через 2 месяца симптомы ушли на 90%. Просто изменил питание по рекомендациям. Жалею только об одном — что не обратился раньше!",
-                image: {
-                    url: IMAGES.cases.energy,
-                    alt: "Энергия и здоровье",
-                },
-                serviceName: "Нутрициология",
-                verified: true,
-                published: true,
-                featured: true,
-                consentGiven: true,
-                order: 3,
-            },
-            {
-                author: {
-                    name: "Ольга П.",
-                    anonymized: false,
-                },
-                rating: 5,
-                title: "Славянская гимнастика — это чудо!",
-                content:
-                    "В 50 лет я чувствую себя лучше, чем в 40! Боли в спине ушли, появилась гибкость, энергия бьет ключом. А главное — научилась расслабляться и получать удовольствие от движения. Рекомендую всем!",
-                image: {
-                    url: IMAGES.testimonials.gymnastics,
-                    alt: "Ольга П.",
-                },
-                serviceName: "Славянская гимнастика",
-                verified: true,
-                published: true,
-                featured: true,
-                consentGiven: true,
-                order: 4,
-            },
-            {
-                author: {
-                    name: "Ирина С.",
-                    anonymized: false,
-                },
-                rating: 5,
-                title: "Профессиональный подход",
-                content:
-                    "Очень понравился комплексный подход. Не просто дали список продуктов, а разобрали весь образ жизни: сон, стресс, движение, питание. Результат превзошел ожидания. Минус 8 кг и полное изменение качества жизни!",
-                image: {
-                    url: IMAGES.testimonials.nutrition,
-                    alt: "Ирина С.",
-                },
-                serviceName: "Нутрициология",
-                verified: true,
-                published: true,
-                featured: true,
-                consentGiven: true,
-                order: 5,
-            },
-            {
-                author: {
-                    name: "Дмитрий В.",
-                    anonymized: false,
-                },
-                rating: 5,
-                title: "Энергия вернулась!",
-                content:
-                    "Постоянная усталость стала нормой жизни. После консультации и коррекции питания энергия вернулась на такой уровень, что я снова начал тренироваться. Это невероятно! Спасибо!",
-                image: {
-                    url: IMAGES.testimonials.healthCoaching,
-                    alt: "Дмитрий В.",
-                },
-                serviceName: "Health-коучинг",
-                verified: true,
-                published: true,
-                featured: true,
-                consentGiven: true,
-                order: 6,
-            },
-        ]);
-        console.log(`✅ Создано ${testimonials.length} отзывов`);
-
         console.log("\n✅ ✅ ✅ Seed завершен успешно! ✅ ✅ ✅\n");
         console.log("📊 Итого создано:");
         console.log(`   - Услуг: ${services.length}`);
@@ -1015,7 +876,6 @@ async function seed() {
         console.log(`   - Вебинаров: ${webinars.length}`);
         console.log(`   - Кейсов: ${cases.length}`);
         console.log(`   - Образований: ${education.length}`);
-        console.log(`   - Отзывов: ${testimonials.length}`);
         console.log("\n");
 
         process.exit(0);

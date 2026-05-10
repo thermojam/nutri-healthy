@@ -13,4 +13,3 @@ export * from "./Video";
 export * from "./Webinar";
 export * from "./Case";
 export * from "./Education";
-export * from "./Testimonial";

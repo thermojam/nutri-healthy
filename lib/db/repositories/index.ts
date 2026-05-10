@@ -12,7 +12,6 @@ export * from "./video.repository";
 export * from "./webinar.repository";
 export * from "./case.repository";
 export * from "./education.repository";
-export * from "./testimonial.repository";
 
 // Бизнес репозитории
 export * from "./user.repository";
@@ -27,7 +26,6 @@ export {videoRepository} from "./video.repository";
 export {webinarRepository} from "./webinar.repository";
 export {caseRepository} from "./case.repository";
 export {educationRepository} from "./education.repository";
-export {testimonialRepository} from "./testimonial.repository";
 export {userRepository} from "./user.repository";
 export {orderRepository} from "./order.repository";
 export {receiptRepository} from "./receipt.repository";

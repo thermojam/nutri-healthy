@@ -14,7 +14,6 @@ import type {
     IWebinar,
     ICase,
     IEducation,
-    ITestimonial,
 } from "@/lib/db/models";
 
 // ============================================
@@ -32,7 +31,6 @@ export type Video = IVideo;
 export type Webinar = IWebinar;
 export type Case = ICase;
 export type Education = IEducation;
-export type Testimonial = ITestimonial;
 
 // ============================================
 // ТИПЫ ДЛЯ ФОРМ

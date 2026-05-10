@@ -205,35 +205,6 @@ export function CaseCardSkeleton() {
 }
 
 /**
- * Skeleton для отзыва
- */
-export function TestimonialCardSkeleton() {
-    return (
-        <div className="overflow-hidden bg-gradient-to-br from-background to-muted/20 rounded-lg p-5 sm:p-6 space-y-3">
-            {/* Звёзды */}
-            <div className="flex gap-1">
-                {Array.from({length: 5}).map((_, i) => (
-                    <Skeleton key={i} variant="rounded" width={20} height={20} />
-                ))}
-            </div>
-
-            {/* Текст отзыва */}
-            <div className="space-y-2">
-                <Skeleton variant="text" width="100%" />
-                <Skeleton variant="text" width="95%" />
-                <Skeleton variant="text" width="70%" />
-            </div>
-
-            {/* Автор и услуга */}
-            <div className="pt-3 border-t border-border/30 space-y-2">
-                <Skeleton variant="text" width="50%" />
-                <Skeleton variant="text" width="40%" />
-            </div>
-        </div>
-    );
-}
-
-/**
  * Skeleton для сетки кейсов (карусель)
  */
 export function CasesCarouselSkeleton({count = 1}: {count?: number}) {
@@ -241,19 +212,6 @@ export function CasesCarouselSkeleton({count = 1}: {count?: number}) {
         <div className="space-y-4">
             {Array.from({length: count}).map((_, i) => (
                 <CaseCardSkeleton key={i} />
-            ))}
-        </div>
-    );
-}
-
-/**
- * Skeleton для сетки отзывов (карусель)
- */
-export function TestimonialCarouselSkeleton({count = 1}: {count?: number}) {
-    return (
-        <div className="space-y-4">
-            {Array.from({length: count}).map((_, i) => (
-                <TestimonialCardSkeleton key={i} />
             ))}
         </div>
     );

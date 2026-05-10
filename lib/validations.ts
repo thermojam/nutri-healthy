@@ -31,19 +31,21 @@ export const contactFormSchema = z.object({
             "Фамилия должна содержать только буквы и дефис"
         ),
     patronymic: z
-        .string()
-        .max(50, "Отчество не должно превышать 50 символов")
-        .regex(
-            /^[а-яА-ЯёЁa-zA-Z-]*$/,
-            "Отчество должно содержать только буквы и дефис"
-        )
-        .optional()
-        .or(z.literal("")),
+        .union([
+            z
+                .string()
+                .max(50, "Отчество не должно превышать 50 символов")
+                .regex(
+                    /^[а-яА-ЯёЁa-zA-Z-]*$/,
+                    "Отчество должно содержать только буквы и дефис"
+                ),
+            z.literal(""),
+        ])
+        .optional(),
     email: z.string().email("Некорректный email адрес"),
     phone: z
-        .string()
-        .optional()
-        .or(z.literal("")),
+        .union([z.string(), z.literal("")])
+        .optional(),
     // Согласия (152-ФЗ требование)
     personalDataConsent: z.boolean().refine((val) => val === true, {
         message: "Необходимо согласие на обработку персональных данных",
@@ -70,13 +72,16 @@ export const orderFormSchema = z.object({
         .string()
         .min(2, "Фамилия должна содержать не менее 2 символов")
         .max(50),
-    patronymic: z.string().max(50).optional().or(z.literal("")),
+    patronymic: z
+        .union([z.string().max(50), z.literal("")])
+        .optional(),
     email: z.string().email("Некорректный email адрес"),
     phone: z
-        .string()
-        .min(10, "Введите корректный номер телефона")
-        .optional()
-        .or(z.literal("")),
+        .union([
+            z.string().min(10, "Введите корректный номер телефона"),
+            z.literal(""),
+        ])
+        .optional(),
     serviceId: z.string().min(1, "ID услуги обязателен"),
     tariff: z.enum(["base", "premium", "vip"]),
     paymentMethod: z.enum(["card", "yookassa", "yandex_split", "dolemi", "paykeeper"]).optional(),
@@ -130,7 +135,9 @@ export const feedbackSchema = z.object({
         .min(2, "Имя должно содержать не менее 2 символов")
         .max(100),
     email: z.string().email("Некорректный email адрес"),
-    phone: z.string().optional().or(z.literal("")),
+    phone: z
+        .union([z.string(), z.literal("")])
+        .optional(),
     message: z
         .string()
         .min(10, "Сообщение должно содержать не менее 10 символов")

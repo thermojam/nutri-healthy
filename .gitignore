@@ -19,8 +19,6 @@ doc
 /.next/
 /out/
 scripts
-spec.md
-skills
 
 # production
 /build

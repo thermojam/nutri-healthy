@@ -163,6 +163,13 @@ export class PaymentProviderManager {
         }
         return status;
     }
+
+    /**
+     * Проверка инициализации
+     */
+    isInitialized(): boolean {
+        return this.initialized;
+    }
 }
 
 /**
@@ -171,20 +178,14 @@ export class PaymentProviderManager {
 export function getPaymentProvider(): PaymentProvider {
     const manager = PaymentProviderManager.getInstance();
     // Автоматическая инициализация при первом вызове
-    if (!manager["initialized"]) {
-        manager["initialized"] = true;
-
+    if (!manager.isInitialized()) {
         const yookassa = new YooKassaPaymentProvider();
         const paykeeper = new PayKeeperPaymentProvider();
 
         manager.registerProvider("yookassa", yookassa);
         manager.registerProvider("paykeeper", paykeeper);
     }
-    const provider = manager.providers.get(manager.activeProviderType);
-    if (!provider) {
-        throw new Error(`Provider ${manager.activeProviderType} not found`);
-    }
-    return provider;
+    return manager.getProvider(manager.getActiveProviderType());
 }
 
 /**
@@ -193,9 +194,7 @@ export function getPaymentProvider(): PaymentProvider {
 export async function getPaymentProviderWithFallback(): Promise<PaymentProvider> {
     const manager = PaymentProviderManager.getInstance();
     // Автоматическая инициализация при первом вызове
-    if (!manager["initialized"]) {
-        manager["initialized"] = true;
-
+    if (!manager.isInitialized()) {
         const yookassa = new YooKassaPaymentProvider();
         const paykeeper = new PayKeeperPaymentProvider();
 

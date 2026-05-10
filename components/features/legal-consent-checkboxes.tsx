@@ -66,7 +66,7 @@ export function LegalConsentCheckboxes({
                 />
                 <label
                     htmlFor="personalDataConsent"
-                    className="text-sm text-muted leading-relaxed cursor-pointer"
+                    className="text-sm text-muted-foreground leading-relaxed cursor-pointer"
                 >
                     {personalDataText || (
                         <>
@@ -105,7 +105,7 @@ export function LegalConsentCheckboxes({
                 />
                 <label
                     htmlFor="contractAcceptance"
-                    className="text-sm text-muted leading-relaxed cursor-pointer"
+                    className="text-sm text-muted-foreground leading-relaxed cursor-pointer"
                 >
                     {contractText || (
                         <>
@@ -134,12 +134,12 @@ export function LegalConsentCheckboxes({
                 />
                 <label
                     htmlFor="marketingConsent"
-                    className="text-sm text-muted leading-relaxed cursor-pointer"
+                    className="text-sm text-muted-foreground leading-relaxed cursor-pointer"
                 >
                     {marketingText || (
                         <>
                             Я хочу получать полезные материалы, новости и специальные предложения по email
-                            {!required && <span className="text-muted"> (необязательно)</span>}
+                            {!required && <span className="text-muted-foreground"> (необязательно)</span>}
                         </>
                     )}
                 </label>
@@ -148,7 +148,7 @@ export function LegalConsentCheckboxes({
             {/* Каналы маркетинговых коммуникаций */}
             {marketingConsent && (
                 <div className="pl-8 space-y-2 animate-fade-in">
-                    <p className="text-sm text-muted">Выберите удобные каналы связи:</p>
+                    <p className="text-sm text-muted-foreground">Выберите удобные каналы связи:</p>
                     <div className="flex flex-wrap gap-4">
                         {[
                             {id: "email", label: "Email"},
@@ -179,7 +179,7 @@ export function LegalConsentCheckboxes({
 
             {/* Версии документов (для прозрачности) */}
             <div className="pt-2 border-t border-border">
-                <p className="text-xs text-muted">
+                <p className="text-xs text-muted-foreground">
                     Версии документов: Оферта v{LEGAL_VERSIONS.contract}, Персональные данные
                     v{LEGAL_VERSIONS.personalDataConsent}
                 </p>

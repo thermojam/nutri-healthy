@@ -100,7 +100,7 @@ export class PaymentService {
         } catch (error) {
             paymentLogger.logError("createPayment", "Failed to create payment", error, {
                 orderId: data.orderId,
-                amount: sanitizedData.amount,
+                amount: data.amount,
             });
             return {
                 success: false,
@@ -116,8 +116,7 @@ export class PaymentService {
      * Получение статуса платежа
      */
     async getPaymentStatus(
-        paymentId: string,
-        providerCode?: string
+        paymentId: string
     ): Promise<PaymentStatus> {
         // Проверка rate limit по paymentId
         const rateLimit = await checkRateLimit("getPaymentStatus", paymentId);

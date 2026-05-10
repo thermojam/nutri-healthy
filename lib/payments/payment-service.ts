@@ -14,6 +14,7 @@ import type {
 } from "./providers/abstract-payment-provider";
 import { Order } from "@/lib/db/models/Order";
 import { validatePaymentData, validateRefundData, sanitizePaymentData } from "./validation";
+import { withRetry } from "./retry-policy";
 
 export interface CreatePaymentResult {
     success: boolean;
@@ -54,7 +55,10 @@ export class PaymentService {
             const sanitizedData = sanitizePaymentData(data);
 
             const provider = getPaymentProvider();
-            const confirmation = await provider.createPayment(sanitizedData);
+            const confirmation = await withRetry(
+                () => provider.createPayment(sanitizedData),
+                "createPayment"
+            );
 
             // Обновляем заказ с информацией о платеже
             await Order.findByIdAndUpdate(data.orderId, {
@@ -88,7 +92,10 @@ export class PaymentService {
         providerCode?: string
     ): Promise<PaymentStatus> {
         const provider = getPaymentProvider();
-        return await provider.getPaymentStatus(paymentId);
+        return await withRetry(
+            () => provider.getPaymentStatus(paymentId),
+            "getPaymentStatus"
+        );
     }
 
     /**
@@ -104,7 +111,10 @@ export class PaymentService {
             }
 
             const provider = getPaymentProvider();
-            return await provider.refund(data);
+            return await withRetry(
+                () => provider.refund(data),
+                "refund"
+            );
         } catch (error) {
             console.error("PaymentService: Refund failed", error);
             throw error;

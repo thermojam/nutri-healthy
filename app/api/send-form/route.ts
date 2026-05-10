@@ -5,6 +5,7 @@ import {User} from "@/lib/db/models/User";
 import {Consent} from "@/lib/db/models/Consent";
 import {createAuditLog, getClientIP, getUserAgent} from "@/lib/db/audit";
 import {contactFormSchema, LEGAL_VERSIONS} from "@/lib/validations";
+import {formSubmitRateLimiter} from "@/lib/rate-limit";
 
 /**
  * Нормализация номера телефона
@@ -33,6 +34,20 @@ function normalizePhone(phone?: string): string | undefined {
  */
 export async function POST(request: NextRequest) {
     try {
+        // Rate limiting
+        const clientIp = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+        const rateLimitResult = formSubmitRateLimiter(clientIp);
+
+        if (!rateLimitResult.allowed) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Слишком много запросов. Попробуйте позже.",
+                },
+                {status: 429}
+            );
+        }
+
         const body = await request.json();
 
         // Валидация данных формы

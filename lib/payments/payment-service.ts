@@ -13,6 +13,7 @@ import type {
     RefundResult,
 } from "./providers/abstract-payment-provider";
 import { Order } from "@/lib/db/models/Order";
+import { validatePaymentData, validateRefundData, sanitizePaymentData } from "./validation";
 
 export interface CreatePaymentResult {
     success: boolean;
@@ -39,8 +40,21 @@ export class PaymentService {
      */
     async createPayment(data: PaymentData): Promise<CreatePaymentResult> {
         try {
+            // Валидация входящих данных
+            const validationErrors = validatePaymentData(data);
+            if (validationErrors.length > 0) {
+                console.warn("PaymentService: Validation failed", validationErrors);
+                return {
+                    success: false,
+                    error: `Validation failed: ${validationErrors.map(e => e.message).join(", ")}`,
+                };
+            }
+
+            // Санитизация данных
+            const sanitizedData = sanitizePaymentData(data);
+
             const provider = getPaymentProvider();
-            const confirmation = await provider.createPayment(data);
+            const confirmation = await provider.createPayment(sanitizedData);
 
             // Обновляем заказ с информацией о платеже
             await Order.findByIdAndUpdate(data.orderId, {
@@ -82,6 +96,13 @@ export class PaymentService {
      */
     async refund(data: RefundData): Promise<RefundResult> {
         try {
+            // Валидация данных возврата
+            const validationErrors = validateRefundData(data);
+            if (validationErrors.length > 0) {
+                console.warn("PaymentService: Refund validation failed", validationErrors);
+                throw new Error(`Validation failed: ${validationErrors.map(e => e.message).join(", ")}`);
+            }
+
             const provider = getPaymentProvider();
             return await provider.refund(data);
         } catch (error) {

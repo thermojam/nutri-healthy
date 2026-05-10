@@ -6,6 +6,7 @@ import {Consent} from "@/lib/db/models/Consent";
 import {createAuditLog, getClientIP, getUserAgent} from "@/lib/db/audit";
 import {contactFormSchema, LEGAL_VERSIONS} from "@/lib/validations";
 import {formSubmitRateLimiter} from "@/lib/rate-limit";
+import {metricsCollector} from "@/lib/metrics";
 
 /**
  * Нормализация номера телефона
@@ -33,6 +34,7 @@ function normalizePhone(phone?: string): string | undefined {
  * - Сохранение версии документов
  */
 export async function POST(request: NextRequest) {
+    const startTime = Date.now();
     try {
         // Rate limiting
         const clientIp = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
@@ -243,14 +245,19 @@ export async function POST(request: NextRequest) {
         //   body: "Спасибо за подписку...",
         // });
 
+        const duration = Date.now() - startTime;
+        metricsCollector.recordRequest('/api/send-form', 'POST', 200, duration);
+
         return NextResponse.json({
             success: true,
             message: "Заявка успешно отправлена",
             userId: user._id,
         });
     } catch (error) {
+        const duration = Date.now() - startTime;
         console.error("❌ Form submission error:", error);
-        
+        metricsCollector.recordRequest('/api/send-form', 'POST', 500, duration, 'Form submission error');
+
         // Более подробное сообщение об ошибке для отладки
         const errorMessage = error instanceof Error ? error.message : "Внутренняя ошибка сервера";
         const errorStack = error instanceof Error ? error.stack : undefined;

@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import {z} from "zod";
-import {sendEmail, sendAdminEmail} from "@/lib/email/resend";
+import {sendEmail, sendAdminEmail} from "@/lib/email/unisender-go";
 import {AdminNewOrderTemplate, AdminNewOrderTemplateProps} from "@/lib/email/templates/admin-new-order";
 import {ClientWelcomeTemplate, ClientWelcomeTemplateProps} from "@/lib/email/templates/client-welcome";
 import {ClientOrderConfirmTemplate, ClientOrderConfirmTemplateProps} from "@/lib/email/templates/client-order-confirm";

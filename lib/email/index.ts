@@ -4,8 +4,8 @@
  * Экспорт всех шаблонов и сервисов
  */
 
-// Resend сервис
-export * from "./resend";
+// Unisender Go сервис
+export * from "./unisender-go";
 
 // Шаблоны
 export {EmailTemplate, EmailButton, EmailDivider, EmailSection} from "./templates/base";
